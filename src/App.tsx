@@ -12,7 +12,14 @@ function App() {
   return (
     <>
       <Timer />
-      <Canvas>
+      <Canvas camera={
+        {
+          fov: 50,
+          near: 0.05,
+          far: 1000,
+          position: [0.8, 0.9, 3]
+        }
+      }>
         <Scene />
       </Canvas>
     </>
