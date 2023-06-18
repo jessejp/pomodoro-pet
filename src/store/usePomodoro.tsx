@@ -5,7 +5,7 @@ interface PomodoroState {
   workTime: number;
   rounds: number;
   currentRound: number;
-  isRunning: boolean;
+  pomodoroPhase: "work" | "break" | "longBreak" | "none";
   start: (params: { rounds: number }) => void;
   stop: () => void;
   addRound: () => void;
@@ -17,20 +17,18 @@ export const usePomodoro = create<PomodoroState>((set) => {
     workTime: 0,
     rounds: 1,
     currentRound: 0,
-    isRunning: false,
+    pomodoroPhase: "none",
 
     start: ({ rounds }) =>
       set(() => {
-        console.log(rounds);
-
         return {
-          isRunning: true,
+          pomodoroPhase: "work",
           startTime: Date.now(),
-          currentRound: 0,
+          currentRound: 1,
           rounds,
         };
       }),
-    stop: () => set(() => ({ isRunning: false })),
+    stop: () => set(() => ({ pomodoroPhase: "none" })),
     addRound: () =>
       set(({ currentRound }) => ({ currentRound: currentRound + 1 })),
   };
