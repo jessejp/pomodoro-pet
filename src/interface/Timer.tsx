@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { usePomodoro } from "../store/usePomodoro";
 
 const Timer = () => {
-  const [minutes, setMinutes] = useState(2);
+  const [minutes, setMinutes] = useState(25);
   const {
     start,
     stop,
-    addRound,
+    nextRound,
     currentRound,
     rounds,
     pomodoroPhase,
@@ -18,7 +18,7 @@ const Timer = () => {
     let intervalId: number | undefined;
 
     if (pomodoroPhase === "work" && timerRef.current) {
-      timerRef.current.innerText = "0:00";
+      timerRef.current.innerText = `${minutes}:00`;
       intervalId = setInterval(() => {
         // Calculate the elapsed time
         const currentTime = Date.now();
@@ -51,23 +51,35 @@ const Timer = () => {
     return () => clearInterval(intervalId);
   }, [pomodoroPhase, startTime, stop, currentRound, rounds, minutes]);
 
-  console.log("dom rendered");
-
   return (
-    <div className="fixed w-full z-10">
+    <div className="fixed w-full z-10 bottom-1/2">
       <div className="text-5xl font-bold text-center" ref={timerRef}>
         0:00
       </div>
       <div className="mt-4" />
       {pomodoroPhase === "none" && (
-        <button
-          className="bg-pink-300 hover:bg-pink-400 text-white font-bold py-2 px-4 rounded"
-          onClick={() => {
-            start({ rounds: 1 });
-          }}
-        >
-          Start {minutes} minutes
-        </button>
+        <div className="flex flex-col justify-center items-center gap-4">
+          <input
+            className="w-64"
+            type="range"
+            min={5}
+            max={60}
+            step={5}
+            value={minutes}
+            onChange={(e) => {
+              setMinutes(e.target.valueAsNumber);
+            }}
+          />
+
+          <button
+            className="bg-pink-300 hover:bg-pink-400 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              start({ rounds: 1 });
+            }}
+          >
+            Start {minutes} minutes
+          </button>
+        </div>
       )}
       {pomodoroPhase !== "none" && (
         <button
