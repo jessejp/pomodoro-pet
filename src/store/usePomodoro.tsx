@@ -2,12 +2,13 @@ import { create } from "zustand";
 
 interface PomodoroState {
   startTime: number;
-  pomodoroSession: {workTime: number, breakTime: number} | null;
+  pomodoroSession: { workTime: number; breakTime: number }[] | null;
   rounds: number;
   currentRound: number;
   pomodoroPhase: "work" | "break" | "longBreak" | "none";
-  start: (params: { rounds: number }) => void;
+  start: (params: { rounds: number, minutes: number }) => void;
   stop: () => void;
+  startBreak: () => void;
   nextRound: () => void;
 }
 
@@ -19,10 +20,10 @@ export const usePomodoro = create<PomodoroState>((set) => {
     currentRound: 0,
     pomodoroPhase: "none",
 
-    start: ({ rounds }) =>
+    start: ({ rounds, minutes }) =>
       set(() => {
         return {
-          pomodoroSession: {workTime: 25, breakTime: 5},
+          pomodoroSession: [{ workTime: minutes, breakTime: 0.25 }],
           pomodoroPhase: "work",
           startTime: Date.now(),
           currentRound: 0,
@@ -30,7 +31,12 @@ export const usePomodoro = create<PomodoroState>((set) => {
         };
       }),
     stop: () => set(() => ({ pomodoroPhase: "none" })),
+    startBreak: () => set(() => ({ pomodoroPhase: "break" })),
     nextRound: () =>
-      set(({ currentRound }) => ({ currentRound: currentRound + 1 })),
+      set(({ currentRound }) => {
+        console.log("next round");
+
+        return { currentRound: currentRound + 1, pomodoroPhase: "work" };
+      }),
   };
 });

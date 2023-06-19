@@ -1,35 +1,42 @@
 import React, { useState, useEffect, useRef } from "react";
 import { usePomodoro } from "../store/usePomodoro";
+import getTimer from "../store/getTimer";
 
 const Timer = () => {
-  const [minutes, setMinutes] = useState(25);
+  const [minutes, setMinutes] = useState(0.1);
   const {
     start,
     stop,
+    startBreak,
     nextRound,
     currentRound,
     rounds,
     pomodoroPhase,
+    pomodoroSession,
     startTime,
   } = usePomodoro();
+
   const timerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let intervalId: number | undefined;
+    console.log("effect", pomodoroPhase);
 
-    if (pomodoroPhase === "work" && timerRef.current) {
-      timerRef.current.innerText = `${minutes}:00`;
+    if (currentRound >= rounds) return stop();
+
+    if (
+      pomodoroPhase === "work" &&
+      !!pomodoroSession?.length &&
+      timerRef.current
+    ) {
+      const { workTime } = pomodoroSession[currentRound];
+      timerRef.current.innerText = `${workTime}:00`;
       intervalId = setInterval(() => {
         // Calculate the elapsed time
-        const currentTime = Date.now();
-        const elapsedTime = Math.floor((currentTime - startTime) / 1000);
-
-        const timeLeft = 60 * minutes - elapsedTime;
-
-        const elapsedMinutes = Math.floor(timeLeft / 60);
-        const elapsedSeconds = timeLeft % 60;
-
-        console.log(elapsedTime, timeLeft, elapsedMinutes, elapsedSeconds);
+        const { elapsedTime, elapsedMinutes, elapsedSeconds } = getTimer({
+          startTime,
+          minutes: workTime,
+        });
 
         if (timerRef.current)
           timerRef.current.innerText = `${elapsedMinutes}:${
@@ -37,19 +44,62 @@ const Timer = () => {
           }${elapsedSeconds}`;
 
         console.log(
+          "interval",
           `${elapsedMinutes}:${elapsedSeconds < 10 ? "0" : ""}${elapsedSeconds}`
         );
 
-        if (elapsedTime >= 60 * minutes) {
-          // 25 minutes have passed
-          console.log("timer passed", currentRound, rounds);
+        if (elapsedTime >= 60 * workTime) {
+          // timer round has passed
+          startBreak();
+        }
+      }, 1000);
+    } else if (
+      pomodoroPhase === "break" &&
+      !!pomodoroSession?.length &&
+      timerRef.current
+    ) {
+      const { breakTime } = pomodoroSession[currentRound];
+      timerRef.current.innerText = `${breakTime}:00`;
+      intervalId = setInterval(() => {
+        // Calculate the elapsed time
+        const { elapsedTime, elapsedMinutes, elapsedSeconds } = getTimer({
+          startTime,
+          minutes: breakTime,
+        });
 
-          if (currentRound >= rounds) stop();
+        if (timerRef.current)
+          timerRef.current.innerText = `${elapsedMinutes}:${
+            elapsedSeconds < 10 ? "0" : ""
+          }${elapsedSeconds}`;
+
+        console.log(
+          "interval",
+          `${elapsedMinutes}:${elapsedSeconds < 10 ? "0" : ""}${elapsedSeconds}`
+        );
+
+        if (elapsedTime >= 60 * breakTime) {
+          // timer round has passed
+          nextRound();
         }
       }, 1000);
     }
-    return () => clearInterval(intervalId);
-  }, [pomodoroPhase, startTime, stop, currentRound, rounds, minutes]);
+
+    return () => {
+      console.log("clearing interval");
+
+      clearInterval(intervalId);
+    };
+  }, [
+    stop,
+    nextRound,
+    startBreak,
+    pomodoroPhase,
+    startTime,
+    currentRound,
+    rounds,
+    pomodoroSession,
+    minutes,
+  ]);
 
   return (
     <div className="fixed w-full z-10 bottom-1/2">
@@ -74,7 +124,7 @@ const Timer = () => {
           <button
             className="bg-pink-300 hover:bg-pink-400 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
-              start({ rounds: 1 });
+              start({ rounds: 1, minutes });
             }}
           >
             Start {minutes} minutes
