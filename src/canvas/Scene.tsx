@@ -1,11 +1,21 @@
 import { Room } from "./Room";
-import { PresentationControls } from "@react-three/drei";
+import { Center, PresentationControls } from "@react-three/drei";
+import Duck from "./Duck";
+import { usePomodoro } from "../store/usePomodoro";
 
 function Scene() {
+  const { pomodoroPhase } = usePomodoro();
   return (
-    <PresentationControls>
-      <Room position={[0.6, -0.4, 0]} />
-    </PresentationControls>
+    <>
+      <ambientLight intensity={1} />
+      <directionalLight position={[0, 5, -10]} intensity={1} />
+      <Center>
+        <PresentationControls enabled={pomodoroPhase !== "none"}>
+          <Room />
+          <Duck />
+        </PresentationControls>
+      </Center>
+    </>
   );
 }
 
