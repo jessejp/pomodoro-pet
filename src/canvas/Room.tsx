@@ -13,69 +13,88 @@ type GLTFResult = GLTF & {
     table: THREE.Mesh;
     chair: THREE.Mesh;
     outsidePlane: THREE.Mesh;
-    windowtop: THREE.Mesh;
     curtain: THREE.Mesh;
+    windowtop: THREE.Mesh;
     curtain001: THREE.Mesh;
   };
 };
 
-const material = new THREE.MeshBasicMaterial();
+const material = new THREE.MeshBasicMaterial({color: 0xffffff});
 
 export function Room(props: JSX.IntrinsicElements["group"]) {
-  const { nodes } = useGLTF("/pomodoropet_layout_0.glb") as GLTFResult;
-  const texture = useTexture("/texture.jpg");
+  const { nodes } = useGLTF(
+    "/pomodoropet_layout_2.glb"
+  ) as GLTFResult;
+  const texture = useTexture("/baked_texture_2.jpg");
   texture.flipY = false;
   return (
     <group {...props} dispose={null}>
       <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.cabinet.geometry}
         material={material}
         material-map={texture}
-        position={[-1.16, 0.01, -1.5]}
-        scale={[1, 0.71, 0.71]}
+        position={[-1.162, 0.01, -0.745]}
       />
       <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.room.geometry}
         material={material}
         material-map={texture}
       />
       <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.table.geometry}
         material={material}
         material-map={texture}
-        position={[-1.27, 0.68, 0.21]}
+        position={[-1.27, 0.677, 0.105]}
       />
       <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.chair.geometry}
         material={material}
         material-map={texture}
-        position={[-0.47, 0.44, 0.21]}
-        rotation={[0, 0.49, 0]}
+        position={[-0.52, 0.437, 0.012]}
+        rotation={[0, 0.489, 0]}
+        scale={[1, 1, 1.818]}
       />
       <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.outsidePlane.geometry}
-        material-color={"#ffffff"}
-      />
-      <mesh
-        geometry={nodes.windowtop.geometry}
         material={material}
         material-map={texture}
-        position={[0.23, 2.09, -2]}
       />
       <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.curtain.geometry}
         material={material}
         material-map={texture}
-        position={[-0.22, 0.57, -1.89]}
+        position={[-0.225, 0.57, -0.938]}
       />
       <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.windowtop.geometry}
+        material={material}
+        material-map={texture}
+        position={[0.227, 2.093, -0.993]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.curtain001.geometry}
         material={material}
         material-map={texture}
-        position={[0.79, 0.57, -1.89]}
+        position={[0.792, 0.57, -0.938]}
       />
     </group>
   );
 }
 
-useGLTF.preload("/pomodoropet_layout_0.glb");
+useGLTF.preload("/pomodoropet_layout_2.glb");
