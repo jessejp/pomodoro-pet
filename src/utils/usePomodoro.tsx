@@ -5,15 +5,17 @@ interface PomodoroState {
   pomodoroSession: { workTime: number; breakTime: number }[] | null;
   rounds: number;
   currentRound: number;
-  pomodoroPhase: "work" | "break" | "longBreak" | "none";
+  pomodoroPhase: "work" | "break" | "none";
+  isRunning: boolean;
   start: (params: {
     rounds: number;
-    workMinutes: number;
-    breakMinutes: number;
+    workTime: number;
+    breakTime: number;
   }) => void;
   stop: () => void;
   startBreak: () => void;
   nextRound: () => void;
+  setIsRunning: (newState: boolean) => void;
 }
 
 export const usePomodoro = create<PomodoroState>((set) => {
@@ -23,14 +25,15 @@ export const usePomodoro = create<PomodoroState>((set) => {
     rounds: 0,
     currentRound: 0,
     pomodoroPhase: "none",
+    isRunning: false,
 
-    start: ({ rounds, workMinutes, breakMinutes }) =>
+    start: ({ rounds, workTime, breakTime }) =>
       set(() => {
         const pomodoroSession = [];
         for (let i = 0; i < rounds; i++) {
           pomodoroSession.push({
-            workTime: workMinutes,
-            breakTime: breakMinutes,
+            workTime,
+            breakTime,
           });
         }
 
@@ -44,13 +47,19 @@ export const usePomodoro = create<PomodoroState>((set) => {
           rounds,
         };
       }),
-    stop: () => set(() => ({ pomodoroPhase: "none" })),
-    startBreak: () => set(() => ({ pomodoroPhase: "break", startTime: Date.now() })),
+    stop: () => set(() => ({ pomodoroPhase: "none", isRunning: false })),
+    startBreak: () =>
+      set(() => ({ pomodoroPhase: "break", startTime: Date.now() })),
     nextRound: () =>
       set(({ currentRound }) => {
-        console.log("next round");
-
-        return { currentRound: currentRound + 1, pomodoroPhase: "work", startTime: Date.now() };
+        return {
+          currentRound: currentRound + 1,
+          pomodoroPhase: "work",
+          startTime: Date.now(),
+        };
       }),
+    setIsRunning: (newState: boolean) => {
+      set(() => ({ isRunning: newState }));
+    },
   };
 });
