@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { usePomodoro } from "../utils/usePomodoro";
 import CountdownClock from "./CountdownClock";
 
@@ -9,21 +9,18 @@ const Timer = () => {
   const {
     start,
     stop,
-    startBreak,
-    nextRound,
     setIsRunning,
     isRunning,
     currentRound,
     rounds,
     pomodoroPhase,
-    pomodoroSession,
     startTime,
   } = usePomodoro();
 
   useEffect(() => {
     if (currentRound >= rounds) return stop();
     if (pomodoroPhase !== "none") return setIsRunning(true);
-  }, [pomodoroPhase]);
+  }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
 
   return (
     <div className="fixed w-full z-10 bottom-1/2">

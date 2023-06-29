@@ -36,7 +36,7 @@ const CountdownClock: React.FC<Props> = ({ startTime, minutes }) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  });
 
   return <span>{formatTime(timeRemaining)}</span>;
 };
