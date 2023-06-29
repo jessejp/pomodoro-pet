@@ -1,13 +1,13 @@
-
 interface Props {
   startTime: number;
   minutes: number;
 }
 
-const getTimer: ({ startTime, minutes }: Props) => {
+const getElapsedTime: ({ startTime, minutes }: Props) => {
   elapsedTime: number;
   elapsedMinutes: number;
   elapsedSeconds: number;
+  timeLeft: number;
 } = ({ startTime, minutes }) => {
   const currentTime = Date.now();
   const elapsedTime = Math.floor((currentTime - startTime) / 1000);
@@ -17,7 +17,7 @@ const getTimer: ({ startTime, minutes }: Props) => {
   const elapsedMinutes = Math.floor(timeLeft / 60);
   const elapsedSeconds = timeLeft % 60;
 
-  return {elapsedTime, elapsedMinutes, elapsedSeconds };
+  return { elapsedTime, elapsedMinutes, elapsedSeconds, timeLeft };
 };
 
-export default getTimer;
+export default getElapsedTime;

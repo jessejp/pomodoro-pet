@@ -1,7 +1,7 @@
 import { Room } from "./Room";
 import { Center, PresentationControls } from "@react-three/drei";
 import Duck from "./Duck";
-import { usePomodoro } from "../store/usePomodoro";
+import { usePomodoro } from "../utils/usePomodoro";
 
 function Scene() {
   const { pomodoroPhase } = usePomodoro();
@@ -10,7 +10,7 @@ function Scene() {
       <ambientLight intensity={1} />
       <directionalLight position={[0, 5, -10]} intensity={1} />
       <Center>
-        <PresentationControls enabled={pomodoroPhase !== "none"}>
+        <PresentationControls enabled={pomodoroPhase !== "none"} snap={true}>
           <Room />
           <Duck />
         </PresentationControls>
