@@ -16,16 +16,19 @@ type GLTFResult = GLTF & {
     curtain: THREE.Mesh;
     windowtop: THREE.Mesh;
     curtain001: THREE.Mesh;
+    Low_Poly_Stylized_Book: THREE.Mesh;
+    page: THREE.Mesh;
+    Low_Poly_Stylized_Book001: THREE.Mesh;
+    Low_Poly_Stylized_Book002: THREE.Mesh;
   };
 };
 
-const material = new THREE.MeshBasicMaterial({color: 0xffffff});
+const material = new THREE.MeshBasicMaterial({ color: 0xdddddd });
+const filePath = "/pomodoropet_layout_3.glb";
 
 export function Room(props: JSX.IntrinsicElements["group"]) {
-  const { nodes } = useGLTF(
-    "/pomodoropet_layout_2.glb"
-  ) as GLTFResult;
-  const texture = useTexture("/baked_texture_2.jpg");
+  const { nodes } = useGLTF(filePath) as GLTFResult;
+  const texture = useTexture("/baked_texture_3.jpg");
   texture.flipY = false;
   return (
     <group {...props} dispose={null}>
@@ -69,6 +72,7 @@ export function Room(props: JSX.IntrinsicElements["group"]) {
         material={material}
         material-map={texture}
       />
+
       <mesh
         castShadow
         receiveShadow
@@ -93,8 +97,43 @@ export function Room(props: JSX.IntrinsicElements["group"]) {
         material-map={texture}
         position={[0.792, 0.57, -0.938]}
       />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Low_Poly_Stylized_Book.geometry}
+        material={material}
+        material-map={texture}
+        position={[-1.524, 0.763, 0.012]}
+        rotation={[-Math.PI / 2, 0, 2.913]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.page.geometry}
+        material={material}
+        material-map={texture}
+        position={[-1.019, 0.705, 0.122]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Low_Poly_Stylized_Book001.geometry}
+        material={material}
+        material-map={texture}
+        position={[-1.524, 0.831, 0.012]}
+        rotation={[-Math.PI / 2, 0, 2.167]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Low_Poly_Stylized_Book002.geometry}
+        material={material}
+        material-map={texture}
+        position={[-1.524, 0.901, 0.012]}
+        rotation={[-Math.PI / 2, 0, 2.92]}
+      />
     </group>
   );
 }
 
-useGLTF.preload("/pomodoropet_layout_2.glb");
+useGLTF.preload(filePath);
