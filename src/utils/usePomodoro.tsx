@@ -37,8 +37,6 @@ export const usePomodoro = create<PomodoroState>((set) => {
           });
         }
 
-        console.log(pomodoroSession);
-
         return {
           pomodoroSession,
           pomodoroPhase: "work",

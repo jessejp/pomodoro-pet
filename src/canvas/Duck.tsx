@@ -39,8 +39,6 @@ export default function Duck(props: JSX.IntrinsicElements["group"]) {
   const { actions } = useAnimations(animations, group);
 
   useEffect(() => {
-    console.log(actions);
-
     if (pomodoroPhase === "none") {
       actions.PositionOuterFrame?.reset().fadeIn(0.5).play();
       return () => actions.PositionOuterFrame?.fadeOut(0.5);
@@ -54,7 +52,7 @@ export default function Duck(props: JSX.IntrinsicElements["group"]) {
         actions.StartStudying.clampWhenFinished = true;
 
       const delayedAction = setTimeout(() => {
-        actions.Studying?.reset().fadeIn(0.5).play();
+        actions.Studying?.reset().fadeIn(0).play();
       }, 4200);
 
       return () => {
@@ -66,12 +64,6 @@ export default function Duck(props: JSX.IntrinsicElements["group"]) {
       actions.Studying?.reset().fadeIn(0).play();
       return () => actions.Studying?.fadeOut(0.5);
     }
-
-    /*  const action = actions[animationName()];
-    if (!action) return;
-    action.reset().fadeIn(0.5).setLoop(THREE.LoopOnce, 0).play();
-    action.clampWhenFinished = true; */
-    // return () => action.fadeOut(0.5);
   }, [pomodoroPhase, currentRound, actions]);
 
   return (

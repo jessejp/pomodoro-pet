@@ -1,12 +1,12 @@
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import Scene from "./canvas/Scene";
-import Timer from "./interface/Timer";
+import TimeInterface from "./interface/TimeInterface";
 
 function App() {
   return (
     <>
-      <Timer />
+      <TimeInterface />
       <Canvas
         camera={{
           fov: 50,
