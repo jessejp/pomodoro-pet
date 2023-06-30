@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import formatTime from "../utils/formatTime";
-import { usePomodoro } from "../utils/usePomodoro";
-import getElapsedTime from "../utils/getElapsedTime";
+import formatTime from "../../utils/formatTime";
+import { usePomodoro } from "../../utils/usePomodoro";
+import getElapsedTime from "../../utils/getElapsedTime";
 
 interface Props {
   startTime: number;
