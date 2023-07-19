@@ -9,13 +9,14 @@ import {
 import { usePomodoro } from "../utils/usePomodoro";
 import Duck from "./Duck";
 import { Room } from "./Room";
+import Monkey from "./Monkey";
 
 function Scene() {
   const { pomodoroPhase } = usePomodoro();
   const portal = useRef<PortalMaterialType>(null);
   const { viewport } = useThree();
-  
-  const circleScale = viewport.width < 3.4 ? 0.9 : 1.25; 
+
+  const circleScale = viewport.width < 3.4 ? 0.9 : 1.25;
   const meshZPosition = viewport.width < 3.4 ? -1 : 0;
 
   useEffect(() => {
@@ -39,7 +40,7 @@ function Scene() {
               snap={true}
             >
               <Room />
-              <Duck />
+              <Monkey/>
             </PresentationControls>
           </Center>
         </MeshPortalMaterial>

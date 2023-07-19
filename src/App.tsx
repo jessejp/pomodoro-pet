@@ -12,7 +12,7 @@ function App() {
           fov: 50,
           near: 0.05,
           far: 1000,
-          position: [0, 0, 4.3],
+          position: [0, -0.2, 3.2],
         }}
       >
         <Scene />
