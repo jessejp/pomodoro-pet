@@ -23,12 +23,14 @@ const TimeInterface = () => {
     if (pomodoroPhase !== "none") return setIsRunning(true);
   }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
 
-  if (pomodoroPhase !== "none" && isRunning) {
+  if (pomodoroPhase !== "none") {
     return (
       <>
         <div className="fixed top-6 z-30 flex h-max w-full flex-row items-end justify-between">
           <div className="mx-10 rounded border-4  border-violet-700 bg-orangeFlavour px-4 py-2 text-4xl font-bold text-violet-700">
-            <CountdownClock startTime={startTime} minutes={workTime} />
+            {isRunning && (
+              <CountdownClock startTime={startTime} minutes={workTime} />
+            )}
           </div>
           <div className="mx-10 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold capitalize text-violet-700">
             <span>
@@ -58,7 +60,7 @@ const TimeInterface = () => {
               setworkTime(minutes);
             }}
           />
-          <div className="fixed h-max w-max top-10">
+          <div className="fixed top-10 h-max w-max">
             <div className="text-1xl text-center font-bold">
               <span>Work for {workTime} minutes</span>
             </div>
