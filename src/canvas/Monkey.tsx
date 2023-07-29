@@ -6,7 +6,9 @@ import { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { usePomodoro } from "../utils/usePomodoro";
 import * as THREE from "three";
+import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 import { GLTF } from "three-stdlib";
+import { useLoader } from "@react-three/fiber";
 
 type ActionName =
   | "All Animations"
@@ -15,7 +17,7 @@ type ActionName =
   | "none"
   | "start_break"
   | "start_study"
-  | "studying";
+  | "study";
 // type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 
 interface GLTFAction extends THREE.AnimationClip {
@@ -24,22 +26,29 @@ interface GLTFAction extends THREE.AnimationClip {
 
 type GLTFResult = GLTF & {
   nodes: {
-    Plane_003: THREE.SkinnedMesh;
+    MonkeyMesh: THREE.SkinnedMesh;
     RL_BoneRoot: THREE.Bone;
   };
   animations: GLTFAction[];
 };
 
-const filePath = "/models/monkey_pet_v01.glb";
+const filePath = "/models/monkey_pet_v02.glb";
 
-const material = new THREE.MeshNormalMaterial();
+const material = new THREE.MeshToonMaterial();
 
 export default function Monkey(props: JSX.IntrinsicElements["group"]) {
   const { pomodoroPhase, currentRound } = usePomodoro();
   const group = useRef<THREE.Group>(null);
   const { nodes, animations } = useGLTF(filePath) as GLTFResult;
   const { actions } = useAnimations(animations, group);
-  
+
+  const texture = useLoader(TextureLoader, "textures/monkeyTexture.png");
+  texture.flipY = false;
+
+  const gradient = useLoader(TextureLoader, "textures/gradient5_wide.jpg");
+  gradient.minFilter = THREE.NearestFilter;
+  gradient.magFilter = THREE.NearestFilter;
+  gradient.generateMipmaps = false;
 
   useEffect(() => {
     if (pomodoroPhase === "none") {
@@ -56,12 +65,12 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
         actions.start_study.clampWhenFinished = true;
 
       const delayedAction = setTimeout(() => {
-        actions.studying?.reset().fadeIn(0).play();
+        actions.study?.reset().fadeIn(0).play();
       }, 4000);
 
       return () => {
         actions.start_study?.fadeOut(0.5);
-        actions.studying?.fadeOut(0.5);
+        actions.study?.fadeOut(0.5);
         clearTimeout(delayedAction);
       };
     } else if (pomodoroPhase === "break") {
@@ -94,12 +103,12 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
         actions.continue_study.clampWhenFinished = true;
 
       const delayedAction = setTimeout(() => {
-        actions.studying?.reset().fadeIn(0).play();
+        actions.study?.reset().fadeIn(0).play();
       }, 4000);
 
       return () => {
         actions.continue_study?.fadeOut(0.5);
-        actions.studying?.fadeOut(0.5);
+        actions.study?.fadeOut(0.5);
         clearTimeout(delayedAction);
       };
     }
@@ -107,19 +116,21 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
 
   return (
     <group ref={group} {...props} dispose={null}>
-      <group name="Scene">
-        <group name="Armature" scale={0.002}>
-          <skinnedMesh
-            name="Plane_003"
-            geometry={nodes.Plane_003.geometry}
-            material={material}
-            skeleton={nodes.Plane_003.skeleton}
-          />
-          <primitive object={nodes.RL_BoneRoot} />
-        </group>
+    <group name="Scene">
+      <group name="Armature" scale={0.002}>
+        <skinnedMesh
+          name="MonkeyMesh"
+          geometry={nodes.MonkeyMesh.geometry}
+          material={material}
+          material-map={texture}
+          material-gradientMap={gradient}
+          skeleton={nodes.MonkeyMesh.skeleton}
+        />
+        <primitive object={nodes.RL_BoneRoot} />
       </group>
     </group>
+  </group>
   );
 }
 
-useGLTF.preload("/Monkey-proto-1-actions.glb");
+useGLTF.preload(filePath);
