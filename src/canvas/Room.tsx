@@ -26,7 +26,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-const material = new THREE.MeshBasicMaterial();
+const material = new THREE.MeshStandardMaterial();
 const materialBackground = new THREE.MeshBasicMaterial();
 
 export function Room(props: JSX.IntrinsicElements["group"]) {

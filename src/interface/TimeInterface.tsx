@@ -17,97 +17,136 @@ const TimeInterface = () => {
     pomodoroPhase,
     startTime,
   } = usePomodoro();
+  const [showCenterContainer, setShowCenterContainer] = useState(false);
+
+  const showCenterContainerTimeout = () => {
+    setShowCenterContainer(true);
+    setTimeout(() => {
+      setShowCenterContainer(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     if (currentRound >= rounds) return stop();
-    if (pomodoroPhase !== "none") return setIsRunning(true);
+    if (pomodoroPhase !== "none") {
+      showCenterContainerTimeout();
+      if (pomodoroPhase === "work" && currentRound !== 0) {
+        const workSound = new Audio("/sounds/alert_work.mp3");
+        workSound.currentTime = 0;
+        workSound.play();
+
+        new Notification("Time to continue the session!", {
+          body: "Let's focus now!",
+          icon: "/favicon.ico",
+          silent: true,
+        });
+      }
+
+      if (pomodoroPhase === "break") {
+        const breakSound = new Audio("/sounds/alert_break.mp3");
+        breakSound.currentTime = 0;
+        breakSound.play();
+
+        new Notification("Break time!", {
+          body: "Take a break to freshen up!",
+          icon: "/favicon.ico",
+          silent: true,
+        });
+      }
+
+      return setIsRunning(true);
+    }
   }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
+
+  console.log("rerender time interface");
 
   if (pomodoroPhase !== "none") {
     return (
-      <>
-        <div className="fixed top-6 z-30 flex h-max w-full flex-row items-end justify-between">
-          <div className="mx-10 rounded border-4  border-violet-700 bg-orangeFlavour px-4 py-2 text-4xl font-bold text-violet-700">
+      <div className="pointer-events-none fixed left-0 top-0 z-10 flex h-screen w-full flex-col items-center justify-between px-5 py-8">
+        <div className="flex w-full justify-between">
+          <div className="mx-10 w-fit rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-4xl font-bold text-violet-700">
             {isRunning && (
               <CountdownClock startTime={startTime} minutes={workTime} />
             )}
           </div>
-          <div className="mx-10 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold capitalize text-violet-700">
+          <div className="mx-10 w-fit rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold capitalize text-violet-700">
             <span>
               {pomodoroPhase} Round {currentRound + 1} / {rounds}
             </span>
           </div>
         </div>
 
-        <div className="fixed bottom-6 z-30 flex h-max w-full flex-row items-end justify-around">
-          <button
-            className="rounded border-4  border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400"
-            onClick={() => {
-              stop();
-            }}
-          >
-            Stop
-          </button>
-        </div>
-      </>
+        {showCenterContainer && (
+          <div className="w-fit rounded border-6 border-violet-700 bg-orangeFlavour px-4 py-12 text-5xl font-bold capitalize text-violet-700 animate-pulse">
+            {pomodoroPhase} Time!
+          </div>
+        )}
+
+        <button
+          className="pointer-events-auto w-fit rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400"
+          onClick={() => {
+            stop();
+          }}
+        >
+          Stop
+        </button>
+      </div>
     );
   } else {
     return (
-      <>
-        <div className="fixed z-40 flex h-screen w-full flex-col items-center justify-center">
-          <WorkTimeInput
-            onWorkTimeSelected={(minutes: number) => {
-              setworkTime(minutes);
-            }}
-          />
-          <div className="fixed top-10 h-max w-max">
-            <div className="text-1xl text-center font-bold">
-              <span>Work for {workTime} minutes</span>
-            </div>
-            <div className="mt-4" />
-            <button
-              className="rounded border-4  border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400"
-              onClick={() => {
-                start({ rounds: roundsAmount, workTime, breakTime });
-              }}
-            >
-              Start {workTime} minutes
-            </button>
+      <div className="fixed left-0 top-0 z-10 flex w-full h-screen min-h-160 aspect-square flex-col items-center justify-between px-5 py-8 bg-orange-circle-gradient from-transparent to-orangeFlavour from-25% to-25% 2xl:from-20% 2xl:to-20% max-sm:from-30% max-sm:to-30%">
+        <div className="h-max w-max">
+          <div className="text-1xl text-center font-bold">
+            <span>Work for {workTime} minutes</span>
           </div>
-          <div className="fixed bottom-0 z-30 flex h-max w-full flex-row flex-wrap items-end justify-around">
-            <div className="text-1xl mb-6 flex flex-col text-center font-bold">
-              <span>Break for {breakTime} minutes</span>
-              <input
-                className="w-64"
-                type="range"
-                name="breakTime"
-                min={1}
-                max={20}
-                step={1}
-                value={breakTime}
-                onChange={(e) => {
-                  setbreakTime(e.target.valueAsNumber);
-                }}
-              />
-            </div>
-            <div className="text-1xl mb-6 flex flex-col text-center font-bold">
-              <span>Do {roundsAmount} rounds</span>
-              <input
-                className="w-64"
-                type="range"
-                name="roundsAmount"
-                min={1}
-                max={8}
-                step={1}
-                value={roundsAmount}
-                onChange={(e) => {
-                  setRoundsAmount(e.target.valueAsNumber);
-                }}
-              />
-            </div>
+          <div className="mt-4" />
+          <button
+            className="rounded border-4  border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400"
+            onClick={() => {
+              start({ rounds: roundsAmount, workTime, breakTime });
+            }}
+          >
+            Start {workTime} minutes
+          </button>
+        </div>
+        <WorkTimeInput
+          onWorkTimeSelected={(minutes: number) => {
+            setworkTime(minutes);
+          }}
+        />
+        <div className="flex h-max w-full flex-row items-end justify-around max-sm:justify-between">
+          <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-lg">
+            <span>Break for {breakTime} minutes</span>
+            <input
+              className="w-64 accent-violet-700 max-sm:w-fit"
+              type="range"
+              name="breakTime"
+              min={1}
+              max={20}
+              step={1}
+              value={breakTime}
+              onChange={(e) => {
+                setbreakTime(e.target.valueAsNumber);
+              }}
+            />
+          </div>
+          <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-lg">
+            <span>Do {roundsAmount} rounds</span>
+            <input
+              className="w-64 accent-violet-700 max-sm:w-fit"
+              type="range"
+              name="roundsAmount"
+              min={1}
+              max={8}
+              step={1}
+              value={roundsAmount}
+              onChange={(e) => {
+                setRoundsAmount(e.target.valueAsNumber);
+              }}
+            />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 };
