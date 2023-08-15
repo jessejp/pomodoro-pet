@@ -19,9 +19,9 @@ function Scene() {
   return (
     <>
       {/* <color attach="background" args={["#ffc222"]} /> */}
-      <ambientLight intensity={0.8} />
+      <ambientLight intensity={0.7} />
       <PresentationControls enabled={pomodoroPhase !== "none"} snap={true}>
-        <directionalLight position={[0, 1.6, -2]} intensity={0.15} />
+        <directionalLight position={[0, 1.6, -2]} intensity={0.25} />
         <Room />
         <Monkey />
       </PresentationControls>

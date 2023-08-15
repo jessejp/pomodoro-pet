@@ -34,7 +34,7 @@ type GLTFResult = GLTF & {
 
 const filePath = "/models/monkey_pet_v02.glb";
 
-const material = new THREE.MeshToonMaterial();
+const material = new THREE.MeshStandardMaterial();
 
 export default function Monkey(props: JSX.IntrinsicElements["group"]) {
   const { pomodoroPhase, currentRound } = usePomodoro();
@@ -116,20 +116,20 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
 
   return (
     <group ref={group} {...props} dispose={null}>
-    <group name="Scene">
-      <group name="Armature" scale={0.002}>
-        <skinnedMesh
-          name="MonkeyMesh"
-          geometry={nodes.MonkeyMesh.geometry}
-          material={material}
-          material-map={texture}
-          material-gradientMap={gradient}
-          skeleton={nodes.MonkeyMesh.skeleton}
-        />
-        <primitive object={nodes.RL_BoneRoot} />
+      <group name="Scene">
+        <group name="Armature" scale={0.002}>
+          <skinnedMesh
+            name="MonkeyMesh"
+            geometry={nodes.MonkeyMesh.geometry}
+            material={material}
+            material-map={texture}
+            material-gradientMap={gradient}
+            skeleton={nodes.MonkeyMesh.skeleton}
+          />
+          <primitive object={nodes.RL_BoneRoot} />
+        </group>
       </group>
     </group>
-  </group>
   );
 }
 

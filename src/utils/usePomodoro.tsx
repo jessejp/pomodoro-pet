@@ -46,16 +46,36 @@ export const usePomodoro = create<PomodoroState>((set) => {
         };
       }),
     stop: () => set(() => ({ pomodoroPhase: "none", isRunning: false })),
-    startBreak: () =>
-      set(() => ({ pomodoroPhase: "break", startTime: Date.now() })),
-    nextRound: () =>
+    startBreak: () => {
+      const breakSound = new Audio("/sounds/alert_break.mp3");
+      breakSound.currentTime = 0;
+      breakSound.play();
+
+      new Notification("Break time!", {
+        body: "Take a break to freshen up!",
+        silent: true,
+      });
+
+      set(() => ({ pomodoroPhase: "break", startTime: Date.now() }));
+    },
+    nextRound: () => {
+      const workSound = new Audio("/sounds/alert_work.mp3");
+      workSound.currentTime = 0;
+      workSound.play();
+
+      new Notification("Time to continue the session!", {
+        body: "Let's focus now!",
+        silent: true,
+      });
+
       set(({ currentRound }) => {
         return {
           currentRound: currentRound + 1,
           pomodoroPhase: "work",
           startTime: Date.now(),
         };
-      }),
+      });
+    },
     setIsRunning: (newState: boolean) => {
       set(() => ({ isRunning: newState }));
     },
