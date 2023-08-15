@@ -40,7 +40,7 @@ const WorkTimeInput: React.FC<{
         return (
           <button
             key={index}
-            className="absolute flex items-center justify-center bg-violet-500 w-10 h-10 sm:w-16 sm:h-16 text-2xl sm:text-4xl rounded-full"
+            className="absolute flex items-center justify-center bg-violet-600 w-10 h-10 sm:w-16 sm:h-16 text-2xl sm:text-4xl rounded-full"
             style={{ top: `${top}px`, left: `${left}px` }}
             onClick={() => {
               props.onWorkTimeSelected(index * 5 + 5);
