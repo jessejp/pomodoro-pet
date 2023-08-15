@@ -37,6 +37,7 @@ const TimeInterface = () => {
 
         new Notification("Time to continue the session!", {
           body: "Let's focus now!",
+          icon: "/favicon.ico",
           silent: true,
         });
       }
@@ -48,6 +49,7 @@ const TimeInterface = () => {
 
         new Notification("Break time!", {
           body: "Take a break to freshen up!",
+          icon: "/favicon.ico",
           silent: true,
         });
       }
