@@ -26,8 +26,8 @@ type GLTFResult = GLTF & {
   };
 };
 
-const material = new THREE.MeshStandardMaterial();
-const materialBackground = new THREE.MeshBasicMaterial();
+const material = new THREE.MeshBasicMaterial();
+const materialBackground = new THREE.MeshBasicMaterial({color: 0xffd1cc});
 
 export function Room(props: JSX.IntrinsicElements["group"]) {
 
@@ -37,11 +37,6 @@ export function Room(props: JSX.IntrinsicElements["group"]) {
 
   const texture = useLoader(TextureLoader, "textures/room_baked_texture_v2.jpg");
   texture.flipY = false;
-
- /*  const gradient = useLoader(TextureLoader, "textures/gradient3_grey.jpg");
-  gradient.minFilter = THREE.NearestFilter;
-  gradient.magFilter = THREE.NearestFilter;
-  gradient.generateMipmaps = false; */
   
   return (
     <group {...props} dispose={null}>

@@ -34,7 +34,8 @@ type GLTFResult = GLTF & {
 
 const filePath = "/models/monkey_pet_v02.glb";
 
-const material = new THREE.MeshStandardMaterial();
+const material = new THREE.MeshBasicMaterial();
+
 
 export default function Monkey(props: JSX.IntrinsicElements["group"]) {
   const { pomodoroPhase, currentRound } = usePomodoro();
@@ -44,11 +45,8 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
 
   const texture = useLoader(TextureLoader, "textures/monkeyTexture.png");
   texture.flipY = false;
-
-  const gradient = useLoader(TextureLoader, "textures/gradient5_wide.jpg");
-  gradient.minFilter = THREE.NearestFilter;
-  gradient.magFilter = THREE.NearestFilter;
-  gradient.generateMipmaps = false;
+  texture.minFilter = THREE.NearestFilter;
+  texture.magFilter = THREE.NearestFilter;
 
   useEffect(() => {
     if (pomodoroPhase === "none") {
@@ -123,7 +121,6 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
             geometry={nodes.MonkeyMesh.geometry}
             material={material}
             material-map={texture}
-            material-gradientMap={gradient}
             skeleton={nodes.MonkeyMesh.skeleton}
           />
           <primitive object={nodes.RL_BoneRoot} />
