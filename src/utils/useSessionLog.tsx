@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 type Log = {
-  message: string;
+  message: string | null;
   minutes: number;
 };
 

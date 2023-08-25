@@ -4,8 +4,8 @@ import CountdownClock from "./TimeSettings/CountdownClock";
 import WorkTimeInput from "./TimeSettings/WorkTimeInput";
 
 const TimeInterface = () => {
-  const [workTime, setworkTime] = useState(0.15);
-  const [breakTime, setbreakTime] = useState(0.15);
+  const [workTime, setWorkTime] = useState(0.15);
+  const [breakTime, setBreakTime] = useState(0.15);
   const [roundsAmount, setRoundsAmount] = useState(1);
   const {
     start,
@@ -58,15 +58,16 @@ const TimeInterface = () => {
     }
   }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
 
-  console.log("rerender time interface");
-
   if (pomodoroPhase !== "none") {
     return (
       <div className="pointer-events-none fixed left-0 top-0 z-10 flex h-screen w-full flex-col items-center justify-between px-5 py-8">
         <div className="flex w-full justify-between">
           <div className="mx-10 w-fit rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-4xl font-bold text-violet-700">
             {isRunning && (
-              <CountdownClock startTime={startTime} minutes={workTime} />
+              <CountdownClock
+                startTime={startTime}
+                minutes={pomodoroPhase === "work" ? workTime : breakTime}
+              />
             )}
           </div>
           <div className="mx-10 w-fit rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold capitalize text-violet-700">
@@ -77,7 +78,7 @@ const TimeInterface = () => {
         </div>
 
         {showCenterContainer && (
-          <div className="w-fit rounded border-6 border-violet-700 bg-orangeFlavour px-4 py-12 text-5xl font-bold capitalize text-violet-700 animate-pulse">
+          <div className="w-fit animate-pulse rounded border-6 border-violet-700 bg-orangeFlavour px-4 py-12 text-5xl font-bold capitalize text-violet-700">
             {pomodoroPhase} Time!
           </div>
         )}
@@ -94,7 +95,7 @@ const TimeInterface = () => {
     );
   } else {
     return (
-      <div className="fixed left-0 top-0 z-10 flex w-full h-screen min-h-160 aspect-square flex-col items-center justify-between px-5 py-8 bg-orange-circle-gradient from-transparent to-orangeFlavour from-25% to-25% 2xl:from-20% 2xl:to-20% max-sm:from-30% max-sm:to-30%">
+      <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% px-5 py-8 max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
         <div className="h-max w-max">
           <div className="text-1xl text-center font-bold">
             <span>Work for {workTime} minutes</span>
@@ -111,7 +112,7 @@ const TimeInterface = () => {
         </div>
         <WorkTimeInput
           onWorkTimeSelected={(minutes: number) => {
-            setworkTime(minutes);
+            setWorkTime(minutes);
           }}
         />
         <div className="flex h-max w-full flex-row items-end justify-around max-sm:justify-between">
@@ -126,7 +127,7 @@ const TimeInterface = () => {
               step={1}
               value={breakTime}
               onChange={(e) => {
-                setbreakTime(e.target.valueAsNumber);
+                setBreakTime(e.target.valueAsNumber);
               }}
             />
           </div>
