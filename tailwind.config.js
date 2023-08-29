@@ -23,6 +23,18 @@ export default {
         "orange-circle-gradient":
           "radial-gradient(circle, var(--tw-gradient-stops))",
       },
+      animation: {
+        "text-bubble-appear": "textBubbleAppear 6s linear forwards",
+      },
+      keyframes: {
+        textBubbleAppear: {
+          "0%": { opacity: 0, transform: "scale(0.4)" },
+          "45%": { opacity: 0, transform: "scale(0.4)" },
+          "50%": { opacity: 1, transform: "scale(1)" },
+          "95%": { opacity: 1, transform: "scale(1)" },
+          "100%": { opacity: 0, transform: "scale(0.4)" },
+        },
+      },
     },
   },
   plugins: [],

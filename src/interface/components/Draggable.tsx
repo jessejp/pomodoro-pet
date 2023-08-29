@@ -54,6 +54,9 @@ const Draggable: React.FC<PropsWithChildren> = ({ children }) => {
           {!isDragging ? "✋" : "✊"}
         </span>
       </div>
+      <div className="absolute -left-2/4 -top-12 h-fit w-fit origin-bottom-right animate-text-bubble-appear rounded-l-full rounded-tr-full bg-white p-4 text-lg border-2 border-violet-700">
+        You can drag me around! 😀
+      </div>
       {children}
     </div>
   );

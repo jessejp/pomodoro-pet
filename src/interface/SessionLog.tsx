@@ -13,13 +13,15 @@ const DUMMY_sessionlist = [
 ];
 
 const SessionLog = () => {
-  const { isRunning } = usePomodoro();
+  const { pomodoroPhase } = usePomodoro();
 
-  if (!isRunning) return null;
+  if (pomodoroPhase === "none") return null;
   return (
     <Draggable>
       <div className="z-10 w-96 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4">
-        <div className="absolute left-5 top-5 text-2xl pointer-events-none">📝</div>
+        <div className="pointer-events-none absolute left-5 top-5 text-2xl">
+          📝
+        </div>
         <h3 className="text-2xl font-bold text-violet-700">Session Log</h3>
         <div className="mt-4" />
         <div className="flex h-fit max-h-80 flex-col gap-1 overflow-y-scroll rounded bg-white p-2">
