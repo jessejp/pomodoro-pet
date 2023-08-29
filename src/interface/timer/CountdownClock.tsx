@@ -10,7 +10,7 @@ interface Props {
 }
 
 const CountdownClock: React.FC<Props> = ({ startTime, minutes }) => {
-  const { newTaskMessage, selectedTaskIndex, updateSessionLog } =
+  const { newTaskMessage, updateSessionLog } =
     useSessionLog();
   const {
     pomodoroPhase,
