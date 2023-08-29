@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import formatTime from "../../utils/formatTime";
 import { usePomodoro } from "../../utils/usePomodoro";
 import getElapsedTime from "../../utils/getElapsedTime";
+import { useSessionLog } from "../../utils/useSessionLog";
 
 interface Props {
   startTime: number;
@@ -9,7 +10,16 @@ interface Props {
 }
 
 const CountdownClock: React.FC<Props> = ({ startTime, minutes }) => {
-  const { pomodoroPhase, startBreak, nextRound, setIsRunning } = usePomodoro();
+  const { newTaskMessage, updateSessionLog } =
+    useSessionLog();
+  const {
+    pomodoroPhase,
+    pomodoroSession,
+    currentRound,
+    startBreak,
+    nextRound,
+    setIsRunning,
+  } = usePomodoro();
   const [timeRemaining, setTimeRemaining] = useState(minutes * 60);
 
   useEffect(() => {
@@ -23,8 +33,20 @@ const CountdownClock: React.FC<Props> = ({ startTime, minutes }) => {
         setIsRunning(false);
         // timer round has passed
         if (pomodoroPhase === "work") {
+          if (pomodoroSession !== null)
+            updateSessionLog({
+              message: newTaskMessage,
+              minutes: pomodoroSession[currentRound].workTime,
+              minutesWithBreaks: pomodoroSession[currentRound].workTime,
+            });
           startBreak();
         } else if (pomodoroPhase === "break") {
+          if (pomodoroSession !== null)
+            updateSessionLog({
+              message: newTaskMessage,
+              minutes: 0,
+              minutesWithBreaks: pomodoroSession[currentRound].breakTime,
+            });
           nextRound();
         }
       } else {
