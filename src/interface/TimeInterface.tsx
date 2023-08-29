@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { usePomodoro } from "../utils/usePomodoro";
-import CountdownClock from "./TimeSettings/CountdownClock";
-import WorkTimeInput from "./TimeSettings/WorkTimeInput";
+import CountdownClock from "./timer/CountdownClock";
+import WorkTimeInput from "./timer/WorkTimeInput";
 
 const TimeInterface = () => {
   const [workTime, setWorkTime] = useState(0.15);
