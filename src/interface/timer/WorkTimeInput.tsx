@@ -26,9 +26,7 @@ const WorkTimeInput: React.FC<{
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  console.log("rerender worktimeinput");
-
+  
   return (
     <div ref={containerRef} className="relative w-96 h-96 sm:w-128 sm:h-128">
       {Array.from({ length: buttonCount }).map((_, index) => {

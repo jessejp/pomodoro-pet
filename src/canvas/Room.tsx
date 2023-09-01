@@ -147,4 +147,4 @@ export function Room(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload("models/pomodoropet_layout_4.glb");
+useGLTF.preload("models/PomodoroPet_Room_2.glb");

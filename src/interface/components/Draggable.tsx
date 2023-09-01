@@ -5,7 +5,10 @@ import React, {
   useEffect,
 } from "react";
 
-const Draggable: React.FC<PropsWithChildren> = ({ children }) => {
+const Draggable: React.FC<PropsWithChildren<{ insetTailwindCss: string }>> = ({
+  insetTailwindCss,
+  children,
+}) => {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const dragRef = useRef<HTMLDivElement>(null);
@@ -42,7 +45,7 @@ const Draggable: React.FC<PropsWithChildren> = ({ children }) => {
   });
 
   return (
-    <div ref={dragRef} className="fixed bottom-1/3 right-5 z-50 h-fit w-fit ">
+    <div ref={dragRef} className={`fixed z-50 h-fit w-fit ${insetTailwindCss}`}>
       <div
         onPointerDown={handleMouseDown}
         onPointerUp={handleMouseUp}
@@ -54,7 +57,7 @@ const Draggable: React.FC<PropsWithChildren> = ({ children }) => {
           {!isDragging ? "✋" : "✊"}
         </span>
       </div>
-      <div className="absolute -left-2/4 -top-12 h-fit w-fit origin-bottom-right animate-text-bubble-appear rounded-l-full rounded-tr-full bg-white p-4 text-lg border-2 border-violet-700">
+      <div className="absolute -left-2/4 -top-12 h-fit w-fit origin-bottom-right animate-text-bubble-appear rounded-l-full rounded-tr-full border-2 border-violet-700 bg-white p-4 text-lg">
         You can drag me around! 😀
       </div>
       {children}
