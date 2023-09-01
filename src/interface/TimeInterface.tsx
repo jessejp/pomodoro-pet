@@ -5,7 +5,7 @@ import WorkTimeInput from "./timer/WorkTimeInput";
 
 const TimeInterface = () => {
   const [workTime, setWorkTime] = useState(0.15);
-  const [breakTime, setBreakTime] = useState(0.15);
+  const [breakTime, setBreakTime] = useState(0.25);
   const [roundsAmount, setRoundsAmount] = useState(1);
   const {
     start,
@@ -98,7 +98,7 @@ const TimeInterface = () => {
       <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% px-5 py-8 max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
         <div className="h-max w-max">
           <div className="text-1xl text-center font-bold">
-            <span>Work for {workTime} minutes</span>
+            <span>Total session length is {(workTime + breakTime) * roundsAmount} minutes.</span>
           </div>
           <div className="mt-4" />
           <button
