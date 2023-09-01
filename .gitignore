@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# gltf test files
+./src/canvas/pets/Preview.tsx
+./src/canvas/rooms/Preview.tsx
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
