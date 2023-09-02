@@ -7,6 +7,8 @@ interface PomodoroState {
   currentRound: number;
   pomodoroPhase: "work" | "break" | "none";
   isRunning: boolean;
+  notificationsPermission: "granted" | "denied";
+  setNotificationsPermission: (permission: "granted") => void;
   start: (params: {
     rounds: number;
     workTime: number;
@@ -26,7 +28,10 @@ export const usePomodoro = create<PomodoroState>((set) => {
     currentRound: 0,
     pomodoroPhase: "none",
     isRunning: false,
-
+    notificationsPermission: "denied",
+    setNotificationsPermission: (permission) => {
+      set(() => ({notificationsPermission: permission}));
+    },
     start: ({ rounds, workTime, breakTime }) =>
       set(() => {
         const pomodoroSession = [];
@@ -58,6 +63,6 @@ export const usePomodoro = create<PomodoroState>((set) => {
       }),
     setIsRunning: (newState: boolean) => {
       set(() => ({ isRunning: newState }));
-    },
+    }
   };
 });

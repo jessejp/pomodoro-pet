@@ -11,6 +11,7 @@ const TimeInterface = () => {
     start,
     stop,
     setIsRunning,
+    notificationsPermission,
     isRunning,
     currentRound,
     rounds,
@@ -35,11 +36,12 @@ const TimeInterface = () => {
         workSound.currentTime = 0;
         workSound.play();
 
-        new Notification("Time to continue the session!", {
-          body: "Let's focus now!",
-          icon: "/favicon.ico",
-          silent: true,
-        });
+        if (notificationsPermission === "granted")
+          new Notification("Time to continue the session!", {
+            body: "Let's focus now!",
+            icon: "/favicon.ico",
+            silent: true,
+          });
       }
 
       if (pomodoroPhase === "break") {
@@ -47,11 +49,12 @@ const TimeInterface = () => {
         breakSound.currentTime = 0;
         breakSound.play();
 
-        new Notification("Break time!", {
-          body: "Take a break to freshen up!",
-          icon: "/favicon.ico",
-          silent: true,
-        });
+        if (notificationsPermission === "granted")
+          new Notification("Break time!", {
+            body: "Take a break to freshen up!",
+            icon: "/favicon.ico",
+            silent: true,
+          });
       }
 
       return setIsRunning(true);
@@ -98,7 +101,10 @@ const TimeInterface = () => {
       <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% px-5 py-8 max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
         <div className="h-max w-max">
           <div className="text-1xl text-center font-bold">
-            <span>Total session length is {(workTime + breakTime) * roundsAmount} minutes.</span>
+            <span>
+              Total session length is {(workTime + breakTime) * roundsAmount}{" "}
+              minutes.
+            </span>
           </div>
           <div className="mt-4" />
           <button
