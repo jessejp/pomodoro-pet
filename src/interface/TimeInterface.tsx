@@ -34,24 +34,12 @@ const TimeInterface = () => {
         const workSound = new Audio("/sounds/alert_work.mp3");
         workSound.currentTime = 0;
         workSound.play();
-
-        new Notification("Time to continue the session!", {
-          body: "Let's focus now!",
-          icon: "/favicon.ico",
-          silent: true,
-        });
       }
 
       if (pomodoroPhase === "break") {
         const breakSound = new Audio("/sounds/alert_break.mp3");
         breakSound.currentTime = 0;
         breakSound.play();
-
-        new Notification("Break time!", {
-          body: "Take a break to freshen up!",
-          icon: "/favicon.ico",
-          silent: true,
-        });
       }
 
       return setIsRunning(true);
