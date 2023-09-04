@@ -10,14 +10,12 @@ function App() {
   const { setNotificationsPermission } = usePomodoro();
   useEffect(() => {
     const notificationPermission = async () => {
-      await Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          return setNotificationsPermission(permission);
-        }
-      });
+      const permission = await Notification.requestPermission();
+
+      if (permission === "granted") setNotificationsPermission(permission);
     };
     notificationPermission();
-  });
+  }, [setNotificationsPermission]);
   return (
     <>
       <TimeInterface />

@@ -36,12 +36,13 @@ const TimeInterface = () => {
         workSound.currentTime = 0;
         workSound.play();
 
-        if (notificationsPermission === "granted")
+        if (notificationsPermission === "granted") {
           new Notification("Time to continue the session!", {
             body: "Let's focus now!",
             icon: "/favicon.ico",
             silent: true,
           });
+        }
       }
 
       if (pomodoroPhase === "break") {
@@ -49,17 +50,25 @@ const TimeInterface = () => {
         breakSound.currentTime = 0;
         breakSound.play();
 
-        if (notificationsPermission === "granted")
+        if (notificationsPermission === "granted") {
           new Notification("Break time!", {
             body: "Take a break to freshen up!",
             icon: "/favicon.ico",
             silent: true,
           });
+        }
       }
 
       return setIsRunning(true);
     }
-  }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
+  }, [
+    pomodoroPhase,
+    currentRound,
+    rounds,
+    notificationsPermission,
+    setIsRunning,
+    stop,
+  ]);
 
   if (pomodoroPhase !== "none") {
     return (
