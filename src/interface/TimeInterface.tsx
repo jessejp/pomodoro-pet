@@ -36,7 +36,7 @@ const TimeInterface = () => {
         workSound.currentTime = 0;
         workSound.play();
 
-        if (notificationsPermission === "granted") {
+        if (notificationsPermission === "granted" && "Notification" in window) {
           new Notification("Time to continue the session!", {
             body: "Let's focus now!",
             icon: "/favicon.ico",
@@ -50,7 +50,7 @@ const TimeInterface = () => {
         breakSound.currentTime = 0;
         breakSound.play();
 
-        if (notificationsPermission === "granted") {
+        if (notificationsPermission === "granted" && "Notification" in window) {
           new Notification("Break time!", {
             body: "Take a break to freshen up!",
             icon: "/favicon.ico",
