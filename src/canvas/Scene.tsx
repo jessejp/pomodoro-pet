@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import { PresentationControls } from "@react-three/drei";
 import { usePomodoro } from "../utils/usePomodoro";
-import { Room } from "./Room";
+import { Room } from "./world/Room";
 import Monkey from "./pets/Monkey";
+import Chair from "./world/furniture/ChairSoft1"
 
 function Scene() {
   const { pomodoroPhase } = usePomodoro();
@@ -26,6 +27,7 @@ function Scene() {
       <PresentationControls enabled={pomodoroPhase !== "none"} snap={true}>
         <directionalLight position={[0, 1.6, -2]} intensity={0.25} />
         <Room />
+        <Chair />
         <Monkey />
       </PresentationControls>
     </>
