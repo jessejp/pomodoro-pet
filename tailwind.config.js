@@ -14,6 +14,8 @@ export default {
       },
       height: {
         128: "32rem",
+        canvasContainer: "70vh",
+        menuContainer: "30vh",
       },
       minHeight: {
         160: "40rem",
