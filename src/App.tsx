@@ -1,14 +1,18 @@
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import Scene from "./canvas/Scene";
-import TimeInterface from "./interface/TimeInterface";
+import SessionTimeInterface from "./interface/SessionTimeInterface";
 import SessionLog from "./interface/SessionLog";
 import Menu from "./interface/components/Menu";
+import { usePomodoro } from "./utils/usePomodoro";
+import StartSessionMainMenu from "./interface/StartSessionMainMenu";
 
 function App() {
+  const { pomodoroPhase } = usePomodoro();
   return (
     <>
-      <TimeInterface />
+      {pomodoroPhase === "none" && <StartSessionMainMenu />}
+      {pomodoroPhase !== "none" && <SessionTimeInterface />}
       <div className="flex h-screen flex-col flex-wrap">
         <Canvas
           camera={{
@@ -20,14 +24,16 @@ function App() {
         >
           <Scene />
         </Canvas>
-        <Menu
-          tabs={[
-            {
-              icon: "📝",
-              component: <SessionLog />,
-            },
-          ]}
-        />
+        {pomodoroPhase !== "none" && (
+          <Menu
+            tabs={[
+              {
+                icon: "📝",
+                component: <SessionLog />,
+              },
+            ]}
+          />
+        )}
       </div>
     </>
   );

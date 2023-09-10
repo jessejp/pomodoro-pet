@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { usePomodoro } from "../utils/usePomodoro";
 import { useSessionLog } from "../utils/useSessionLog";
 
 const SessionLog = () => {
@@ -13,13 +12,11 @@ const SessionLog = () => {
     updateSelectedTaskIndex,
     updateNewTaskMessage,
   } = useSessionLog();
-  const { pomodoroPhase } = usePomodoro();
 
   useEffect(() => {
     updateNewTaskMessage(taskMessageInput);
   }, [taskMessageInput, updateNewTaskMessage]);
 
-  if (pomodoroPhase === "none") return null;
   return (
     <div className="rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4">
       <h3 className="text-2xl font-bold text-violet-700">Session Log</h3>
