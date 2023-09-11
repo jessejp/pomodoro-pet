@@ -42,7 +42,11 @@ const WorkTimeInput: React.FC<{
           <button
             key={index}
             className={clsx(
-              "absolute flex h-12 w-12 items-center justify-center rounded-full border-4 border-transparent bg-violet-600 text-2xl hover:bg-violet-500 sm:h-16 sm:w-16 sm:text-4xl",
+              "absolute flex h-12 w-12 items-center justify-center rounded-full border-4  text-2xl  sm:h-16 sm:w-16 sm:text-4xl",
+              {
+                "border-transparent bg-violet-600 hover:bg-violet-500":
+                  props.selectedMinutes !== minuteSelectionValue,
+              },
               {
                 "border-violet-600 bg-orange-300 hover:bg-orange-300":
                   props.selectedMinutes === minuteSelectionValue,

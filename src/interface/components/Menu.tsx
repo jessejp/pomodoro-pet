@@ -21,9 +21,9 @@ const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
           <div
             key={index}
             className={clsx(
-              "rounded-tl rounded-tr border-4 border-violet-700 bg-orangeFlavour px-3 pb-2 pt-2 text-center text-lg",
+              "rounded-tl rounded-tr border-4 border-violet-700 px-3 pb-2 pt-2 text-center text-lg",
               { "bg-gray-400": selectedTabIndex !== index },
-              { "border-b-transparent": selectedTabIndex === index }
+              { "border-b-transparent bg-orangeFlavour": selectedTabIndex === index }
             )}
             onClick={() => {
               setSelectedTabIndex(index);
