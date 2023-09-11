@@ -27,6 +27,7 @@ function App() {
         {pomodoroPhase !== "none" && (
           <Menu
             tabs={[
+              { icon: "➖", component: <div className="hidden"></div> },
               {
                 icon: "📝",
                 component: <SessionLog />,
