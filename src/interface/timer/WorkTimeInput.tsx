@@ -13,10 +13,14 @@ const WorkTimeInput: React.FC<{
   useEffect(() => {
     const handleResize = () => {
       if (!containerRef.current) return;
+
+      // Width of the button container, divided by button count
       const containerWidth =
         containerRef.current.offsetWidth +
-        containerRef.current.offsetWidth / buttonCount; // Width of the button container, divided by button count
-      const adjustedRadius = (containerWidth / 2) * 0.8; // Adjusted radius based on container width
+        containerRef.current.offsetWidth / buttonCount;
+
+      // Adjusted radius based on container width
+      const adjustedRadius = (containerWidth / 2) * 0.8;
       setRadius(adjustedRadius);
     };
 
@@ -30,7 +34,15 @@ const WorkTimeInput: React.FC<{
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-96 w-96 sm:h-128 sm:w-128">
+    <div
+      ref={containerRef}
+      className={clsx("relative h-80 w-80 md:h-128 md:w-128", {
+        "-top-2 scale-75":
+          (window.innerHeight < 770 && window.innerWidth >= 640) ||
+          window.innerWidth < 305,
+        "scale-100": window.innerHeight >= 770,
+      })}
+    >
       {Array.from({ length: buttonCount }).map((_, index) => {
         const angleOffset = Math.PI * -0.33;
         const angle = index * angleIncrement + angleOffset;
@@ -42,7 +54,7 @@ const WorkTimeInput: React.FC<{
           <button
             key={index}
             className={clsx(
-              "absolute flex h-12 w-12 items-center justify-center rounded-full border-4  text-2xl  sm:h-16 sm:w-16 sm:text-4xl",
+              "absolute flex h-12 w-12 items-center justify-center rounded-full border-4  text-2xl  md:h-16 md:w-16 md:text-4xl",
               {
                 "border-transparent bg-violet-600 hover:bg-violet-500":
                   props.selectedMinutes !== minuteSelectionValue,

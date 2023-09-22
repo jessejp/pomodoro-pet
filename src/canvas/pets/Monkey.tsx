@@ -45,9 +45,13 @@ const filePath = "/models/pomodoro_pets_monkey_1_v2.glb";
 const material = new THREE.MeshBasicMaterial();
 
 export default function Monkey(props: JSX.IntrinsicElements["group"]) {
-  const { pomodoroPhase, currentRound } = usePomodoro();
+  const { pomodoroPhase, currentRound, modelLoaded } = usePomodoro();
   const group = useRef<THREE.Group>(null);
-  const { nodes, animations } = useGLTF(filePath) as GLTFResult;
+  const { nodes, animations } = useGLTF(filePath, true, undefined, (loader) => {
+    loader.manager.onLoad = () => {
+      modelLoaded();
+    };
+  }) as GLTFResult;
   const { actions } = useAnimations<GLTFAction>(animations, group);
 
   const texture = useLoader(TextureLoader, "textures/monkey_1_diffuse.png");
@@ -148,5 +152,3 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
     </group>
   );
 }
-
-useGLTF.preload(filePath);

@@ -8,11 +8,12 @@ import { usePomodoro } from "./utils/usePomodoro";
 import StartSessionMainMenu from "./interface/StartSessionMainMenu";
 
 function App() {
-  const { pomodoroPhase } = usePomodoro();
+  const { pomodoroPhase, isModelLoaded } = usePomodoro();
   return (
     <>
       {pomodoroPhase === "none" && <StartSessionMainMenu />}
       {pomodoroPhase !== "none" && <SessionTimeInterface />}
+
       <div className="flex h-screen flex-col flex-wrap">
         <Canvas
           camera={{
@@ -24,6 +25,13 @@ function App() {
         >
           <Scene />
         </Canvas>
+        {!isModelLoaded && (
+          <div className="absolute z-20 flex h-screen w-full items-center justify-center">
+            <div>
+              <img src="/pomodoropet-logo-2-large.png" />
+            </div>
+          </div>
+        )}
         {pomodoroPhase !== "none" && (
           <Menu
             tabs={[

@@ -9,6 +9,10 @@ export default {
       borderWidth: {
         6: "6px",
       },
+      spacing: {
+        "1/14": `${(1 / 14) * 100}%`,
+        "1/20": `${(1 / 20) * 100}%`,
+      },
       width: {
         128: "32rem",
       },
@@ -16,6 +20,7 @@ export default {
         128: "32rem",
         canvasContainer: "70vh",
         menuContainer: "30vh",
+        fullMobileScreen: ["100vh", "100svh"],
       },
       minHeight: {
         160: "40rem",

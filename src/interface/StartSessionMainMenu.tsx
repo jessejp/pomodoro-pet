@@ -19,7 +19,7 @@ const StartSessionMainMenu = () => {
         </div>
         <div className="mt-4" />
         <button
-          className="rounded border-4  border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400"
+          className="rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400"
           onClick={() => {
             console.log({ rounds: roundsAmount, workTime, breakTime });
 
@@ -35,11 +35,11 @@ const StartSessionMainMenu = () => {
           setWorkTime(minutes);
         }}
       />
-      <div className="relative bottom-2 flex h-max w-11/12 flex-row justify-around gap-2 max-sm:justify-between">
-        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-lg">
-          <span>Break for {breakTime} minutes</span>
+      <div className="relative bottom-1/14 md:bottom-1/20 flex h-max w-11/12 max-sm:w-full flex-row items-end justify-around gap-2 max-sm:justify-center">
+        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-sm max-sm:px-2">
+          <span className="whitespace-nowrap">Break for {breakTime} minutes</span>
           <input
-            className="w-64 accent-violet-700 max-sm:w-fit"
+            className="w-64 accent-violet-700 max-sm:w-24"
             type="range"
             name="breakTime"
             min={1}
@@ -51,10 +51,10 @@ const StartSessionMainMenu = () => {
             }}
           />
         </div>
-        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-lg">
+        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-sm max-sm:px-2">
           <span>Do {roundsAmount} rounds</span>
           <input
-            className="w-64 accent-violet-700 max-sm:w-fit"
+            className="w-64 accent-violet-700 max-sm:w-24"
             type="range"
             name="roundsAmount"
             min={1}
