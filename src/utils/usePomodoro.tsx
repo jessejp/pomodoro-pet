@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 interface PomodoroState {
+  isModelLoaded: boolean;
   startTime: number;
   pomodoroSession: { workTime: number; breakTime: number }[] | null;
   rounds: number;
@@ -16,17 +17,18 @@ interface PomodoroState {
   startBreak: () => void;
   nextRound: () => void;
   setIsRunning: (newState: boolean) => void;
+  modelLoaded: () => void;
 }
 
 export const usePomodoro = create<PomodoroState>((set) => {
   return {
+    isModelLoaded: false,
     startTime: 0,
     pomodoroSession: null,
     rounds: 0,
     currentRound: 0,
     pomodoroPhase: "none",
     isRunning: false,
-
     start: ({ rounds, workTime, breakTime }) =>
       set(() => {
         const pomodoroSession = [];
@@ -58,6 +60,11 @@ export const usePomodoro = create<PomodoroState>((set) => {
       }),
     setIsRunning: (newState: boolean) => {
       set(() => ({ isRunning: newState }));
+    },
+    modelLoaded: () => {
+      set(() => {
+        return { isModelLoaded: true };
+      });
     },
   };
 });

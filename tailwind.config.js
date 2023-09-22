@@ -43,11 +43,6 @@ export default {
         },
       },
     },
-    safelist: [
-      {
-        pattern: /scale-./,
-      },
-    ],
   },
   plugins: [],
 };
