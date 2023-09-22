@@ -9,7 +9,7 @@ const StartSessionMainMenu = () => {
   const { start } = usePomodoro();
 
   return (
-    <div className="fixed left-0 top-0 z-10 flex aspect-square h-fullMobileScreen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
+    <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
       <div className="h-max w-max relative top-6">
         <div className="text-1xl text-center font-bold">
           <span>
@@ -35,9 +35,9 @@ const StartSessionMainMenu = () => {
           setWorkTime(minutes);
         }}
       />
-      <div className="relative bottom-2 flex h-max w-11/12 flex-row justify-around gap-2 max-sm:justify-between">
-        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-lg">
-          <span>Break for {breakTime} minutes</span>
+      <div className="relative bottom-1/20 flex h-max w-11/12 max-sm:w-full flex-row items-end justify-around gap-1 max-sm:justify-center">
+        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-sm max-sm:px-2">
+          <span className="whitespace-nowrap">Break for {breakTime} minutes</span>
           <input
             className="w-64 accent-violet-700 max-sm:w-fit"
             type="range"
@@ -51,7 +51,7 @@ const StartSessionMainMenu = () => {
             }}
           />
         </div>
-        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-lg">
+        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:text-sm max-sm:px-2">
           <span>Do {roundsAmount} rounds</span>
           <input
             className="w-64 accent-violet-700 max-sm:w-fit"

@@ -9,6 +9,9 @@ export default {
       borderWidth: {
         6: "6px",
       },
+      spacing: {
+        "1/20": `${(1 / 20) * 100}%`,
+      },
       width: {
         128: "32rem",
       },
@@ -39,6 +42,11 @@ export default {
         },
       },
     },
+    safelist: [
+      {
+        pattern: /scale-./,
+      },
+    ],
   },
   plugins: [],
 };
