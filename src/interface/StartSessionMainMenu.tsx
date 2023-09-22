@@ -9,7 +9,7 @@ const StartSessionMainMenu = () => {
   const { start } = usePomodoro();
 
   return (
-    <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
+    <div className="fixed left-0 top-0 z-10 flex aspect-square h-fullMobileScreen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
       <div className="h-max w-max relative top-6">
         <div className="text-1xl text-center font-bold">
           <span>

@@ -16,6 +16,7 @@ export default {
         128: "32rem",
         canvasContainer: "70vh",
         menuContainer: "30vh",
+        fullMobileScreen: ["100vh", "100svh"],
       },
       minHeight: {
         160: "40rem",
