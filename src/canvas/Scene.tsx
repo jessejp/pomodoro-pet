@@ -1,6 +1,6 @@
 import { useThree, useFrame } from "@react-three/fiber";
 import { PresentationControls } from "@react-three/drei";
-import { usePomodoro } from "../utils/usePomodoro";
+import { usePomodoro } from "../stores/usePomodoro";
 import { Room } from "./world/Room";
 import Monkey from "./pets/Monkey";
 import Chair from "./world/furniture/ChairSoft1";
@@ -70,7 +70,6 @@ function Scene() {
 
   return (
     <>
-      {/* <color attach="background" args={["#ffc222"]} /> */}
       <ambientLight intensity={1} />
       <PresentationControls
         enabled={pomodoroPhase !== "none"}

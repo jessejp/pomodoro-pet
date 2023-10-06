@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSessionLog } from "../utils/useSessionLog";
+import { useSessionLog } from "../stores/useSessionLog";
 
 const SessionLog = () => {
   const [taskMessageInput, setTaskMessageInput] = useState<string | null>("");

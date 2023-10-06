@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import formatTime from "../../utils/formatTime";
-import { usePomodoro } from "../../utils/usePomodoro";
+import { usePomodoro } from "../../stores/usePomodoro";
 import getElapsedTime from "../../utils/getElapsedTime";
-import { useSessionLog } from "../../utils/useSessionLog";
+import { useSessionLog } from "../../stores/useSessionLog";
 
 interface Props {
   startTime: number;

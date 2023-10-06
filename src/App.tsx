@@ -4,8 +4,9 @@ import Scene from "./canvas/Scene";
 import SessionTimeInterface from "./interface/SessionTimeInterface";
 import SessionLog from "./interface/SessionLog";
 import Menu from "./interface/components/Menu";
-import { usePomodoro } from "./utils/usePomodoro";
+import { usePomodoro } from "./stores/usePomodoro";
 import StartSessionMainMenu from "./interface/StartSessionMainMenu";
+import Customization from "./interface/Customization";
 
 function App() {
   const { pomodoroPhase, isModelLoaded } = usePomodoro();
@@ -39,6 +40,10 @@ function App() {
               {
                 icon: "📝",
                 component: <SessionLog />,
+              },
+              {
+                icon: "👕",
+                component: <Customization />,
               },
             ]}
           />

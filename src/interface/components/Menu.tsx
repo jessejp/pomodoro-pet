@@ -1,6 +1,6 @@
 import React, { useState, type PropsWithChildren } from "react";
 import clsx from "clsx";
-import { usePomodoro } from "../../utils/usePomodoro";
+import { usePomodoro } from "../../stores/usePomodoro";
 
 type Tab = {
   icon: string;
@@ -23,7 +23,10 @@ const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
             className={clsx(
               "rounded-tl rounded-tr border-4 border-violet-700 px-3 pb-2 pt-2 text-center text-lg",
               { "bg-gray-400": selectedTabIndex !== index },
-              { "border-b-transparent bg-orangeFlavour": selectedTabIndex === index }
+              {
+                "border-b-transparent bg-orangeFlavour":
+                  selectedTabIndex === index,
+              }
             )}
             onClick={() => {
               setSelectedTabIndex(index);

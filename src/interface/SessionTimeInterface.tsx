@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { usePomodoro } from "../utils/usePomodoro";
+import { usePomodoro } from "../stores/usePomodoro";
 import CountdownClock from "./timer/CountdownClock";
 
 const TimeInterface = () => {

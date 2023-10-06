@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usePomodoro } from "../utils/usePomodoro";
+import { usePomodoro } from "../stores/usePomodoro";
 import WorkTimeInput from "./timer/WorkTimeInput";
 
 const StartSessionMainMenu = () => {
