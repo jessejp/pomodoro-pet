@@ -43,7 +43,7 @@ type GLTFResult = GLTF & {
   animations: GLTFAction[];
 };
 
-const filePath = "/models/pomodoro_pets_monkey_1_v2.glb";
+const filePath = "/models/pomodoro_pets_monkey_1.glb";
 
 const material = new THREE.MeshBasicMaterial();
 
