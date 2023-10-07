@@ -9,6 +9,9 @@ type GLTFResult = GLTF & {
   nodes: {
     head_slot: THREE.SkinnedMesh;
   };
+  materials: {
+    vertex_color: THREE.MeshBasicMaterial;
+  };
 };
 
 const HeadSlot = (props: React.JSX.IntrinsicElements["skinnedMesh"]) => {
@@ -18,6 +21,7 @@ const HeadSlot = (props: React.JSX.IntrinsicElements["skinnedMesh"]) => {
       {...props}
       name={props.name}
       geometry={model.nodes.head_slot.geometry}
+      material={model.materials.vertex_color}
     />
   );
 };
