@@ -4,11 +4,16 @@ import Scene from "./canvas/Scene";
 import SessionTimeInterface from "./interface/SessionTimeInterface";
 import SessionLog from "./interface/SessionLog";
 import Menu from "./interface/components/Menu";
-import { usePomodoro } from "./utils/usePomodoro";
 import StartSessionMainMenu from "./interface/StartSessionMainMenu";
+import Customization from "./interface/Customization";
+import { useBoundStore } from "./store/useBoundStore";
 
 function App() {
-  const { pomodoroPhase, isModelLoaded } = usePomodoro();
+  const { pomodoroPhase, isModelLoaded } = useBoundStore((state) => ({
+    pomodoroPhase: state.pomodoroPhase,
+    isModelLoaded: state.isModelLoaded,
+  }));
+
   return (
     <>
       {pomodoroPhase === "none" && <StartSessionMainMenu />}
@@ -39,6 +44,10 @@ function App() {
               {
                 icon: "📝",
                 component: <SessionLog />,
+              },
+              {
+                icon: "👕",
+                component: <Customization />,
               },
             ]}
           />

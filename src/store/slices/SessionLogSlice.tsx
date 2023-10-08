@@ -1,21 +1,7 @@
-import { create } from "zustand";
+import type { StateCreator } from "zustand";
+import type { SessionLogParams } from "../types";
 
-type Log = {
-  message: string | null;
-  minutes: number;
-  minutesWithBreaks: number;
-};
-
-interface SessionLog {
-  selectedTaskIndex: number;
-  newTaskMessage: string | null;
-  sessionLog: Log[];
-  updateSessionLog: (logEntry: Log) => void;
-  updateSelectedTaskIndex: (selectedIndex: number) => void;
-  updateNewTaskMessage: (value: string | null) => void;
-}
-
-export const useSessionLog = create<SessionLog>((set) => {
+export const SessionLogSlice: StateCreator<SessionLogParams> = (set) => {
   return {
     selectedTaskIndex: -1,
     newTaskMessage: null,
@@ -78,4 +64,4 @@ export const useSessionLog = create<SessionLog>((set) => {
       });
     },
   };
-});
+};

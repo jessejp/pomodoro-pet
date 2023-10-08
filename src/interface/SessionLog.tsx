@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSessionLog } from "../utils/useSessionLog";
+import { useBoundStore } from "../store/useBoundStore";
 
 const SessionLog = () => {
   const [taskMessageInput, setTaskMessageInput] = useState<string | null>("");
@@ -11,7 +11,13 @@ const SessionLog = () => {
     selectedTaskIndex,
     updateSelectedTaskIndex,
     updateNewTaskMessage,
-  } = useSessionLog();
+  } = useBoundStore((state) => ({
+    sessionLog: state.sessionLog,
+    newTaskMessage: state.newTaskMessage,
+    selectedTaskIndex: state.selectedTaskIndex,
+    updateSelectedTaskIndex: state.updateSelectedTaskIndex,
+    updateNewTaskMessage: state.updateNewTaskMessage,
+  }));
 
   useEffect(() => {
     updateNewTaskMessage(taskMessageInput);

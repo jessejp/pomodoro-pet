@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { usePomodoro } from "../utils/usePomodoro";
 import CountdownClock from "./timer/CountdownClock";
+import { useBoundStore } from "../store/useBoundStore";
 
 const TimeInterface = () => {
   const {
@@ -12,7 +12,17 @@ const TimeInterface = () => {
     rounds,
     pomodoroPhase,
     startTime,
-  } = usePomodoro();
+  } = useBoundStore((state) => ({
+    stop: state.stop,
+    setIsRunning: state.setIsRunning,
+    pomodoroSession: state.pomodoroSession,
+    isRunning: state.isRunning,
+    currentRound: state.currentRound,
+    rounds: state.rounds,
+    pomodoroPhase: state.pomodoroPhase,
+    startTime: state.startTime,
+  }));
+
   const [showCenterContainer, setShowCenterContainer] = useState(false);
 
   const showCenterContainerTimeout = () => {
@@ -41,7 +51,7 @@ const TimeInterface = () => {
   }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
 
   return (
-    <div className="pointer-events-none fixed w-full z-10 flex justify-center">
+    <div className="pointer-events-none fixed z-10 flex w-full justify-center">
       <div className="relative top-4 flex w-11/12 justify-between gap-2">
         <div className="w-fit self-baseline rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-4xl font-bold text-violet-700">
           {isRunning && pomodoroSession?.length && (
