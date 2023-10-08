@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { usePomodoro } from "../stores/usePomodoro"
 import { GLTFAction } from "../canvas/pets/Monkey";
 import { useAnimations } from "@react-three/drei";
 import * as THREE from "three";
+import { useBoundStore } from "../store/useBoundStore";
 
 type HookProps = {
   animations: GLTFAction[];
@@ -13,7 +13,10 @@ const useAnimPhases: (props: HookProps) => void = ({
   animations,
   groupRef,
 }) => {
-  const { pomodoroPhase, currentRound } = usePomodoro();
+  const { pomodoroPhase, currentRound } = useBoundStore((state) => ({
+    pomodoroPhase: state.pomodoroPhase,
+    currentRound: state.currentRound,
+  }));
 
   const { actions } = useAnimations<GLTFAction>(animations, groupRef);
 

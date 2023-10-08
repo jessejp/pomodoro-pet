@@ -1,6 +1,6 @@
 import React, { useState, type PropsWithChildren } from "react";
 import clsx from "clsx";
-import { usePomodoro } from "../../stores/usePomodoro";
+import { useBoundStore } from "../../store/useBoundStore";
 
 type Tab = {
   icon: string;
@@ -12,7 +12,9 @@ interface MenuProps {
 }
 
 const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
-  const { stop } = usePomodoro();
+  const { stop } = useBoundStore((state) => ({
+    stop: state.stop,
+  }));
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   return (
     <div className="relative max-h-[40%] w-full">

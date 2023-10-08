@@ -6,6 +6,12 @@ export const PetCosmeticSlice: StateCreator<CosmeticParams> = (set) => ({
     pet_model: "monkey",
     head_slot: undefined,
   },
+  isModelLoaded: false,
+  modelLoaded: () => {
+    set(() => {
+      return { isModelLoaded: true };
+    });
+  },
   updateCosmetic: (cosmetic) => {
     set((state) => {
       return {

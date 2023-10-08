@@ -1,11 +1,11 @@
 import { useThree, useFrame } from "@react-three/fiber";
 import { PresentationControls } from "@react-three/drei";
-import { usePomodoro } from "../stores/usePomodoro";
 import { Room } from "./world/Room";
 import Monkey from "./pets/Monkey";
 import Chair from "./world/furniture/ChairSoft1";
 import { Vector3 } from "three";
 import { useEffect, useState } from "react";
+import { useBoundStore } from "../store/useBoundStore";
 
 const camPaths = [
   {
@@ -32,7 +32,9 @@ const camPaths = [
 
 function Scene() {
   const [camPathIndex, setCamPathIndex] = useState(0);
-  const { pomodoroPhase } = usePomodoro();
+  const { pomodoroPhase } = useBoundStore((state) => ({
+    pomodoroPhase: state.pomodoroPhase,
+  }));
   const { camera } = useThree();
 
   useEffect(() => {

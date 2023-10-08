@@ -1,8 +1,11 @@
-import { useCosmetic } from "../stores/useCosmetic";
-import type { HeadSlot } from "../stores/useCosmetic";
+import type { HeadSlot } from "../store/types";
+import { useBoundStore } from "../store/useBoundStore";
 
 const Customization = () => {
-  const { cosmetic, updateCosmetic } = useCosmetic();
+  const { cosmetic, updateCosmetic } = useBoundStore((state) => ({
+    cosmetic: state.cosmetic,
+    updateCosmetic: state.updateCosmetic,
+  }));
 
   return (
     <div className="min-h-[83%] w-full pb-16">

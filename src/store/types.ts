@@ -2,7 +2,6 @@
     Pomodoro Time Slice Types
 */
 export interface PomodoroTimerParams {
-  isModelLoaded: boolean;
   isRunning: boolean;
   startTime: number;
   pomodoroSession: { workTime: number; breakTime: number }[] | null;
@@ -18,7 +17,6 @@ export interface PomodoroTimerParams {
   startBreak: () => void;
   nextRound: () => void;
   setIsRunning: (newState: boolean) => void;
-  modelLoaded: () => void;
 }
 
 /* 
@@ -35,7 +33,9 @@ export type Cosmetic = {
 
 export interface CosmeticParams {
   cosmetic: Cosmetic;
+  isModelLoaded: boolean;
   updateCosmetic: (cosmetic: Cosmetic) => void;
+  modelLoaded: () => void;
 }
 
 /* 

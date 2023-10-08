@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import formatTime from "../../utils/formatTime";
-import { usePomodoro } from "../../stores/usePomodoro";
 import getElapsedTime from "../../utils/getElapsedTime";
-import { useSessionLog } from "../../stores/useSessionLog";
+import { useBoundStore } from "../../store/useBoundStore";
 
 interface Props {
   startTime: number;
@@ -10,15 +9,26 @@ interface Props {
 }
 
 const CountdownClock: React.FC<Props> = ({ startTime, minutes }) => {
-  const { newTaskMessage, updateSessionLog } = useSessionLog();
   const {
+    newTaskMessage,
+    updateSessionLog,
     pomodoroPhase,
     pomodoroSession,
     currentRound,
     startBreak,
     nextRound,
     setIsRunning,
-  } = usePomodoro();
+  } = useBoundStore((state) => ({
+    newTaskMessage: state.newTaskMessage,
+    updateSessionLog: state.updateSessionLog,
+    pomodoroPhase: state.pomodoroPhase,
+    pomodoroSession: state.pomodoroSession,
+    currentRound: state.currentRound,
+    startBreak: state.startBreak,
+    nextRound: state.nextRound,
+    setIsRunning: state.setIsRunning,
+  }));
+
   const [timeRemaining, setTimeRemaining] = useState(minutes * 60);
 
   useEffect(() => {
