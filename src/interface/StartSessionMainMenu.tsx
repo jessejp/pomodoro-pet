@@ -1,6 +1,7 @@
 import { useState, Suspense } from "react";
 import WorkTimeButtonsCircle from "./timer/WorkTimeButtonsCircle";
 import { useBoundStore } from "../store/useBoundStore";
+import SliderWithTabs from "./ui/SliderWithTabs";
 
 const StartSessionMainMenu = () => {
   const [workTime, setWorkTime] = useState(25);
@@ -37,40 +38,29 @@ const StartSessionMainMenu = () => {
           }}
         />
       </Suspense>
-      <div className="relative bottom-1/14 flex h-max w-11/12 flex-row items-end justify-around gap-2 max-sm:w-full max-sm:justify-center md:bottom-1/20">
-        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:px-2 max-sm:text-sm">
-          <span className="whitespace-nowrap">
-            Break for {breakTime} minutes
-          </span>
-          <input
-            className="w-64 accent-violet-700 max-sm:w-24"
-            type="range"
-            name="breakTime"
-            min={1}
-            max={20}
-            step={1}
-            value={breakTime}
-            onChange={(e) => {
-              setBreakTime(e.target.valueAsNumber);
-            }}
-          />
-        </div>
-        <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:px-2 max-sm:text-sm">
-          <span>Do {roundsAmount} rounds</span>
-          <input
-            className="w-64 accent-violet-700 max-sm:w-24"
-            type="range"
-            name="roundsAmount"
-            min={1}
-            max={8}
-            step={1}
-            value={roundsAmount}
-            onChange={(e) => {
-              setRoundsAmount(e.target.valueAsNumber);
-            }}
-          />
-        </div>
-      </div>
+      <div className="mb-4">
+      <SliderWithTabs
+        tabs={[
+          {
+            name: "Break",
+            valueLabel: "minutes",
+            value: breakTime,
+            setMethod: setBreakTime,
+            step: 1,
+            min: 1,
+            max: 20,
+          },
+          {
+            name: "Rounds",
+            valueLabel: "rounds",
+            value: roundsAmount,
+            setMethod: setRoundsAmount,
+            step: 1,
+            min: 1,
+            max: 8,
+          },
+        ]}
+      /></div>
     </div>
   );
 };
