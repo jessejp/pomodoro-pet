@@ -1,5 +1,5 @@
-import { useState } from "react";
-import WorkTimeInput from "./timer/WorkTimeInput";
+import { useState, Suspense } from "react";
+import WorkTimeButtonsCircle from "./timer/WorkTimeButtonsCircle";
 import { useBoundStore } from "../store/useBoundStore";
 
 const StartSessionMainMenu = () => {
@@ -29,12 +29,14 @@ const StartSessionMainMenu = () => {
           Start {workTime} minutes
         </button>
       </div>
-      <WorkTimeInput
-        selectedMinutes={workTime}
-        onWorkTimeSelected={(minutes: number) => {
-          setWorkTime(minutes);
-        }}
-      />
+      <Suspense fallback={null}>
+        <WorkTimeButtonsCircle
+          selectedMinutes={workTime}
+          onWorkTimeSelected={(minutes: number) => {
+            setWorkTime(minutes);
+          }}
+        />
+      </Suspense>
       <div className="relative bottom-1/14 flex h-max w-11/12 flex-row items-end justify-around gap-2 max-sm:w-full max-sm:justify-center md:bottom-1/20">
         <div className="flex w-fit flex-col items-center gap-2 rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-4 text-2xl font-bold text-violet-700 max-sm:px-2 max-sm:text-sm">
           <span className="whitespace-nowrap">
