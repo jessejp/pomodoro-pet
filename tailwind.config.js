@@ -2,9 +2,30 @@
 export default {
   content: ["./index.html", "./src/interface/**/*.{ts,tsx}"],
   theme: {
+    fontSize:{
+      base: "16px",
+      md: '20px',
+      lg: "28px",
+      xl: "34px",
+    },
+    fontFamily:{
+      'sans': ["Work Sans", "ui-sans-serif"],
+    },
     extend: {
       colors: {
         orangeFlavour: "#FFC222",
+        "primary-100": "#FDE2DB",
+        "secondary-300": "#EBBE8A",
+        "secondary-500": "#855824",
+        "secondary-800": "#583A18",
+        "secondary-900": "#2C1D0C",
+        "tertiary-100": "#FFFAE4",
+        "tertiary-200": "#FFF5C8",
+        "tertiary-500": "#FFE576",
+        "accent-400": "#A3C982",
+        "accent-500": "#8CBB63",
+        "cool-150": "#CAE1D9",
+        "cool-200": "#B9D7CD",
       },
       borderWidth: {
         6: "6px",
@@ -44,5 +65,5 @@ export default {
       },
     },
   },
-  plugins: ['prettier-plugin-tailwindcss'],
+  plugins: ["prettier-plugin-tailwindcss"],
 };

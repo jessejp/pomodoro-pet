@@ -21,8 +21,8 @@ const SliderWithTabs: React.FC<SliderTabsProps> = ({ tabs }) => {
         {tabs.map((tab, index) => (
           <button
             className={clsx("rounded-t-xl  px-2 py-[0.38rem]", {
-              "bg-red-200": activeTab === index,
-              "bg-blue-200": activeTab !== index,
+              "bg-primary-100": activeTab === index,
+              "bg-cool-150": activeTab !== index,
             })}
             key={index}
             onClick={() => {
@@ -33,8 +33,8 @@ const SliderWithTabs: React.FC<SliderTabsProps> = ({ tabs }) => {
           </button>
         ))}
       </div>
-      <div className="flex flex-col rounded-xl bg-red-200 px-6 py-4">
-        <div className="text-3xl">
+      <div className="flex flex-col rounded-xl bg-primary-100 px-6 py-4">
+        <div className="text-lg font-semibold text-center">
           {tabs[activeTab].value} {tabs[activeTab].valueLabel}
         </div>
         <input

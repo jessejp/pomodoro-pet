@@ -12,23 +12,12 @@ const StartSessionMainMenu = () => {
   }));
 
   return (
-    <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-orangeFlavour to-25% max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
-      <div className="relative top-6 h-max w-max">
-        <div className="text-1xl text-center font-bold">
-          <span>
-            Total session length is {(workTime + breakTime) * roundsAmount}{" "}
-            minutes.
-          </span>
+    <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen min-h-160 w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-secondary-300 to-25% max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20%">
+      <div className="relative top-6 h-32 w-[20.75rem]">
+        <div className="flex flex-col p-4 bg-primary-100 text-center rounded-xl text-2xl font-semibold">
+            <span>Session Length</span>
+            <span>{(workTime + breakTime) * roundsAmount} minutes.</span>
         </div>
-        <div className="mt-4" />
-        <button
-          className="rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400"
-          onClick={() => {
-            start({ rounds: roundsAmount, workTime, breakTime });
-          }}
-        >
-          Start {workTime} minutes
-        </button>
       </div>
       <Suspense fallback={null}>
         <WorkTimeButtonsCircle
@@ -38,7 +27,7 @@ const StartSessionMainMenu = () => {
           }}
         />
       </Suspense>
-      <div className="mb-4">
+      <div className="relative bottom-4 h-32">
       <SliderWithTabs
         tabs={[
           {

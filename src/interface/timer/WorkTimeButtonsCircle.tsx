@@ -18,8 +18,14 @@ const WorkTimeButtonsCircle: React.FC<{
     const handleResize = () => {
       if (!buttonContainerRef.current) return 0;
 
-      // Adjusted radius based on container width
-      return (buttonContainerRef.current.offsetWidth / 2) * 0.865;
+      // Calculate the adjusted radius based on the minimum of window width and height
+      const containerWidth = buttonContainerRef.current.offsetWidth;
+      const containerHeight = buttonContainerRef.current.offsetHeight;
+
+      // Adjusted radius based on the smaller dimension
+      const smallerDimension = Math.min(containerWidth, containerHeight);
+
+      return (smallerDimension / 2) * 0.865; // You can adjust the factor (0.865) as needed
     };
 
     // Call once initially to set the initial radius
@@ -39,40 +45,50 @@ const WorkTimeButtonsCircle: React.FC<{
   }, []);
 
   return (
-    <div ref={buttonContainerRef} className="relative aspect-square w-[50%] min-w-[26rem] max-w-[30rem]">
-      {Array.from({ length: buttonCount }).map((_, index) => {
-        const angleOffset = Math.PI * -0.33;
-        const angle = index * angleIncrement + angleOffset;
-        const top = Math.sin(angle) * radius + radius;
-        const left = Math.cos(angle) * radius + radius;
+    <div className="flex aspect-square h-[25%] w-full items-center justify-center">
+      <div
+        ref={buttonContainerRef}
+        className={clsx(
+          "relative h-auto min-h-[30rem] w-[30rem] max-sm:min-h-[19rem] max-sm:w-[19rem]",
+          {
+            "scale-75": window.innerHeight < 1000,
+          }
+        )}
+      >
+        {Array.from({ length: buttonCount }).map((_, index) => {
+          const angleOffset = Math.PI * -0.33;
+          const angle = index * angleIncrement + angleOffset;
+          const top = Math.sin(angle) * radius + radius;
+          const left = Math.cos(angle) * radius + radius;
 
-        const minuteSelectionValue = index * 5 + 5; //minimun of 5
-        return (
-          <button
-            key={index}
-            className={clsx(
-              "absolute flex h-16 w-16 items-center justify-center rounded-full border-4 text-4xl",
-              {
-                "border-transparent bg-violet-600 hover:bg-violet-500":
-                  props.selectedMinutes !== minuteSelectionValue,
-              },
-              {
-                "border-violet-600 bg-orange-300 hover:bg-orange-300":
-                  props.selectedMinutes === minuteSelectionValue,
-              }
-            )}
-            style={{
-              top: `calc(50% - 50% + ${top}px)`, // Center vertically
-              left: `calc(50% - 50% + ${left}px)`, // Center horizontally
-            }}
-            onClick={() => {
-              props.onWorkTimeSelected(minuteSelectionValue);
-            }}
-          >
-            {minuteSelectionValue}
-          </button>
-        );
-      })}
+          const minuteSelectionValue = index * 5 + 5; //minimun of 5
+          return (
+            <button
+              key={index}
+              className={clsx(
+                "absolute flex h-16 w-16 items-center justify-center rounded-full text-xl font-semibold",
+                {
+                  "bg-tertiary-500 hover:bg-tertiary-200":
+                    props.selectedMinutes !== minuteSelectionValue,
+                },
+                {
+                  "bg-accent-500 hover:bg-accent-400":
+                    props.selectedMinutes === minuteSelectionValue,
+                }
+              )}
+              style={{
+                top: `calc(50% - 50% + ${top}px)`, // Center vertically
+                left: `calc(50% - 50% + ${left}px)`, // Center horizontally
+              }}
+              onClick={() => {
+                props.onWorkTimeSelected(minuteSelectionValue);
+              }}
+            >
+              {minuteSelectionValue}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };
