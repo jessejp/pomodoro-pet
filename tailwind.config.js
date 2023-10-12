@@ -2,6 +2,10 @@
 export default {
   content: ["./index.html", "./src/interface/**/*.{ts,tsx}"],
   theme: {
+    screens: {
+      'short': { 'raw': '(max-height: 800px)' },
+      'thin': { 'raw': '(max-width: 760px)' },	
+    },
     fontSize:{
       base: "16px",
       md: '20px',
@@ -15,13 +19,13 @@ export default {
       colors: {
         orangeFlavour: "#FFC222",
         "primary-100": "#FDE2DB",
-        "secondary-300": "#EBBE8A",
-        "secondary-500": "#855824",
-        "secondary-800": "#583A18",
-        "secondary-900": "#2C1D0C",
-        "tertiary-100": "#FFFAE4",
-        "tertiary-200": "#FFF5C8",
-        "tertiary-500": "#FFE576",
+        "secondary-100": "#FFFAE4",
+        "secondary-200": "#FFF5C8",
+        "secondary-500": "#FFE576",
+        "tertiary-300": "#EBBE8A",
+        "tertiary-500": "#855824",
+        "tertiary-800": "#583A18",
+        "tertiary-900": "#2C1D0C",
         "accent-400": "#A3C982",
         "accent-500": "#8CBB63",
         "cool-150": "#CAE1D9",

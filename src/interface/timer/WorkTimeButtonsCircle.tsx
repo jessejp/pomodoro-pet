@@ -25,7 +25,8 @@ const WorkTimeButtonsCircle: React.FC<{
       // Adjusted radius based on the smaller dimension
       const smallerDimension = Math.min(containerWidth, containerHeight);
 
-      return (smallerDimension / 2) * 0.865; // You can adjust the factor (0.865) as needed
+      // You can adjust the factor (0.865) as needed
+      return (smallerDimension / 2) * 0.865;
     };
 
     // Call once initially to set the initial radius
@@ -45,15 +46,10 @@ const WorkTimeButtonsCircle: React.FC<{
   }, []);
 
   return (
-    <div className="flex aspect-square h-[25%] w-full items-center justify-center">
+    <div className="flex aspect-square w-full items-center justify-center">
       <div
         ref={buttonContainerRef}
-        className={clsx(
-          "relative h-auto min-h-[30rem] w-[30rem] max-sm:min-h-[19rem] max-sm:w-[19rem]",
-          {
-            "scale-75": window.innerHeight < 1000,
-          }
-        )}
+        className="max-sm:h-[19rem] max-sm:w-[19rem] max-sm:scale-75 relative h-[25rem] w-[25rem] short:h-[20rem] short:w-[20rem] short:scale-75"
       >
         {Array.from({ length: buttonCount }).map((_, index) => {
           const angleOffset = Math.PI * -0.33;
@@ -68,7 +64,7 @@ const WorkTimeButtonsCircle: React.FC<{
               className={clsx(
                 "absolute flex h-16 w-16 items-center justify-center rounded-full text-xl font-semibold",
                 {
-                  "bg-tertiary-500 hover:bg-tertiary-200":
+                  "bg-secondary-500 hover:bg-secondary-200":
                     props.selectedMinutes !== minuteSelectionValue,
                 },
                 {
