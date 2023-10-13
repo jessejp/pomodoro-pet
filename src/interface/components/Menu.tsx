@@ -1,6 +1,5 @@
 import React, { useState, type PropsWithChildren } from "react";
 import clsx from "clsx";
-import { useBoundStore } from "../../store/useBoundStore";
 
 type Tab = {
   icon: string;
@@ -12,45 +11,31 @@ interface MenuProps {
 }
 
 const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
-  const { stop } = useBoundStore((state) => ({
-    stop: state.stop,
-  }));
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   return (
-    <div className="relative max-h-[40%] w-full">
-      <div className="absolute -top-12 left-2 flex items-center gap-1">
+    <div className="fixed bottom-4 w-fit min-w-[30rem] thin:relative thin:bottom-0 thin:w-full">
+      <div className="absolute -top-10 left-6 flex items-center gap-1">
         {tabs.map((tab, index) => (
           <div
             key={index}
             className={clsx(
-              "rounded-tl rounded-tr border-4 border-violet-700 px-3 pb-2 pt-2 text-center text-lg",
-              { "bg-gray-400": selectedTabIndex !== index },
+              "rounded-t-xl px-2 py-[0.38rem] text-center text-lg",
+              { "bg-cool-200": selectedTabIndex !== index },
               {
-                "border-b-transparent bg-orangeFlavour":
-                  selectedTabIndex === index,
+                "bg-primary-100": selectedTabIndex === index,
               }
             )}
             onClick={() => {
               setSelectedTabIndex(index);
             }}
           >
-            {tab.icon}
+            <img src={`/icons/${tab.icon}.svg`} alt={`${tab.icon} icon`} />
           </div>
         ))}
       </div>
-      <div className="flex h-full flex-col justify-between border-4 border-violet-700 bg-orangeFlavour px-4 py-4">
+      <div className="flex h-full flex-col justify-between rounded-xl bg-primary-100 px-8 py-4">
         <div className="h-4/5 w-full max-w-7xl self-center">
           {tabs[selectedTabIndex].component}
-        </div>
-        <div className="h-fit w-full max-w-2xl self-center border-t-2 border-violet-500 pt-2">
-          <button
-            className="w-fit rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold text-violet-700 hover:bg-orange-400 max-sm:text-lg"
-            onClick={() => {
-              stop();
-            }}
-          >
-            Stop
-          </button>
         </div>
       </div>
     </div>

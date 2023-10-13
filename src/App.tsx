@@ -6,11 +6,13 @@ import Menu from "./interface/components/Menu";
 import StartSessionMainMenu from "./interface/StartSessionMainMenu";
 import Customization from "./interface/Customization";
 import { useBoundStore } from "./store/useBoundStore";
+import Button from "./interface/ui/Button";
 
 function App() {
-  const { pomodoroPhase, isModelLoaded } = useBoundStore((state) => ({
+  const { pomodoroPhase, isModelLoaded, stop } = useBoundStore((state) => ({
     pomodoroPhase: state.pomodoroPhase,
     isModelLoaded: state.isModelLoaded,
+    stop: state.stop,
   }));
 
   return (
@@ -18,7 +20,7 @@ function App() {
       {pomodoroPhase === "none" && <StartSessionMainMenu />}
       {pomodoroPhase !== "none" && <SessionTimeInterface />}
 
-      <div className="flex h-screen flex-col flex-wrap">
+      <div className="bg-white flex h-screen flex-col flex-wrap items-center">
         <Canvas
           camera={{
             fov: 50,
@@ -37,19 +39,23 @@ function App() {
           </div>
         )}
         {pomodoroPhase !== "none" && (
-          <Menu
-            tabs={[
-              { icon: "➖", component: <div className="hidden"></div> },
-              {
-                icon: "📝",
-                component: <SessionLog />,
-              },
-              {
-                icon: "👕",
-                component: <Customization />,
-              },
-            ]}
-          />
+          <>
+            <Menu
+              tabs={[
+                {
+                  icon: "note-tertiary-800",
+                  component: <SessionLog />,
+                },
+                {
+                  icon: "customize-tertiary-800",
+                  component: <Customization />,
+                },
+              ]}
+            />
+            <Button position="bottom-right" intent="secondary" onClick={stop} icon="stop-tertiary-900">
+              Stop
+            </Button>
+          </>
         )}
       </div>
     </>

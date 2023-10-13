@@ -3,22 +3,25 @@ export default {
   content: ["./index.html", "./src/interface/**/*.{ts,tsx}"],
   theme: {
     screens: {
-      'short': { 'raw': '(max-height: 800px)' },
-      'thin': { 'raw': '(max-width: 760px)' },	
+      short: { raw: "(max-height: 800px)" },
+      thin: { raw: "(max-width: 760px)" },
+      xl: "1280px",
+      "2xl": "1536px",
     },
-    fontSize:{
+    fontSize: {
       base: "16px",
-      md: '20px',
+      md: "20px",
       lg: "28px",
       xl: "34px",
     },
-    fontFamily:{
-      'sans': ["Work Sans", "ui-sans-serif"],
+    fontFamily: {
+      sans: ["Work Sans", "ui-sans-serif"],
     },
     extend: {
       colors: {
         orangeFlavour: "#FFC222",
         "primary-100": "#FDE2DB",
+        "primary-200": "#FBC5B8",
         "secondary-100": "#FFFAE4",
         "secondary-200": "#FFF5C8",
         "secondary-500": "#FFE576",
@@ -57,6 +60,8 @@ export default {
       },
       animation: {
         "text-bubble-appear": "textBubbleAppear 6s linear forwards",
+        "pulsate-active-round-color":
+          "pulsateActiveRoundColor 5.25s ease-in-out infinite",
       },
       keyframes: {
         textBubbleAppear: {
@@ -65,6 +70,11 @@ export default {
           "50%": { opacity: 1, transform: "scale(1)" },
           "95%": { opacity: 1, transform: "scale(1)" },
           "100%": { opacity: 0, transform: "scale(0.4)" },
+        },
+        pulsateActiveRoundColor: {
+          "0%": { backgroundColor: "hsla(11, 90%, 93%, 1)" },
+          "50%": { backgroundColor: "hsla(11, 90%, 85%, 1)" },
+          "100%": { backgroundColor: "hsla(11, 90%, 93%, 1)" },
         },
       },
     },

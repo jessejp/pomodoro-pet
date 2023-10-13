@@ -13,7 +13,7 @@ const StartSessionMainMenu = () => {
   }));
 
   return (
-    <div className="max-sm:from-30% max-sm:to-30% 2xl:from-20% 2xl:to-20% fixed left-0 top-0 z-10 flex aspect-square h-screen w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-tertiary-300 to-25%">
+    <div className="thin:from-30% thin:to-30% 2xl:from-15% 2xl:to-15% fixed left-0 top-0 z-10 flex aspect-square h-screen w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-tertiary-300 to-25%">
       <div className="relative top-6 h-fit w-[20.75rem]">
         <div className="flex flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold">
           <span>Session Length</span>
@@ -28,7 +28,7 @@ const StartSessionMainMenu = () => {
           }}
         />
       </Suspense>
-      <div className="relative bottom-4 h-fit w-full">
+      <div className="relative bottom-4 flex h-fit w-full flex-col items-center gap-4">
         <SliderWithTabs
           tabs={[
             {
@@ -51,17 +51,16 @@ const StartSessionMainMenu = () => {
             },
           ]}
         />
-        <div className="absolute bottom-0 right-16 w-fit thin:relative thin:right-0">
-          <Button
-            intent="accent"
-            icon="check-tertiary-900"
-            onClick={() => {
-              start({ workTime, breakTime, rounds });
-            }}
-          >
-            Start
-          </Button>
-        </div>
+        <Button
+          intent="accent"
+          icon="check-tertiary-900"
+          position="bottom-right"
+          onClick={() => {
+            start({ workTime, breakTime, rounds });
+          }}
+        >
+          Start
+        </Button>
       </div>
     </div>
   );
