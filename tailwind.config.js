@@ -9,7 +9,7 @@ export default {
       "2xl": "1536px",
     },
     fontSize: {
-      base: "16px",
+      sm: "16px",
       md: "20px",
       lg: "28px",
       xl: "34px",
@@ -53,6 +53,9 @@ export default {
       minHeight: {
         160: "40rem",
         170: "42.5rem",
+      },
+      gridTemplateColumns: {
+        sessionlog: '6rem minmax(16rem, 1fr) 6rem'
       },
       backgroundImage: {
         "orange-circle-gradient":

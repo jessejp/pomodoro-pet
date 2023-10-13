@@ -5,7 +5,7 @@ import SliderWithTabs from "./ui/SliderWithTabs";
 import Button from "./ui/Button";
 
 const StartSessionMainMenu = () => {
-  const [workTime, setWorkTime] = useState(25);
+  const [workTime, setWorkTime] = useState(.25);
   const [breakTime, setBreakTime] = useState(5);
   const [rounds, setRounds] = useState(1);
   const { start } = useBoundStore((state) => ({
