@@ -1,4 +1,3 @@
-import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import Scene from "./canvas/Scene";
 import SessionTimeInterface from "./interface/SessionTimeInterface";
