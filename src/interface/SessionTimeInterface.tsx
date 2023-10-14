@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CountdownClock from "./timer/CountdownClock";
 import { useBoundStore } from "../store/useBoundStore";
+import clsx from "clsx";
 
 const TimeInterface = () => {
   const {
@@ -51,9 +52,17 @@ const TimeInterface = () => {
   }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
 
   return (
-    <div className="pointer-events-none fixed z-10 flex w-full justify-center">
-      <div className="relative top-4 flex w-11/12 justify-between gap-2">
-        <div className="w-fit self-baseline rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-4xl font-bold text-violet-700">
+    <div className="pointer-events-none fixed z-10 flex w-full items-start justify-center">
+      <div className="relative top-10 flex w-full items-start justify-between gap-4 px-16 thin:flex-wrap-reverse thin:justify-center thin:px-4">
+        <div
+          className={clsx(
+            "flex w-[7.75rem] items-center justify-center rounded-xl py-4 text-xl font-semibold leading-none",
+            {
+              "bg-primary-100": pomodoroPhase === "work",
+              "bg-secondary-500": pomodoroPhase === "break",
+            }
+          )}
+        >
           {isRunning && pomodoroSession?.length && (
             <CountdownClock
               startTime={startTime}
@@ -65,17 +74,34 @@ const TimeInterface = () => {
             />
           )}
         </div>
-        <div className="w-fit rounded border-4 border-violet-700 bg-orangeFlavour px-4 py-2 text-2xl font-bold capitalize text-violet-700">
-          <span>{pomodoroPhase}&nbsp;Round</span>{" "}
-          <span className="whitespace-nowrap">
-            {currentRound + 1} / {rounds}
-          </span>
+        <div className="flex gap-2">
+          {[...Array(rounds).keys()].map((n) => (
+            <div
+              key={n}
+              className={clsx(
+                "grid aspect-square h-16 w-16 place-content-center rounded-full text-lg font-semibold text-tertiary-900",
+                {
+                  "animate-pulsate-active-round-color":
+                    n === currentRound && pomodoroPhase === "work",
+                  "bg-secondary-500":
+                    n === currentRound && pomodoroPhase === "break",
+                  "bg-accent-500 ": n < currentRound,
+                  "bg-cool-150": n > currentRound,
+                }
+              )}
+            >
+              {n + 1}
+            </div>
+          ))}
         </div>
       </div>
 
       {showCenterContainer && (
         <div className="fixed top-1/4 z-10 w-full">
-          <div className="mx-auto w-fit animate-pulse rounded border-6 border-violet-700 bg-orangeFlavour px-4 py-12 text-5xl font-bold capitalize text-violet-700">
+          <div className={clsx("mx-auto flex w-fit min-w-[24rem] animate-pulse flex-col rounded-xl p-4 text-center text-xl font-semibold capitalize", {
+            "bg-primary-200": pomodoroPhase === "work",
+            "bg-secondary-500": pomodoroPhase === "break"
+          })}>
             {pomodoroPhase} Time!
           </div>
         </div>
