@@ -14,7 +14,7 @@ const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   return (
     <div className="fixed bottom-4 w-fit min-w-[30rem] thin:relative thin:bottom-0 thin:w-full">
-      <div className="absolute -top-10 left-6 flex items-center gap-1">
+      <div className="absolute -top-12 left-6 flex items-center gap-1">
         {tabs.map((tab, index) => (
           <div
             key={index}

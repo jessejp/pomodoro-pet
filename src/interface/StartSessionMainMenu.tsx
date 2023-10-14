@@ -5,7 +5,7 @@ import SliderWithTabs from "./ui/SliderWithTabs";
 import Button from "./ui/Button";
 
 const StartSessionMainMenu = () => {
-  const [workTime, setWorkTime] = useState(.25);
+  const [workTime, setWorkTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
   const [rounds, setRounds] = useState(1);
   const { start } = useBoundStore((state) => ({
@@ -13,11 +13,11 @@ const StartSessionMainMenu = () => {
   }));
 
   return (
-    <div className="thin:from-30% thin:to-30% 2xl:from-15% 2xl:to-15% fixed left-0 top-0 z-10 flex aspect-square h-screen w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-tertiary-300 to-25%">
+    <div className="fixed left-0 top-0 z-10 flex aspect-square h-screen w-full flex-col items-center justify-between bg-orange-circle-gradient from-transparent from-25% to-tertiary-300 to-25% thin:from-30% thin:to-30% 2xl:from-15% 2xl:to-15%">
       <div className="relative top-6 h-fit w-[20.75rem]">
-        <div className="flex flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold">
+        <div className="flex min-w-[24rem] flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold">
           <span>Session Length</span>
-          <span>{(workTime + breakTime) * rounds} minutes.</span>
+          <span>{(workTime + breakTime) * rounds} minutes</span>
         </div>
       </div>
       <Suspense fallback={null}>

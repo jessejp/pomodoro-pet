@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import scrollbarplugin from "tailwind-scrollbar";
+
 export default {
   content: ["./index.html", "./src/interface/**/*.{ts,tsx}"],
   theme: {
@@ -26,7 +29,8 @@ export default {
         "secondary-200": "#FFF5C8",
         "secondary-500": "#FFE576",
         "tertiary-300": "#EBBE8A",
-        "tertiary-500": "#855824",
+        "tertiary-600": "#B17530",
+        "tertiary-700": "#855824",
         "tertiary-800": "#583A18",
         "tertiary-900": "#2C1D0C",
         "accent-400": "#A3C982",
@@ -55,7 +59,7 @@ export default {
         170: "42.5rem",
       },
       gridTemplateColumns: {
-        sessionlog: '6rem minmax(16rem, 1fr) 6rem'
+        sessionlog: "6rem 16rem 6rem",
       },
       backgroundImage: {
         "orange-circle-gradient":
@@ -80,7 +84,13 @@ export default {
           "100%": { backgroundColor: "hsla(11, 90%, 93%, 1)" },
         },
       },
+      boxShadow: {
+        radioButtonInset: "inset 1em 1em var(--tw-shadow-color)",
+      },
     },
   },
-  plugins: ["prettier-plugin-tailwindcss"],
+  plugins: [
+    "prettier-plugin-tailwindcss",
+    scrollbarplugin({ nocompatible: true }),
+  ],
 };

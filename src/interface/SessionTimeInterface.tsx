@@ -53,10 +53,10 @@ const TimeInterface = () => {
 
   return (
     <div className="pointer-events-none fixed z-10 flex w-full items-start justify-center">
-      <div className="relative top-10 flex w-full justify-between gap-2 px-16 thin:px-4">
+      <div className="relative top-10 flex w-full items-start justify-between gap-4 px-16 thin:flex-wrap-reverse thin:justify-center thin:px-4">
         <div
           className={clsx(
-            "flex w-28 items-center justify-center rounded-xl text-xl font-semibold leading-none",
+            "flex w-[7.75rem] items-center justify-center rounded-xl py-4 text-xl font-semibold leading-none",
             {
               "bg-primary-100": pomodoroPhase === "work",
               "bg-secondary-500": pomodoroPhase === "break",
@@ -98,7 +98,10 @@ const TimeInterface = () => {
 
       {showCenterContainer && (
         <div className="fixed top-1/4 z-10 w-full">
-          <div className="text-5xl mx-auto w-fit animate-pulse rounded border-6 border-violet-700 bg-orangeFlavour px-4 py-12 font-bold capitalize text-violet-700">
+          <div className={clsx("mx-auto flex w-fit min-w-[24rem] animate-pulse flex-col rounded-xl p-4 text-center text-xl font-semibold capitalize", {
+            "bg-primary-200": pomodoroPhase === "work",
+            "bg-secondary-500": pomodoroPhase === "break"
+          })}>
             {pomodoroPhase} Time!
           </div>
         </div>

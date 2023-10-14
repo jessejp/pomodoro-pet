@@ -4,14 +4,12 @@ import type { SessionLogParams } from "../types";
 export const SessionLogSlice: StateCreator<SessionLogParams> = (set) => {
   return {
     selectedTaskIndex: -1,
-    newTaskMessage: null,
+    newTaskMessage: "",
     sessionLog: [],
     updateSessionLog: (logEntry) => {
       set(({ sessionLog, selectedTaskIndex, newTaskMessage }) => {
-        if (selectedTaskIndex === -1) {
+        if (selectedTaskIndex === -1 && !!newTaskMessage) {
           return {
-            newTaskMessage: null,
-            selectedTaskIndex: 0,
             sessionLog: [
               {
                 message: newTaskMessage || "Unnamed Task",
@@ -20,10 +18,12 @@ export const SessionLogSlice: StateCreator<SessionLogParams> = (set) => {
               },
               ...sessionLog,
             ],
+            newTaskMessage: "",
+            selectedTaskIndex: 0,
           };
         } else if (sessionLog.length) {
           return {
-            newTaskMessage: null,
+            newTaskMessage: "",
             sessionLog: sessionLog.map((log, index) => {
               if (selectedTaskIndex !== index) return log;
               else
