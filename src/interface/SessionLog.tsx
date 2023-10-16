@@ -53,7 +53,7 @@ const SessionLog = () => {
           })}
         </div>
         <div className="grid h-8 grid-cols-sessionlog gap-3 text-md">
-          <div>0.00 h</div>
+          <div>0.00&nbsp;h</div>
           <input
             className="h-8 rounded-lg bg-secondary-100 pl-1"
             type="text"

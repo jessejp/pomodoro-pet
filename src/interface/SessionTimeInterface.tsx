@@ -74,7 +74,7 @@ const TimeInterface = () => {
             />
           )}
         </div>
-        <div className="flex flex-wrap justify-evenly gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
           {[...Array(rounds).keys()].map((n) => (
             <div
               key={n}
