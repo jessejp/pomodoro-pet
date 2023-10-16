@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       className={clsx(
-        "flex items-center gap-4 rounded-xl py-3 pl-4 pr-5 text-xl font-semibold leading-none",
+        "flex items-center gap-4 rounded-xl py-3 pl-4 pr-5 text-xl font-semibold leading-none thin:text-lg",
         {
           "bg-accent-500 text-tertiary-900": intent === "accent",
           "bg-secondary-500 text-tertiary-900": intent === "secondary",
@@ -28,7 +28,11 @@ const Button: React.FC<ButtonProps> = ({
         }
       )}
     >
-      <img src={`/icons/${icon}.svg`} alt={`${children} button icon`} />
+      <img
+        className="h-8 w-8"
+        src={`/icons/${icon}.svg`}
+        alt={`${children} button icon`}
+      />
       <span>{children}</span>
     </button>
   );

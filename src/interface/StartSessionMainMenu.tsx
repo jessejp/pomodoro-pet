@@ -7,31 +7,34 @@ import Button from "./ui/Button";
 const StartSessionMainMenu = () => {
   const [workTime, setWorkTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
-  const [rounds, setRounds] = useState(1);
+  const [rounds, setRounds] = useState(2);
   const { start } = useBoundStore((state) => ({
     start: state.start,
   }));
 
   const bgFiller = <div className="h-full w-full bg-tertiary-300"></div>;
+
   return (
-    <div className="fixed left-0 top-0 z-10 grid h-screen w-screen grid-cols-startScreenBg items-center justify-center">
+    <div className="fixed left-0 top-0 z-10 grid h-full w-screen grid-cols-startScreenBg items-center justify-center">
       {bgFiller}
-      <div className="grid h-screen w-128 grid-cols-1 grid-rows-3 place-content-between items-center bg-orange-circle-gradient from-transparent from-[26%] to-tertiary-300 to-[26%] 2xl:short:from-30% 2xl:short:to-30% py-4 ">
-        <div className="flex w-full justify-center self-start pt-6">
-          <div className="flex min-w-[24rem] flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold">
+      <div className="grid h-screen min-h-160 grid-cols-1 grid-rows-startScreenInputs place-content-between items-center">
+        <div className="flex h-full w-full items-start justify-center self-start bg-tertiary-300 pt-10">
+          <div className="flex min-w-[24rem] flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold thin:min-w-min thin:px-8 thin:text-md">
             <span>Session Length</span>
             <span>{(workTime + breakTime) * rounds} minutes</span>
           </div>
         </div>
-        <Suspense fallback={null}>
-          <WorkTimeButtonsCircle
-            selectedMinutes={workTime}
-            onWorkTimeSelected={(minutes: number) => {
-              setWorkTime(minutes);
-            }}
-          />
-        </Suspense>
-        <div className="flex h-fit w-full flex-col items-center gap-4 self-end">
+        <div className="h-128 w-128 bg-orange-circle-gradient from-transparent from-45% to-tertiary-300 to-45%">
+          <Suspense fallback={null}>
+            <WorkTimeButtonsCircle
+              selectedMinutes={workTime}
+              onWorkTimeSelected={(minutes: number) => {
+                setWorkTime(minutes);
+              }}
+            />
+          </Suspense>
+        </div>
+        <div className="flex h-full w-full flex-col items-center justify-end gap-4 self-end bg-tertiary-300 pb-4 thin:flex-row thin:items-end">
           <SliderWithTabs
             tabs={[
               {

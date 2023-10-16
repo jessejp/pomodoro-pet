@@ -33,12 +33,12 @@ const SliderWithTabs: React.FC<SliderTabsProps> = ({ tabs }) => {
           </button>
         ))}
       </div>
-      <div className="flex flex-col rounded-xl bg-primary-100 px-6 py-4">
+      <div className="flex flex-col rounded-xl bg-primary-100 px-6 py-4 thin:px-8">
         <div className="text-lg font-semibold text-center">
           {tabs[activeTab].value} {tabs[activeTab].valueLabel}
         </div>
         <input
-          className="w-64"
+          className="w-64 thin:w-40"
           type="range"
           name={tabs[activeTab].name}
           min={tabs[activeTab].min}

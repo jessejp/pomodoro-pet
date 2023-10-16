@@ -20,7 +20,7 @@ function App() {
       {pomodoroPhase === "none" && <StartSessionMainMenu />}
       {pomodoroPhase !== "none" && <SessionTimeInterface />}
 
-      <div className="bg-white flex h-screen flex-col flex-wrap items-center">
+      <div className="relative flex h-screen flex-col items-center bg-white">
         <Canvas
           camera={{
             fov: 50,
@@ -39,7 +39,7 @@ function App() {
           </div>
         )}
         {pomodoroPhase !== "none" && (
-          <>
+          <div className="w-full flex flex-col items-center gap-2">
             <Menu
               tabs={[
                 {
@@ -52,10 +52,15 @@ function App() {
                 },
               ]}
             />
-            <Button position="bottom-right" intent="secondary" onClick={stop} icon="stop-tertiary-900">
+            <Button
+              position="bottom-right"
+              intent="secondary"
+              onClick={stop}
+              icon="stop-tertiary-900"
+            >
               Stop
             </Button>
-          </>
+          </div>
         )}
       </div>
     </>

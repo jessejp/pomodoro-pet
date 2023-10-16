@@ -52,7 +52,7 @@ const TimeInterface = () => {
   }, [pomodoroPhase, currentRound, rounds, setIsRunning, stop]);
 
   return (
-    <div className="pointer-events-none fixed z-10 flex w-full items-start justify-center">
+    <div className="pointer-events-none fixed z-10 flex w-full items-start justify-center text-tertiary-900">
       <div className="relative top-10 flex w-full items-start justify-between gap-4 px-16 thin:flex-wrap-reverse thin:justify-center thin:px-4">
         <div
           className={clsx(
@@ -74,7 +74,7 @@ const TimeInterface = () => {
             />
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap justify-evenly gap-2">
           {[...Array(rounds).keys()].map((n) => (
             <div
               key={n}
@@ -98,10 +98,15 @@ const TimeInterface = () => {
 
       {showCenterContainer && (
         <div className="fixed top-1/4 z-10 w-full">
-          <div className={clsx("mx-auto flex w-fit min-w-[24rem] animate-pulse flex-col rounded-xl p-4 text-center text-xl font-semibold capitalize", {
-            "bg-primary-200": pomodoroPhase === "work",
-            "bg-secondary-500": pomodoroPhase === "break"
-          })}>
+          <div
+            className={clsx(
+              "mx-auto flex w-fit min-w-[24rem] animate-pulse flex-col rounded-xl p-4 text-center text-xl font-semibold capitalize",
+              {
+                "bg-primary-200": pomodoroPhase === "work",
+                "bg-secondary-500": pomodoroPhase === "break",
+              }
+            )}
+          >
             {pomodoroPhase} Time!
           </div>
         </div>
