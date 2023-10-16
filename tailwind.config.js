@@ -7,7 +7,7 @@ export default {
   theme: {
     screens: {
       short: { raw: "(max-height: 800px)" },
-      thin: { raw: "(max-width: 760px)" },
+      thin: { raw: "(max-width: 990px)" },
       xl: "1280px",
       "2xl": "1536px",
     },
@@ -59,7 +59,11 @@ export default {
         170: "42.5rem",
       },
       gridTemplateColumns: {
-        sessionlog: "6rem 16rem 6rem",
+        sessionlog: "minmax(2rem, 6rem) minmax(8rem, 16rem) minmax(2rem, 6rem)",
+        startScreenBg: "1fr 32rem 1fr",
+      },
+      gridTemplateRows: {
+        startScreenInputs: "repeat(3, minmax(auto, 1fr))",
       },
       backgroundImage: {
         "orange-circle-gradient":
