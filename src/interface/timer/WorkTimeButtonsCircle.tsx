@@ -49,7 +49,7 @@ const WorkTimeButtonsCircle: React.FC<{
     <div className="flex aspect-square w-full items-center justify-center">
       <div
         ref={buttonContainerRef}
-        className="max-sm:h-[19rem] max-sm:w-[19rem] max-sm:scale-75 relative h-[25rem] w-[25rem] short:h-[20rem] short:w-[20rem] short:scale-75"
+        className="relative h-[29rem] w-[29rem] thin:h-96 thin:w-96 short:scale-[70%]"
       >
         {Array.from({ length: buttonCount }).map((_, index) => {
           const angleOffset = Math.PI * -0.33;

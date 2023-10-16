@@ -60,6 +60,7 @@ export default {
       },
       gridTemplateColumns: {
         sessionlog: "6rem 16rem 6rem",
+        startScreenBg: "1fr 32rem 1fr",
       },
       backgroundImage: {
         "orange-circle-gradient":
