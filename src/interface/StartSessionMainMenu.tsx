@@ -15,16 +15,16 @@ const StartSessionMainMenu = () => {
   const bgFiller = <div className="h-full w-full bg-tertiary-300"></div>;
 
   return (
-    <div className="fixed left-0 top-0 z-10 grid h-full w-screen grid-cols-startScreenBg items-center justify-center">
+    <div className="fixed left-0 top-0 z-10 grid h-screen w-screen grid-cols-startScreenBg items-center justify-center">
       {bgFiller}
-      <div className="grid h-screen min-h-160 grid-cols-1 grid-rows-startScreenInputs place-content-between items-center">
+      <div className="grid min-h-160 h-screen grid-cols-1 grid-rows-startScreenInputs place-content-between items-center">
         <div className="flex h-full w-full items-start justify-center self-start bg-tertiary-300 pt-10">
           <div className="flex min-w-[24rem] flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold thin:min-w-min thin:px-8 thin:text-md">
             <span>Session Length</span>
             <span>{(workTime + breakTime) * rounds} minutes</span>
           </div>
         </div>
-        <div className="h-128 w-128 bg-orange-circle-gradient from-transparent from-45% to-tertiary-300 to-45%">
+        <div className="h-full w-full bg-orange-circle-gradient from-transparent from-45% to-tertiary-300 to-45%">
           <Suspense fallback={null}>
             <WorkTimeButtonsCircle
               selectedMinutes={workTime}
