@@ -49,7 +49,7 @@ const WorkTimeButtonsCircle: React.FC<{
     <div className="flex w-full items-center justify-center">
       <div
         ref={buttonContainerRef}
-        className="relative h-[29rem] w-[29rem] thin:short:w-80 thin:short:h-80"
+        className="relative h-[29rem] w-[29rem] thin:short:h-80 thin:short:w-80 thin:scale-90"
       >
         {Array.from({ length: buttonCount }).map((_, index) => {
           const angleOffset = Math.PI * -0.33;
@@ -62,7 +62,7 @@ const WorkTimeButtonsCircle: React.FC<{
             <button
               key={index}
               className={clsx(
-                "absolute flex h-16 w-16 items-center justify-center rounded-full text-xl font-semibold",
+                "absolute flex h-16 w-16 items-center justify-center rounded-full text-xl font-semibold short:thin:h-12 short:thin:w-12 short:thin:text-md",
                 {
                   "bg-secondary-500 hover:bg-secondary-200":
                     props.selectedMinutes !== minuteSelectionValue,
