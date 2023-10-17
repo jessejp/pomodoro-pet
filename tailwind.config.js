@@ -49,6 +49,7 @@ export default {
         128: "32rem",
       },
       height: {
+        screen: ["100vh", "100svh"],
         128: "32rem",
         canvasContainer: "70vh",
         menuContainer: "30vh",
