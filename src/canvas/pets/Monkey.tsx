@@ -47,11 +47,11 @@ const filePath = "/models/pomodoro_pets_monkey_1.glb";
 const material = new THREE.MeshBasicMaterial();
 
 export default function Monkey(props: JSX.IntrinsicElements["group"]) {
-  const { cosmetic, modelLoaded } = useBoundStore((state) => ({
-    cosmetic: state.cosmetic,
+  const { equippedCosmetic, modelLoaded } = useBoundStore((state) => ({
+    equippedCosmetic: state.equippedCosmetic,
     modelLoaded: state.modelLoaded,
   }));
-  
+
   const group = useRef<THREE.Group>(null);
   const { nodes, animations } = useGLTF(filePath, true, undefined, (loader) => {
     loader.manager.onLoad = () => {
@@ -66,6 +66,10 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
   texture.minFilter = THREE.NearestFilter;
   texture.magFilter = THREE.NearestFilter;
 
+  const headSlotItem = equippedCosmetic.cosmetics.find(
+    (cosmetic) => cosmetic.slot === "head"
+  );
+
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
@@ -77,9 +81,12 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
             material-map={texture}
             skeleton={nodes.monkey.skeleton}
           />
-          {cosmetic.head_slot && (
+          {!!headSlotItem && (
             <Suspense fallback={null}>
-              <HeadSlot name="beanie" skeleton={nodes.monkey.skeleton} />
+              <HeadSlot
+                name={headSlotItem.name}
+                skeleton={nodes.monkey.skeleton}
+              />
             </Suspense>
           )}
           <primitive object={nodes.root} />

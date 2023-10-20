@@ -2,9 +2,9 @@ import { type StateCreator } from "zustand";
 import type { CosmeticParams } from "../types";
 
 export const PetCosmeticSlice: StateCreator<CosmeticParams> = (set) => ({
-  cosmetic: {
-    pet_model: "monkey",
-    head_slot: undefined,
+  equippedCosmetic: {
+    petModel: "monkey",
+    cosmetics: [],
   },
   isModelLoaded: false,
   modelLoaded: () => {
@@ -12,12 +12,12 @@ export const PetCosmeticSlice: StateCreator<CosmeticParams> = (set) => ({
       return { isModelLoaded: true };
     });
   },
-  updateCosmetic: (cosmetic) => {
+  updateCosmetic: (cosmetics) => {
     set((state) => {
       return {
-        cosmetic: {
-          ...state.cosmetic,
-          ...cosmetic,
+        equippedCosmetic: {
+          ...state.equippedCosmetic,
+          ...cosmetics,
         },
       };
     });

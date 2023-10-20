@@ -22,19 +22,27 @@ export interface PomodoroTimerParams {
 /* 
     Cosmetic Slice Types
 */
+
+export type CosmeticSlots = "head";
+
 export type HeadSlot = "beanie" | undefined;
+
+export type CosmeticItem = {
+  name: HeadSlot;
+  slot: CosmeticSlots;
+};
 
 export type Pet = "monkey";
 
-export type Cosmetic = {
-  pet_model: Pet;
-  head_slot: HeadSlot;
+export type EquippedCosmetic = {
+  petModel: Pet;
+  cosmetics: CosmeticItem[];
 };
 
 export interface CosmeticParams {
-  cosmetic: Cosmetic;
+  equippedCosmetic: EquippedCosmetic;
   isModelLoaded: boolean;
-  updateCosmetic: (cosmetic: Cosmetic) => void;
+  updateCosmetic: (cosmetics: EquippedCosmetic) => void;
   modelLoaded: () => void;
 }
 

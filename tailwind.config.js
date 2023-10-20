@@ -28,6 +28,7 @@ export default {
         "secondary-100": "#FFFAE4",
         "secondary-200": "#FFF5C8",
         "secondary-500": "#FFE576",
+        "tertiary-200": "#F1D3B1",
         "tertiary-300": "#EBBE8A",
         "tertiary-600": "#B17530",
         "tertiary-700": "#855824",
