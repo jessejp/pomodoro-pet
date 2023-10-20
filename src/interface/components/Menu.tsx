@@ -13,7 +13,7 @@ interface MenuProps {
 const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   return (
-    <div className="fixed bottom-4 w-fit thin:relative thin:bottom-0 thin:w-full">
+    <div className="fixed bottom-4 thin:relative thin:bottom-0 thin:w-full">
       <div className="absolute -top-12 left-6 flex items-center gap-1">
         {tabs.map((tab, index) => (
           <div
@@ -34,7 +34,7 @@ const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
         ))}
       </div>
       <div className="flex h-full flex-col justify-between rounded-xl bg-primary-100 px-8 py-4">
-        <div className="h-4/5 w-full max-w-7xl self-center">
+        <div className="h-4/5 w-[29.5rem] max-w-7xl self-center thin:w-full">
           {tabs[selectedTabIndex].component}
         </div>
       </div>
