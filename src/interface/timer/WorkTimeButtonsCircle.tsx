@@ -25,19 +25,16 @@ const WorkTimeButtonsCircle: React.FC<{
       // Adjusted radius based on the smaller dimension
       const smallerDimension = Math.min(containerWidth, containerHeight);
 
-      // You can adjust the factor (0.865) as needed
+      // Tweakable factor (0.865)
       return (smallerDimension / 2) * 0.865;
     };
 
-    // Call once initially to set the initial radius
     setRadius(handleResize());
 
-    // Update the radius on window resize
     window.addEventListener("resize", () => {
       setRadius(handleResize());
     });
 
-    // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("resize", () => {
         setRadius(handleResize());
@@ -45,24 +42,32 @@ const WorkTimeButtonsCircle: React.FC<{
     };
   }, []);
 
+  const gridTemplateAreas = `" .  .  .  B12  .  .  . "
+                             " .  .  B11  .  B1  .  . "
+                             " .  B10  .  .  .  B2  . "
+                             " B9  .  .  .  .  .  B3 "
+                             " .  B8  .  .  .  B4  . "
+                             " .  .  B7  .  B5  .  . "
+                             " .  .  .  B6  .  .  . "`;
+
   return (
     <div className="flex w-full items-center justify-center">
       <div
         ref={buttonContainerRef}
-        className="relative h-[29rem] w-[29rem] thin:short:h-80 thin:short:w-80 thin:scale-90"
+        className="relative grid h-full w-full grid-cols-7 grid-rows-7 gap-2"
+        style={{
+          gridTemplateAreas,
+        }}
       >
         {Array.from({ length: buttonCount }).map((_, index) => {
-          const angleOffset = Math.PI * -0.33;
-          const angle = index * angleIncrement + angleOffset;
-          const top = Math.sin(angle) * radius + radius;
-          const left = Math.cos(angle) * radius + radius;
+          const minuteSelectionValue = index * 5 + 5; // minimum of 5
+          const gridArea = `B${(index + 1).toString()}`;
 
-          const minuteSelectionValue = index * 5 + 5; //minimun of 5
           return (
             <button
               key={index}
               className={clsx(
-                "absolute flex h-16 w-16 items-center justify-center rounded-full text-xl font-semibold short:thin:h-12 short:thin:w-12 short:thin:text-md",
+                "flex h-16 w-16 items-center justify-center rounded-full text-xl font-semibold",
                 {
                   "bg-secondary-500 hover:bg-secondary-200":
                     props.selectedMinutes !== minuteSelectionValue,
@@ -72,10 +77,7 @@ const WorkTimeButtonsCircle: React.FC<{
                     props.selectedMinutes === minuteSelectionValue,
                 }
               )}
-              style={{
-                top: `calc(50% - 50% + ${top}px)`, // Center vertically
-                left: `calc(50% - 50% + ${left}px)`, // Center horizontally
-              }}
+              style={{ gridArea }} // Place in the specified grid area
               onClick={() => {
                 props.onWorkTimeSelected(minuteSelectionValue);
               }}

@@ -63,8 +63,10 @@ export default {
       gridTemplateColumns: {
         sessionlog: "minmax(2rem, 6rem) minmax(8rem, 16rem) minmax(2rem, 6rem)",
         startScreenBg: "1fr 32rem 1fr",
+        7: "repeat(7, 7fr)",
       },
       gridTemplateRows: {
+        7: "repeat(7, 7fr)",
         startScreenInputs: "repeat(3, minmax(auto, 1fr))",
       },
       backgroundImage: {
