@@ -7,6 +7,9 @@ import StartSessionMainMenu from "./interface/StartSessionMainMenu";
 import Customization from "./interface/Customization";
 import { useBoundStore } from "./store/useBoundStore";
 import Button from "./interface/ui/Button";
+import { useControls, Leva } from "leva";
+
+const devGUI = window.location.search === "?dev=1";
 
 function App() {
   const { pomodoroPhase, isModelLoaded, stop } = useBoundStore((state) => ({
@@ -15,10 +18,20 @@ function App() {
     stop: state.stop,
   }));
 
+  const ctrls = useControls("App", {
+    showStartMenu: true,
+    showSessionTimeInterface: true,
+    showMenu: true,
+  });
   return (
     <>
-      {pomodoroPhase === "none" && <StartSessionMainMenu />}
-      {pomodoroPhase !== "none" && <SessionTimeInterface />}
+      {!devGUI && <Leva hidden={true} />}
+      {(pomodoroPhase === "none") === ctrls.showStartMenu && (
+        <StartSessionMainMenu />
+      )}
+      {(pomodoroPhase !== "none") === ctrls.showSessionTimeInterface && (
+        <SessionTimeInterface />
+      )}
 
       <div className="relative flex h-screen flex-col items-center bg-white">
         <Canvas
@@ -38,8 +51,8 @@ function App() {
             </div>
           </div>
         )}
-        {pomodoroPhase !== "none" && (
-          <div className="w-full flex flex-col items-center gap-2">
+        {(pomodoroPhase !== "none") === ctrls.showMenu && (
+          <div className="flex w-full flex-col items-center gap-2">
             <Menu
               tabs={[
                 {

@@ -1,11 +1,12 @@
 import { useThree, useFrame } from "@react-three/fiber";
-import { PresentationControls } from "@react-three/drei";
+import { OrbitControls, PresentationControls } from "@react-three/drei";
 import { Room } from "./world/Room";
 import Monkey from "./pets/Monkey";
 import Chair from "./world/furniture/ChairSoft1";
 import { Vector3 } from "three";
 import { useEffect, useState } from "react";
 import { useBoundStore } from "../store/useBoundStore";
+import { useControls } from "leva";
 
 const camPaths = [
   {
@@ -31,6 +32,18 @@ const camPaths = [
 ];
 
 function Scene() {
+  const ctrls = useControls("Scene", {
+    presentationMode: true,
+    orbitControls: false,
+  });
+
+  const animatedCamera = useControls("Scene.animatedCamera", {
+    enabled: true,
+    path1_from: { x: 0.1, y: 0.8, z: 3.2 },
+    path1_to: { x: -0.5, y: 1, z: 1 },
+    path1_lookAt: { x: 0, y: 0.66, z: 0 },
+  });
+
   const [camPathIndex, setCamPathIndex] = useState(0);
   const { pomodoroPhase } = useBoundStore((state) => ({
     pomodoroPhase: state.pomodoroPhase,
@@ -38,6 +51,7 @@ function Scene() {
   const { camera } = useThree();
 
   useEffect(() => {
+    if (!animatedCamera.enabled) return;
     const cameraAnimationInterval = setInterval(() => {
       setCamPathIndex((prev) => ++prev % camPaths.length);
     }, 6000);
@@ -45,7 +59,7 @@ function Scene() {
     return () => {
       clearInterval(cameraAnimationInterval);
     };
-  }, [setCamPathIndex]);
+  }, [setCamPathIndex, animatedCamera.enabled]);
 
   useEffect(() => {
     if (pomodoroPhase === "none") {
@@ -66,15 +80,16 @@ function Scene() {
   }, [camera, camPathIndex, pomodoroPhase]);
 
   useFrame(({ camera }) => {
-    if (pomodoroPhase !== "none")
+    if (pomodoroPhase !== "none" && animatedCamera.enabled)
       camera.position.lerp(camPaths[camPathIndex].to, 0.0005);
   });
-
+  
   return (
     <>
+      <OrbitControls enabled={ctrls.orbitControls} />
       <ambientLight intensity={1} />
       <PresentationControls
-        enabled={pomodoroPhase !== "none"}
+        enabled={(pomodoroPhase !== "none") === ctrls.presentationMode}
         snap={true}
         polar={[0, 0.1]}
         azimuth={[-1.4, 1.4]}
