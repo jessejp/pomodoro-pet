@@ -42,7 +42,7 @@ function App() {
           }}
           flat={true}
         >
-          <Scene />
+          <Scene devGUI={devGUI} />
         </Canvas>
         {!isModelLoaded && (
           <div className="absolute z-20 flex h-screen w-full items-center justify-center">
