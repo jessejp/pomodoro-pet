@@ -16,7 +16,7 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
   const { pomodoroPhase } = useBoundStore((state) => ({
     pomodoroPhase: state.pomodoroPhase,
   }));
-
+  console.log(pomodoroPhase, 'scene rerenredererew');
   return (
     <>
       {devGUI && ctrls.showAxes && <axesHelper args={[1]} />}
