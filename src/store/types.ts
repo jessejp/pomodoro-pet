@@ -1,5 +1,7 @@
 /*
-    Pomodoro Time Slice Types
+┏┓┏┓┳┳┓┏┓┳┓┏┓┳┓┏┓  ┏┳┓┳┳┳┓┏┓┳┓
+┃┃┃┃┃┃┃┃┃┃┃┃┃┣┫┃┃   ┃ ┃┃┃┃┣ ┣┫
+┣┛┗┛┛ ┗┗┛┻┛┗┛┛┗┗┛   ┻ ┻┛ ┗┗┛┛┗
 */
 export interface PomodoroTimerParams {
   isRunning: boolean;
@@ -20,7 +22,9 @@ export interface PomodoroTimerParams {
 }
 
 /* 
-    Cosmetic Slice Types
+┏┓┓┏┏┓┳┓┏┓┏┓┏┳┓┏┓┳┓
+┃ ┣┫┣┫┣┫┣┫┃  ┃ ┣ ┣┫
+┗┛┛┗┛┗┛┗┛┗┗┛ ┻ ┗┛┛┗
 */
 
 export type CosmeticSlots = "head";
@@ -47,7 +51,9 @@ export interface CosmeticParams {
 }
 
 /* 
-    Session Log Slice Types
+┏┓┏┓┏┓┏┓┳┏┓┳┓  ┓ ┏┓┏┓
+┗┓┣ ┗┓┗┓┃┃┃┃┃  ┃ ┃┃┃┓
+┗┛┗┛┗┛┗┛┻┗┛┛┗  ┗┛┗┛┗┛
 */
 
 export type Log = {

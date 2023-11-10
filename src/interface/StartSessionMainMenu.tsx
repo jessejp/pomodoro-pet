@@ -3,6 +3,7 @@ import WorkTimeButtonsCircle from "./timer/WorkTimeButtonsCircle";
 import { useBoundStore } from "../store/useBoundStore";
 import SliderWithTabs from "./ui/SliderWithTabs";
 import Button from "./ui/Button";
+import { useControls } from "leva";
 
 const StartSessionMainMenu = () => {
   const [workTime, setWorkTime] = useState(25);
@@ -11,6 +12,12 @@ const StartSessionMainMenu = () => {
   const { start } = useBoundStore((state) => ({
     start: state.start,
   }));
+
+  const ctrls = useControls("App.CustomTimers", {
+    workTime: 0,
+    breakTime: 0,
+    rounds: 0,
+  });
 
   const bgFiller = <div className="h-full w-full bg-tertiary-300"></div>;
 
@@ -64,7 +71,11 @@ const StartSessionMainMenu = () => {
               variant="big"
               icon="check-tertiary-900"
               onClick={() => {
-                start({ workTime, breakTime, rounds });
+                start({
+                  workTime: ctrls.workTime || workTime,
+                  breakTime: ctrls.breakTime || breakTime,
+                  rounds: ctrls.rounds || rounds,
+                });
               }}
             >
               Start
