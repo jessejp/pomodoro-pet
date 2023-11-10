@@ -24,8 +24,7 @@ function App() {
     showSessionTimeInterface: true,
     showMenu: true,
   });
-  console.log('APP');
-  
+
   return (
     <>
       {!devGUI && <Leva hidden={true} />}

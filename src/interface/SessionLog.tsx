@@ -1,20 +1,31 @@
+import { useEffect, useState } from "react";
 import { useBoundStore } from "../store/useBoundStore";
 
 const SessionLog = () => {
-  // const [showTimeWithBreaks, setShowTimeWithBreaks] = useState<boolean>(false);
   const {
-    newTaskMessage,
     sessionLog,
-    selectedTaskIndex,
-    updateSelectedTaskIndex,
+    selectedTask,
+    newTaskMessage,
     updateNewTaskMessage,
+    updateSelectedTaskIndex,
   } = useBoundStore((state) => ({
     sessionLog: state.sessionLog,
+    selectedTask: state.selectedTaskIndex,
     newTaskMessage: state.newTaskMessage,
-    selectedTaskIndex: state.selectedTaskIndex,
-    updateSelectedTaskIndex: state.updateSelectedTaskIndex,
     updateNewTaskMessage: state.updateNewTaskMessage,
+    updateSelectedTaskIndex: state.updateSelectedTaskIndex,
   }));
+  const [taskName, setTaskName] = useState<string>(newTaskMessage);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateNewTaskMessage(taskName || "");
+    }, 800);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [taskName, updateNewTaskMessage]);
 
   return (
     <>
@@ -41,8 +52,8 @@ const SessionLog = () => {
                     id={`active-session-${index}`}
                     type="radio"
                     name={`active-session-${index}`}
-                    checked={selectedTaskIndex === index}
-                    autoFocus={selectedTaskIndex === index}
+                    checked={selectedTask === index}
+                    autoFocus={selectedTask === index}
                     onChange={() => {
                       updateSelectedTaskIndex(index);
                     }}
@@ -56,14 +67,14 @@ const SessionLog = () => {
           <div>0.00&nbsp;h</div>
           <input
             className="h-8 rounded-lg bg-secondary-100 pl-1"
+            value={taskName}
             type="text"
             placeholder="New Task"
-            value={newTaskMessage}
             onFocus={() => {
               updateSelectedTaskIndex(-1);
             }}
             onChange={(event) => {
-              updateNewTaskMessage(event.target.value);
+              setTaskName(event.target.value);
             }}
           />
           <label htmlFor="active-session--1">
@@ -73,7 +84,7 @@ const SessionLog = () => {
               id="active-session--1"
               type="radio"
               name="active-session"
-              checked={selectedTaskIndex === -1}
+              checked={selectedTask === -1}
               onChange={() => {
                 updateSelectedTaskIndex(-1);
               }}

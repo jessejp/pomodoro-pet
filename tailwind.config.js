@@ -61,7 +61,7 @@ export default {
         170: "42.5rem",
       },
       gridTemplateColumns: {
-        sessionlog: "minmax(2rem, 6rem) minmax(8rem, 16rem) minmax(2rem, 6rem)",
+        sessionlog: "6rem 16rem minmax(2rem, 6rem)",
         startScreenBg: "1fr 32rem 1fr",
       },
       gridTemplateRows: {
