@@ -34,6 +34,7 @@
     "postcss": "^8.4.24",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
+    "r3f-perf": "^7.1.2",
     "tailwind-scrollbar": "^3.0.5",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",

@@ -8,6 +8,7 @@ import Customization from "./interface/Customization";
 import { useBoundStore } from "./store/useBoundStore";
 import Button from "./interface/ui/Button";
 import { useControls, Leva } from "leva";
+import {Perf} from "r3f-perf"
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -44,6 +45,7 @@ function App() {
           }}
           flat={true}
         >
+          {devGUI && <Perf position="top-left" />}
           <Scene devGUI={devGUI} />
         </Canvas>
         {!isModelLoaded && (
