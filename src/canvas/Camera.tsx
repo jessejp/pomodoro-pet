@@ -1,5 +1,5 @@
 import { useControls } from "leva";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Vector3 } from "three";
 import { useBoundStore } from "../store/useBoundStore";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -23,9 +23,9 @@ const camPaths: CameraPath[] = [
   },
   {
     pomodoroPhase: "work",
-    from: new Vector3(1, 2, 0.8),
-    to: new Vector3(1.5, 1.6, -0.5),
-    lookAt: new Vector3(-1, 0.4, 0),
+    from: new Vector3(1.3, 2.3, 0.8),
+    to: new Vector3(2.0, 1.6, -2.0),
+    lookAt: new Vector3(-1.0, 0.4, -0.1),
   },
   {
     pomodoroPhase: "work",
@@ -42,8 +42,14 @@ const camPaths: CameraPath[] = [
   {
     pomodoroPhase: "break",
     from: new Vector3(1.0, 0.8, 2.5),
-    to: new Vector3(-2.0, 1.0, 1.1),
+    to: new Vector3(-3.0, 1.0, 1.1),
     lookAt: new Vector3(0.3, 0.5, 0),
+  },
+  {
+    pomodoroPhase: "break",
+    from: new Vector3(-0.3, 1.4, 2.4),
+    to: new Vector3(-0.3, 0.2, 3.0),
+    lookAt: new Vector3(0.2, 0.7, 0.0),
   },
 ];
 
@@ -53,6 +59,8 @@ const Camera = () => {
   }));
   const { camera } = useThree();
   const [camPathIndex, setCamPathIndex] = useState(0);
+  const activeCamPaths = useRef<CameraPath[]>([]);
+  const cappedIndex = useRef(camPathIndex % activeCamPaths.current.length || 0);
 
   const ctrls = useControls("Scene.animatedCamera", {
     enabled: true,
@@ -73,16 +81,27 @@ const Camera = () => {
   // customPaths needs atleast 2 elements to loop
   customPaths.push({ ...customPaths[0], pomodoroPhase: "break" });
 
+  /* Leva DevGUI use Custom Camera Path */
   const camPathsSwitch = !ctrls.isCustomPath ? camPaths : customPaths;
-  const activeCamPaths = camPathsSwitch.filter(
-    (path) => path.pomodoroPhase === pomodoroPhase
+
+  const setupActiveCamPaths = useCallback(
+    (camPathsSwitch: CameraPath[]): CameraPath[] => {
+      const camPaths = camPathsSwitch.filter(
+        (path) => path.pomodoroPhase === pomodoroPhase
+      );
+      if (camPaths.length === 1) camPaths.push(camPaths[0]);
+
+      return camPaths;
+    },
+    [pomodoroPhase]
   );
-  if (activeCamPaths.length === 1) activeCamPaths.push(activeCamPaths[0]);
 
   useEffect(() => {
-    if (!ctrls.enabled || !activeCamPaths.length) return;
+    activeCamPaths.current = setupActiveCamPaths(camPathsSwitch);
+
+    if (!ctrls.enabled || !activeCamPaths.current.length) return;
     const cameraAnimationInterval = setInterval(() => {
-      setCamPathIndex((prev) => ++prev % activeCamPaths.length);
+      setCamPathIndex((prev) => ++prev % activeCamPaths.current.length);
     }, 6000);
 
     if (pomodoroPhase === "none")
@@ -91,31 +110,58 @@ const Camera = () => {
     return () => {
       clearInterval(cameraAnimationInterval);
     };
-  }, [setCamPathIndex, ctrls.enabled, activeCamPaths, pomodoroPhase]);
-
-  const CappedCamPathIndex = camPathIndex % activeCamPaths.length;
+  }, [
+    setCamPathIndex,
+    ctrls.enabled,
+    activeCamPaths,
+    pomodoroPhase,
+    setupActiveCamPaths,
+    camPathsSwitch,
+  ]);
 
   useEffect(() => {
-    if (pomodoroPhase === "none") {
+    if (pomodoroPhase === "none" || activeCamPaths.current.length === 0) {
       camera.position.set(0, 1.1, 4.2);
       camera.lookAt(0, 0.7, 0);
     } else {
+      cappedIndex.current = camPathIndex % activeCamPaths.current.length || 0;
       camera.position.set(
-        activeCamPaths[CappedCamPathIndex].from.x,
-        activeCamPaths[CappedCamPathIndex].from.y,
-        activeCamPaths[CappedCamPathIndex].from.z
+        activeCamPaths.current[cappedIndex.current].from.x,
+        activeCamPaths.current[cappedIndex.current].from.y,
+        activeCamPaths.current[cappedIndex.current].from.z
       );
       camera.lookAt(
-        activeCamPaths[CappedCamPathIndex].lookAt.x,
-        activeCamPaths[CappedCamPathIndex].lookAt.y,
-        activeCamPaths[CappedCamPathIndex].lookAt.z
+        activeCamPaths.current[cappedIndex.current].lookAt.x,
+        activeCamPaths.current[cappedIndex.current].lookAt.y,
+        activeCamPaths.current[cappedIndex.current].lookAt.z
       );
     }
-  }, [camera, camPathIndex, pomodoroPhase, activeCamPaths, CappedCamPathIndex]);
+  }, [
+    camera,
+    camPathIndex,
+    pomodoroPhase,
+    activeCamPaths,
+    cappedIndex,
+    setupActiveCamPaths,
+    camPathsSwitch,
+  ]);
 
   useFrame(({ camera }) => {
-    if (pomodoroPhase !== "none" && ctrls.enabled)
-      camera.position.lerp(activeCamPaths[CappedCamPathIndex].to, 0.0005);
+    if (
+      pomodoroPhase !== "none" &&
+      ctrls.enabled &&
+      activeCamPaths.current.length
+    ) {
+      camera.position.lerp(
+        activeCamPaths.current[cappedIndex.current].to,
+        0.0005
+      );
+      camera.lookAt(
+        activeCamPaths.current[cappedIndex.current].lookAt.x,
+        activeCamPaths.current[cappedIndex.current].lookAt.y,
+        activeCamPaths.current[cappedIndex.current].lookAt.z
+      );
+    }
   });
 
   return null;

@@ -8,7 +8,7 @@ import Customization from "./interface/Customization";
 import { useBoundStore } from "./store/useBoundStore";
 import Button from "./interface/ui/Button";
 import { useControls, Leva } from "leva";
-import {Perf} from "r3f-perf"
+import { Perf } from "r3f-perf";
 
 const devGUI = window.location.search === "?dev=1";
 
