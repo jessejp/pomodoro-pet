@@ -1,6 +1,6 @@
 import { OrbitControls, PresentationControls } from "@react-three/drei";
 import { Room } from "./world/Room";
-import Monkey from "./pets/Monkey";
+import { Pet } from "./pets/Pet";
 import Chair from "./world/furniture/ChairSoft1";
 import { useBoundStore } from "../store/useBoundStore";
 import { useControls } from "leva";
@@ -32,7 +32,7 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
         <Room />
         <Book />
         <Chair />
-        <Monkey />
+        <Pet pet="penguin" />
       </PresentationControls>
     </>
   );

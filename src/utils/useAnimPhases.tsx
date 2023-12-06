@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { PetGLTFAction } from "../canvas/pets/Monkey";
+import { PetGLTFAction } from "../canvas/pets/Pet";
 import { useAnimations } from "@react-three/drei";
 import * as THREE from "three";
 import { useBoundStore } from "../store/useBoundStore";
@@ -21,8 +21,6 @@ const useAnimPhases: (props: HookProps) => void = ({
     currentRound: state.currentRound,
   }));
 
-  console.log("animations", animations);
-
   const { actions } = useAnimations<HookProps["animations"][0]>(
     animations,
     groupRef
@@ -43,11 +41,11 @@ const useAnimPhases: (props: HookProps) => void = ({
       if (actions.start_study && !actions.start_study?.clampWhenFinished)
         actions.start_study.clampWhenFinished = true;
 
-      actions.study?.reset().fadeIn(0).play();
+      actions.study_v3?.reset().fadeIn(0).play();
 
       return () => {
         actions.start_study?.fadeOut(0.5);
-        actions.study?.fadeOut(0.5);
+        actions.study_v3?.fadeOut(0.5);
       };
     } else if (pomodoroPhase === "break") {
       const duration = actions.start_break?.getClip().duration || 2;
@@ -79,11 +77,11 @@ const useAnimPhases: (props: HookProps) => void = ({
       if (actions.continue_study && !actions.continue_study?.clampWhenFinished)
         actions.continue_study.clampWhenFinished = true;
 
-      actions.study?.reset().fadeIn(0).play();
+      actions.study_v3?.reset().fadeIn(0).play();
 
       return () => {
         actions.continue_study?.fadeOut(0.5);
-        actions.study?.fadeOut(0.5);
+        actions.study_v3?.fadeOut(0.5);
       };
     }
   }, [pomodoroPhase, currentRound, actions, isPet]);

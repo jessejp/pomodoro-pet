@@ -35,7 +35,6 @@ const filePath = "models/room/book_v1.glb";
 export function Book(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
   const { nodes, animations } = useGLTF(filePath, true) as GLTFResult;
-  console.log("boook animations", animations);
 
   useAnimPhases({ animations: animations, groupRef: group, isPet: false });
 

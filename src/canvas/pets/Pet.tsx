@@ -11,6 +11,7 @@ import { useLoader } from "@react-three/fiber";
 import useAnimPhases from "../../utils/useAnimPhases";
 import HeadSlot from "../cosmetics/HeadSlot";
 import { useBoundStore } from "../../store/useBoundStore";
+import type { PetType, PetMeshType } from "../../store/types";
 
 type ActionName =
   | "continue_study"
@@ -21,7 +22,8 @@ type ActionName =
   | "start_break"
   | "start_study"
   | "study"
-  | "study_v2";
+  | "study_v2"
+  | "study_v3";
 // type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 
 export interface PetGLTFAction extends THREE.AnimationClip {
@@ -30,7 +32,6 @@ export interface PetGLTFAction extends THREE.AnimationClip {
 
 type GLTFResult = GLTF & {
   nodes: {
-    monkey: THREE.SkinnedMesh;
     root: THREE.Bone;
     ["MCH-torsoparent"]: THREE.Bone;
     ["MCH-hand_ikparentL"]: THREE.Bone;
@@ -41,30 +42,36 @@ type GLTFResult = GLTF & {
     ["MCH-thigh_ik_targetparentL"]: THREE.Bone;
     ["MCH-foot_ikparentR"]: THREE.Bone;
     ["MCH-thigh_ik_targetparentR"]: THREE.Bone;
-  };
+  } & PetMeshType;
   animations: PetGLTFAction[];
 };
 
-const filePath = "/models/pomodoro_pets_monkey_1_v2.glb";
-
 const material = new THREE.MeshBasicMaterial();
 
-export default function Monkey(props: JSX.IntrinsicElements["group"]) {
+export const Pet = (
+  props: JSX.IntrinsicElements["group"] & { pet: PetType }
+) => {
+  const { pet } = props;
   const { equippedCosmetic, modelLoaded } = useBoundStore((state) => ({
     equippedCosmetic: state.equippedCosmetic,
     modelLoaded: state.modelLoaded,
   }));
 
   const group = useRef<THREE.Group>(null);
-  const { nodes, animations } = useGLTF(filePath, true, undefined, (loader) => {
-    loader.manager.onLoad = () => {
-      modelLoaded();
-    };
-  }) as GLTFResult;
+  const { nodes, animations } = useGLTF(
+    `/models/pomodoro_pets_${pet}.glb`,
+    true,
+    undefined,
+    (loader) => {
+      loader.manager.onLoad = () => {
+        modelLoaded();
+      };
+    }
+  ) as GLTFResult;
 
   useAnimPhases({ animations: animations, groupRef: group, isPet: true });
 
-  const texture = useLoader(TextureLoader, "textures/monkey_1_diffuse.png");
+  const texture = useLoader(TextureLoader, `textures/pets/${pet}.png`);
   texture.flipY = false;
   texture.minFilter = THREE.NearestFilter;
   texture.magFilter = THREE.NearestFilter;
@@ -76,19 +83,19 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
-        <group name="monkey_rig">
+        <group name={`${pet}_rig`}>
           <skinnedMesh
-            name="monkey"
-            geometry={nodes.monkey.geometry}
+            name={pet}
+            geometry={nodes[pet].geometry}
             material={material}
             material-map={texture}
-            skeleton={nodes.monkey.skeleton}
+            skeleton={nodes[pet].skeleton}
           />
           {!!headSlotItem && (
             <Suspense fallback={null}>
               <HeadSlot
                 name={headSlotItem.name}
-                skeleton={nodes.monkey.skeleton}
+                skeleton={nodes[pet].skeleton}
               />
             </Suspense>
           )}
@@ -106,4 +113,4 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
       </group>
     </group>
   );
-}
+};
