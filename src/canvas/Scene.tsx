@@ -5,6 +5,7 @@ import Chair from "./world/furniture/ChairSoft1";
 import { useBoundStore } from "../store/useBoundStore";
 import { useControls } from "leva";
 import Camera from "./Camera";
+import { Book } from "./world/furniture/Book";
 
 const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
   const ctrls = useControls("Scene", {
@@ -29,6 +30,7 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
       >
         <Camera />
         <Room />
+        <Book />
         <Chair />
         <Monkey />
       </PresentationControls>

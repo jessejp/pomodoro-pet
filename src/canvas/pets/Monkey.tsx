@@ -13,15 +13,18 @@ import HeadSlot from "../cosmetics/HeadSlot";
 import { useBoundStore } from "../../store/useBoundStore";
 
 type ActionName =
-  | "break"
   | "continue_study"
   | "none"
+  | "page_flip"
+  | "page_none"
+  | "pause"
   | "start_break"
   | "start_study"
-  | "study";
+  | "study"
+  | "study_v2";
 // type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 
-export interface GLTFAction extends THREE.AnimationClip {
+export interface PetGLTFAction extends THREE.AnimationClip {
   name: ActionName;
 }
 
@@ -39,10 +42,10 @@ type GLTFResult = GLTF & {
     ["MCH-foot_ikparentR"]: THREE.Bone;
     ["MCH-thigh_ik_targetparentR"]: THREE.Bone;
   };
-  animations: GLTFAction[];
+  animations: PetGLTFAction[];
 };
 
-const filePath = "/models/pomodoro_pets_monkey_1.glb";
+const filePath = "/models/pomodoro_pets_monkey_1_v2.glb";
 
 const material = new THREE.MeshBasicMaterial();
 
@@ -59,7 +62,7 @@ export default function Monkey(props: JSX.IntrinsicElements["group"]) {
     };
   }) as GLTFResult;
 
-  useAnimPhases({ animations: animations, groupRef: group });
+  useAnimPhases({ animations: animations, groupRef: group, isPet: true });
 
   const texture = useLoader(TextureLoader, "textures/monkey_1_diffuse.png");
   texture.flipY = false;

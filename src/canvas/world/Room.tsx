@@ -17,27 +17,29 @@ type GLTFResult = GLTF & {
     curtain__loops_r: THREE.Mesh;
     curtain_r: THREE.Mesh;
     wall_outside: THREE.Mesh;
-    doorway: THREE.Mesh;
     Cube_table: THREE.Mesh;
     Cube_shelf_legs: THREE.Mesh;
     Cube_shelf_planes: THREE.Mesh;
-    placeholder_book: THREE.Mesh;
-  };
-  materials: {
-    material_room: THREE.MeshBasicMaterial;
-    background: THREE.MeshBasicMaterial;
+    window_frame_bottom: THREE.Mesh;
+    door_handle: THREE.Mesh;
+    doorway: THREE.Mesh;
+    Door_panes: THREE.Mesh;
+    door_window_frame: THREE.Mesh;
+    window_emission: THREE.Mesh;
+    emission_window: THREE.Mesh;
   };
 };
 
 const material = new THREE.MeshBasicMaterial();
 const materialBackground = new THREE.MeshBasicMaterial({ color: 0xffffff });
+const filePath = "models/room/room_v2.glb";
 
 export function Room(props: JSX.IntrinsicElements["group"]) {
-  const { nodes } = useGLTF("models/room/room.glb") as GLTFResult;
+  const { nodes } = useGLTF(filePath) as GLTFResult;
 
   const texture = useLoader(
     TextureLoader,
-    "textures/room_baked_2023-09-05_1024x1024.png"
+    "textures/room_v2_1024x1024_texture.png"
   );
   texture.flipY = false;
   texture.channel = 1;
@@ -103,13 +105,6 @@ export function Room(props: JSX.IntrinsicElements["group"]) {
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.doorway.geometry}
-        material={materialBackground}
-        position={[0, -0.1, 0]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
         geometry={nodes.Cube_table.geometry}
         material={material}
         material-map={texture}
@@ -134,13 +129,60 @@ export function Room(props: JSX.IntrinsicElements["group"]) {
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.placeholder_book.geometry}
+        geometry={nodes.window_frame_bottom.geometry}
         material={material}
         material-map={texture}
-        position={[-1, 0.3, -0.01]}
+        position={[0, -0.1, 0]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.door_handle.geometry}
+        material={material}
+        material-map={texture}
+        position={[1.256, 0.586, -0.329]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.doorway.geometry}
+        material={material}
+        material-map={texture}
+        position={[1.3, 0.64, 0]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Door_panes.geometry}
+        material={material}
+        material-map={texture}
+        position={[1.262, 0.64, 0]}
+        rotation={[0, 0, -Math.PI / 2]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.door_window_frame.geometry}
+        material={material}
+        material-map={texture}
+        position={[1.3, 0.836, 0]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.window_emission.geometry}
+        material={materialBackground}
+        position={[0, -0.1, 0]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.emission_window.geometry}
+        material={materialBackground}
+        position={[1.3, 0.836, 0]}
       />
     </group>
   );
 }
 
-useGLTF.preload("models/room/room.glb");
+useGLTF.preload(filePath);

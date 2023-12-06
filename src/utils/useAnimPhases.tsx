@@ -1,31 +1,39 @@
 import React, { useEffect } from "react";
-import { GLTFAction } from "../canvas/pets/Monkey";
+import { PetGLTFAction } from "../canvas/pets/Monkey";
 import { useAnimations } from "@react-three/drei";
 import * as THREE from "three";
 import { useBoundStore } from "../store/useBoundStore";
+import { FurnitureGLTFAction } from "../canvas/world/furniture/Book";
 
 type HookProps = {
-  animations: GLTFAction[];
+  animations: PetGLTFAction[] | FurnitureGLTFAction[];
   groupRef: React.RefObject<THREE.Group>;
+  isPet: boolean;
 };
 
 const useAnimPhases: (props: HookProps) => void = ({
   animations,
   groupRef,
+  isPet = true,
 }) => {
   const { pomodoroPhase, currentRound } = useBoundStore((state) => ({
     pomodoroPhase: state.pomodoroPhase,
     currentRound: state.currentRound,
   }));
 
-  const { actions } = useAnimations<GLTFAction>(animations, groupRef);
+  console.log("animations", animations);
+
+  const { actions } = useAnimations<HookProps["animations"][0]>(
+    animations,
+    groupRef
+  );
 
   useEffect(() => {
+    if (!isPet) return;
     if (pomodoroPhase === "none") {
       actions.none?.reset().fadeIn(0.5).play();
       return () => actions.none?.fadeOut(0.5);
     } else if (pomodoroPhase === "work" && currentRound === 0) {
-      const duration = actions.start_study?.getClip().duration || 2;
       actions.start_study
         ?.reset()
         .fadeIn(0.5)
@@ -35,14 +43,11 @@ const useAnimPhases: (props: HookProps) => void = ({
       if (actions.start_study && !actions.start_study?.clampWhenFinished)
         actions.start_study.clampWhenFinished = true;
 
-      const delayedAction = setTimeout(() => {
-        actions.study?.reset().fadeIn(0).play();
-      }, duration * 1000);
+      actions.study?.reset().fadeIn(0).play();
 
       return () => {
         actions.start_study?.fadeOut(0.5);
         actions.study?.fadeOut(0.5);
-        clearTimeout(delayedAction);
       };
     } else if (pomodoroPhase === "break") {
       const duration = actions.start_break?.getClip().duration || 2;
@@ -56,16 +61,15 @@ const useAnimPhases: (props: HookProps) => void = ({
         actions.start_break.clampWhenFinished = true;
 
       const delayedAction = setTimeout(() => {
-        actions.break?.reset().fadeIn(0).play();
+        actions.pause?.reset().fadeIn(0).play();
       }, duration * 1000);
 
       return () => {
         actions.start_break?.fadeOut(0.5);
-        actions.break?.fadeOut(0.5);
+        actions.pause?.fadeOut(0.5);
         clearTimeout(delayedAction);
       };
     } else if (pomodoroPhase === "work" && currentRound > 0) {
-      const duration = actions.continue_study?.getClip().duration || 2;
       actions.continue_study
         ?.reset()
         .fadeIn(0.5)
@@ -75,17 +79,29 @@ const useAnimPhases: (props: HookProps) => void = ({
       if (actions.continue_study && !actions.continue_study?.clampWhenFinished)
         actions.continue_study.clampWhenFinished = true;
 
-      const delayedAction = setTimeout(() => {
-        actions.study?.reset().fadeIn(0).play();
-      }, duration * 1000);
+      actions.study?.reset().fadeIn(0).play();
 
       return () => {
         actions.continue_study?.fadeOut(0.5);
         actions.study?.fadeOut(0.5);
-        clearTimeout(delayedAction);
       };
     }
-  }, [pomodoroPhase, currentRound, actions]);
+  }, [pomodoroPhase, currentRound, actions, isPet]);
+
+  useEffect(() => {
+    if (isPet) return;
+    if (pomodoroPhase !== "work") {
+      actions.page_none?.reset().fadeIn(0.5).play();
+      return () => {
+        actions.page_none?.fadeOut(0.5);
+      };
+    } else {
+      actions.page_flip?.reset().fadeIn(0).play();
+      return () => {
+        actions.page_flip?.fadeOut(0);
+      };
+    }
+  }, [pomodoroPhase, actions, isPet]);
 };
 
 export default useAnimPhases;
