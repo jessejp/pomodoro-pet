@@ -3,7 +3,7 @@ import type { CosmeticParams } from "../types";
 
 export const PetCosmeticSlice: StateCreator<CosmeticParams> = (set) => ({
   equippedCosmetic: {
-    petModel: "monkey",
+    petModel: "penguin",
     cosmetics: [],
   },
   isModelLoaded: false,

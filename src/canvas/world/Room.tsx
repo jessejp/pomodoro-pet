@@ -32,14 +32,14 @@ type GLTFResult = GLTF & {
 
 const material = new THREE.MeshBasicMaterial();
 const materialBackground = new THREE.MeshBasicMaterial({ color: 0xffffff });
-const filePath = "models/room/room_v2.glb";
+const filePath = "models/room/room.glb";
 
 export function Room(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF(filePath) as GLTFResult;
 
   const texture = useLoader(
     TextureLoader,
-    "textures/room_v2_1024x1024_texture.png"
+    "textures/room_texture.png"
   );
   texture.flipY = false;
   texture.channel = 1;

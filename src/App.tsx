@@ -9,6 +9,7 @@ import { useBoundStore } from "./store/useBoundStore";
 import Button from "./interface/ui/Button";
 import { useControls, Leva } from "leva";
 import { Perf } from "r3f-perf";
+import CharacterSelection from "./interface/CharacterSelection";
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -64,6 +65,10 @@ function App() {
                 },
                 {
                   icon: "customize-tertiary-800",
+                  component: <CharacterSelection />,
+                },
+                {
+                  icon: "backpack-tertiary-800",
                   component: <Customization />,
                 },
               ]}

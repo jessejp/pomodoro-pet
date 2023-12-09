@@ -30,7 +30,7 @@ type GLTFResult = GLTF & {
 // type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 
 const material = new THREE.MeshBasicMaterial();
-const filePath = "models/room/book_v1.glb";
+const filePath = "models/room/book.glb";
 
 export function Book(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
@@ -40,7 +40,7 @@ export function Book(props: JSX.IntrinsicElements["group"]) {
 
   const texture = useLoader(
     TextureLoader,
-    "textures/room_v2_1024x1024_texture.png"
+    "textures/room_texture.png"
   );
   texture.flipY = false;
   texture.channel = 1;

@@ -14,10 +14,11 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
     showAxes: true,
   });
 
-  const { pomodoroPhase } = useBoundStore((state) => ({
+  const { pomodoroPhase, pet } = useBoundStore((state) => ({
     pomodoroPhase: state.pomodoroPhase,
+    pet: state.equippedCosmetic.petModel,
   }));
-  
+
   return (
     <>
       {devGUI && ctrls.showAxes && <axesHelper args={[1]} />}
@@ -32,7 +33,7 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
         <Room />
         <Book />
         <Chair />
-        <Pet pet="monkey" />
+        <Pet pet={pet} />
       </PresentationControls>
     </>
   );
