@@ -32,7 +32,7 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
         <Room />
         <Book />
         <Chair />
-        <Pet pet="penguin" />
+        <Pet pet="monkey" />
       </PresentationControls>
     </>
   );

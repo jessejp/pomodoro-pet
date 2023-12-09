@@ -94,7 +94,8 @@ export const Pet = (
           {!!headSlotItem && (
             <Suspense fallback={null}>
               <HeadSlot
-                name={headSlotItem.name}
+                pet={pet}
+                cosmetic={headSlotItem.name}
                 skeleton={nodes[pet].skeleton}
               />
             </Suspense>
