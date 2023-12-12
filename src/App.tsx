@@ -32,58 +32,59 @@ function App() {
       {(pomodoroPhase === "none") === ctrls.showStartMenu && (
         <StartSessionMainMenu />
       )}
-      {(pomodoroPhase !== "none") === ctrls.showSessionTimeInterface && (
-        <SessionTimeInterface />
-      )}
 
-      <div className="relative flex h-screen flex-col items-center bg-white">
-        <Canvas
-          camera={{
-            fov: 50,
-            near: 0.05,
-            far: 15,
-          }}
-          flat={true}
-        >
-          {devGUI && <Perf position="top-left" />}
-          <Scene devGUI={devGUI} />
-        </Canvas>
-        {!isModelLoaded && (
-          <div className="absolute z-20 flex h-screen w-full items-center justify-center">
-            <div>
-              <img src="/pomodoropet-logo-2-large.png" />
+      {pomodoroPhase !== "none" && (
+        <>
+          {ctrls.showSessionTimeInterface && <SessionTimeInterface />}
+          
+          <div className="relative flex h-screen flex-col items-center bg-white">
+            <Canvas
+              camera={{
+                fov: 50,
+                near: 0.05,
+                far: 15,
+              }}
+              flat={true}
+            >
+              {devGUI && <Perf position="top-left" />}
+              <Scene devGUI={devGUI} />
+            </Canvas>
+            {!isModelLoaded && (
+              <div className="absolute z-20 flex h-screen w-full items-center justify-center">
+                <div>
+                  <img src="/pomodoropet-logo-2-large.png" />
+                </div>
+              </div>
+            )}
+            <div className="flex w-full flex-col items-center gap-2">
+              <Menu
+                tabs={[
+                  {
+                    icon: "note-tertiary-800",
+                    component: <SessionLog />,
+                  },
+                  {
+                    icon: "customize-tertiary-800",
+                    component: <CharacterSelection />,
+                  },
+                  {
+                    icon: "backpack-tertiary-800",
+                    component: <Customization />,
+                  },
+                ]}
+              />
+              <Button
+                position="bottom-right"
+                intent="secondary"
+                onClick={stop}
+                icon="stop-tertiary-900"
+              >
+                Stop
+              </Button>
             </div>
           </div>
-        )}
-        {(pomodoroPhase !== "none") === ctrls.showMenu && (
-          <div className="flex w-full flex-col items-center gap-2">
-            <Menu
-              tabs={[
-                {
-                  icon: "note-tertiary-800",
-                  component: <SessionLog />,
-                },
-                {
-                  icon: "customize-tertiary-800",
-                  component: <CharacterSelection />,
-                },
-                {
-                  icon: "backpack-tertiary-800",
-                  component: <Customization />,
-                },
-              ]}
-            />
-            <Button
-              position="bottom-right"
-              intent="secondary"
-              onClick={stop}
-              icon="stop-tertiary-900"
-            >
-              Stop
-            </Button>
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </>
   );
 }

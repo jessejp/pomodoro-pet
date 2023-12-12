@@ -17,7 +17,7 @@ type GLTFResult = GLTF & {
 
 const material = new THREE.MeshBasicMaterial();
 
-const Model = (props: JSX.IntrinsicElements["group"]) => {
+const Chair = (props: JSX.IntrinsicElements["group"]) => {
   const { nodes } = useGLTF("models/room/chair_soft_1.glb") as GLTFResult;
 
   const texture = useLoader(
@@ -52,4 +52,4 @@ const Model = (props: JSX.IntrinsicElements["group"]) => {
 
 useGLTF.preload("models/room/chair_soft_1.glb");
 
-export default Model;
+export default Chair;

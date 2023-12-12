@@ -52,7 +52,7 @@ export interface CosmeticParams {
   equippedCosmetic: EquippedCosmetic;
   isModelLoaded: boolean;
   updateCosmetic: (cosmetics: EquippedCosmetic) => void;
-  modelLoaded: () => void;
+  modelLoaded: (isLoaded: boolean) => void;
 }
 
 /* 

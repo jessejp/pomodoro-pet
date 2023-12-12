@@ -4,13 +4,15 @@ import { useBoundStore } from "../store/useBoundStore";
 import SliderWithTabs from "./ui/SliderWithTabs";
 import Button from "./ui/Button";
 import { useControls } from "leva";
+import CircularSlider from "@fseehawer/react-circular-slider";
 
 const StartSessionMainMenu = () => {
   const [workTime, setWorkTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
   const [rounds, setRounds] = useState(2);
-  const { start } = useBoundStore((state) => ({
+  const { start, updateCosmetic } = useBoundStore((state) => ({
     start: state.start,
+    updateCosmetic: state.updateCosmetic,
   }));
 
   const ctrls = useControls("App.CustomTimers", {
@@ -19,71 +21,80 @@ const StartSessionMainMenu = () => {
     rounds: 0,
   });
 
-  const bgFiller = <div className="h-full w-full bg-tertiary-300"></div>;
-
   return (
-    <div className="fixed left-0 top-0 z-10 grid h-screen w-screen grid-cols-startScreenBg items-center justify-center">
-      {bgFiller}
-      <div className="grid h-screen min-h-160 grid-cols-1 grid-rows-startScreenInputs place-content-between items-center">
-        <div className="flex h-full w-full items-start justify-center self-start bg-tertiary-300 pt-10">
-          <div className="flex min-w-[24rem] flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold thin:min-w-min thin:px-8 thin:text-md">
-            <span>
-              Session Length: {(workTime + breakTime) * rounds} minutes
-            </span>
-          </div>
-        </div>
-        <div className="h-full w-full bg-orange-circle-gradient from-transparent from-45% to-tertiary-300 to-45% thin:from-35% thin:to-35%">
-          <Suspense fallback={null}>
-            <WorkTimeButtonsCircle
-              selectedMinutes={workTime}
-              onWorkTimeSelected={(minutes: number) => {
-                setWorkTime(minutes);
-              }}
-            />
-          </Suspense>
-        </div>
-        <div className="flex h-full w-full flex-col items-center justify-end gap-4 self-end bg-tertiary-300 pb-4">
-          <div className="flex w-4/6 flex-col gap-4">
-            <SliderWithTabs
-              tabs={[
-                {
-                  name: "Break",
-                  valueLabel: "minutes",
-                  value: breakTime,
-                  setMethod: setBreakTime,
-                  step: 1,
-                  min: 1,
-                  max: 20,
-                },
-                {
-                  name: "Rounds",
-                  valueLabel: "rounds",
-                  value: rounds,
-                  setMethod: setRounds,
-                  step: 1,
-                  min: 1,
-                  max: 8,
-                },
-              ]}
-            />
-            <Button
-              intent="accent"
-              variant="big"
-              icon="check-tertiary-900"
-              onClick={() => {
-                start({
-                  workTime: ctrls.workTime || workTime,
-                  breakTime: ctrls.breakTime || breakTime,
-                  rounds: ctrls.rounds || rounds,
-                });
-              }}
-            >
-              Start
-            </Button>
-          </div>
+    <div className="relative flex h-screen flex-col items-center justify-between gap-16 bg-tertiary-300 short:justify-end">
+      <button className="mr-8 mt-8 grid place-content-center self-end rounded-full border-4 border-tertiary-800 bg-primary-200 p-3 hover:scale-105 hover:bg-primary-100 short:fixed short:top-0">
+        <img
+          className="h-8 w-8"
+          src={`/icons/customize-x24-tertiary-800.svg`}
+          alt={`customize character button`}
+        />
+      </button>
+      <Suspense fallback={null}>
+        <CircularSlider
+          renderLabelValue={
+            <div className="absolute top-0 grid h-full w-full place-content-center text-center font-semibold">
+              <div className="text-2xl text-tertiary-900">{workTime}</div>
+              <div className="text-lg text-tertiary-900">minutes</div>
+            </div>
+          }
+          data={Array.from({ length: 12 }).map((_, index) => index * 5 + 5)}
+          dataIndex={4}
+          progressSize={16}
+          initialValue={workTime}
+          progressColorFrom="#FFE576"
+          progressColorTo="#FFE576"
+          trackColor="#FFFAE4"
+          knobColor="#FFE576"
+          knobSize={48}
+          trackSize={16}
+          label="minutes"
+          labelBottom={true}
+          onChange={(value: number) => {
+            setWorkTime(value);
+          }}
+        />
+      </Suspense>
+      <div className="flex w-full flex-col items-center justify-end gap-4 self-end pb-4">
+        <div className="flex flex-col gap-6">
+          <SliderWithTabs
+            tabs={[
+              {
+                name: "Break",
+                valueLabel: "minutes",
+                value: breakTime,
+                setMethod: setBreakTime,
+                step: 1,
+                min: 1,
+                max: 20,
+              },
+              {
+                name: "Rounds",
+                valueLabel: "rounds",
+                value: rounds,
+                setMethod: setRounds,
+                step: 1,
+                min: 1,
+                max: 8,
+              },
+            ]}
+          />
+          <Button
+            intent="accent"
+            variant="big"
+            icon="check-tertiary-900"
+            onClick={() => {
+              start({
+                workTime: ctrls.workTime || workTime,
+                breakTime: ctrls.breakTime || breakTime,
+                rounds: ctrls.rounds || rounds,
+              });
+            }}
+          >
+            Start
+          </Button>
         </div>
       </div>
-      {bgFiller}
     </div>
   );
 };

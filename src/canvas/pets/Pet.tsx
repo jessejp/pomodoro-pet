@@ -60,32 +60,36 @@ export const Pet = (
   );
 
   const group = useRef<THREE.Group>(null);
-  const { nodes, animations, } = useGLTF(
+  const { nodes, animations } = useGLTF(
     `/models/pomodoro_pets_${pet}.glb`,
     true,
     undefined,
     (loader) => {
       loader.manager.onLoad = () => {
-        modelLoaded();
+        modelLoaded(true);
       };
     }
   ) as GLTFResult;
 
-  const { actions } = useAnimations<PetGLTFAction>(animations, group);
+  const { actions , mixer} = useAnimations<PetGLTFAction>(animations, group);
+
+  console.log(nodes);
+  console.log(actions);
+  console.log(mixer);
 
   useEffect(() => {
     if (pomodoroPhase === "none") {
       actions.none?.reset().fadeIn(0.5).play();
-      return () => actions.none?.fadeOut(0.5);
+      return () => actions.none?.reset().stop();
     } else if (pomodoroPhase === "work") {
       actions.study_v3?.reset().fadeIn(0).play();
       return () => {
-        actions.study_v3?.fadeOut(0.5);
+        actions.study_v3?.reset().stop();
       };
     } else if (pomodoroPhase === "break") {
       actions.pause?.reset().fadeIn(0).play();
       return () => {
-        actions.pause?.fadeOut(0.5);
+        actions.pause?.reset().stop();
       };
     }
   }, [pomodoroPhase, actions, pet]);

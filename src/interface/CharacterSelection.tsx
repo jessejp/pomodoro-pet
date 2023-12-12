@@ -5,10 +5,12 @@ import { useBoundStore } from "../store/useBoundStore";
 const characters: PetType[] = ["monkey", "penguin"];
 
 const CharacterSelection = () => {
-  const { equippedCosmetic, updateCosmetic } = useBoundStore((state) => ({
-    equippedCosmetic: state.equippedCosmetic,
-    updateCosmetic: state.updateCosmetic,
-  }));
+  const { equippedCosmetic, updateCosmetic } = useBoundStore(
+    (state) => ({
+      equippedCosmetic: state.equippedCosmetic,
+      updateCosmetic: state.updateCosmetic,
+    })
+  );
 
   return (
     <div className="min-h-[83%] w-full">
@@ -41,7 +43,6 @@ const CharacterOption: React.FC<CharacterOptionProps> = ({
       className="relative"
       onClick={() => {
         if (isEquipped) return;
-
         updateCosmetic({
           cosmetics: equippedCosmetic.cosmetics,
           petModel: pet,

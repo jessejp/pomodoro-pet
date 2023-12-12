@@ -20,10 +20,13 @@ const SliderWithTabs: React.FC<SliderTabsProps> = ({ tabs }) => {
       <div className="flex gap-2">
         {tabs.map((tab, index) => (
           <button
-            className={clsx("rounded-t-xl px-2 py-[0.38rem]", {
-              "bg-primary-100": activeTab === index,
-              "bg-cool-150": activeTab !== index,
-            })}
+            className={clsx(
+              "rounded-t-xl px-2 py-[0.38rem] font-semibold text-tertiary-800",
+              {
+                "bg-primary-100": activeTab === index,
+                "bg-cool-150": activeTab !== index,
+              }
+            )}
             key={index}
             onClick={() => {
               setActiveTab(index);
@@ -33,12 +36,12 @@ const SliderWithTabs: React.FC<SliderTabsProps> = ({ tabs }) => {
           </button>
         ))}
       </div>
-      <div className="flex flex-col rounded-xl bg-primary-100 px-6 pb-4 pt-3 thin:px-8 w-full items-center">
-        <div className="text-lg thin:text-md font-semibold text-center">
+      <div className="flex w-full flex-col items-center rounded-xl bg-primary-100 px-6 pb-4 pt-3 thin:px-8">
+        <div className="text-center text-lg font-semibold text-tertiary-900 thin:text-md">
           {tabs[activeTab].value} {tabs[activeTab].valueLabel}
         </div>
         <input
-          className="w-64 thin:w-40"
+          className="h-2 w-64 appearance-none rounded-full border-2 border-tertiary-700 bg-secondary-100 accent-secondary-500 thin:w-40"
           type="range"
           name={tabs[activeTab].name}
           min={tabs[activeTab].min}

@@ -16,6 +16,7 @@ export default {
       md: "20px",
       lg: "28px",
       xl: "34px",
+      "2xl": "40px",
     },
     fontFamily: {
       sans: ["Work Sans", "ui-sans-serif"],
