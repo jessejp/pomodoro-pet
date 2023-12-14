@@ -9,14 +9,14 @@ const cosmetics: CosmeticItem[] = [
   },
 ];
 
-const Customization = () => {
+const CosmeticSelectMenu = () => {
   const { equippedCosmetic, updateCosmetic } = useBoundStore((state) => ({
     equippedCosmetic: state.equippedCosmetic,
     updateCosmetic: state.updateCosmetic,
   }));
 
   return (
-    <div className="min-h-[83%] w-full">
+    <div className="flex w-full gap-3">
       {cosmetics.map((cosmetic) => (
         <CosmeticOption
           key={cosmetic.name}
@@ -73,4 +73,4 @@ const CosmeticOption: React.FC<CosmeticOptionProps> = ({
   );
 };
 
-export default Customization;
+export default CosmeticSelectMenu;

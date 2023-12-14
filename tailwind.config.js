@@ -7,6 +7,7 @@ export default {
   theme: {
     screens: {
       short: { raw: "(max-height: 800px)" },
+      xshort: { raw: "(max-height: 560px)" },
       thin: { raw: "(max-width: 990px)" },
       xl: "1280px",
       "2xl": "1536px",
@@ -16,6 +17,7 @@ export default {
       md: "20px",
       lg: "28px",
       xl: "34px",
+      "2xl": "40px",
     },
     fontFamily: {
       sans: ["Work Sans", "ui-sans-serif"],
@@ -62,6 +64,7 @@ export default {
       },
       gridTemplateColumns: {
         sessionlog: "6rem 16rem minmax(2rem, 6rem)",
+        sessionlogMobile: "6rem minmax(8rem, 16rem) minmax(2rem, 6rem)",
         startScreenBg: "1fr 32rem 1fr",
       },
       gridTemplateRows: {

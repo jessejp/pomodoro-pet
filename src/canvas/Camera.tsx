@@ -102,7 +102,7 @@ const Camera = () => {
     if (!ctrls.enabled || !activeCamPaths.current.length) return;
     const cameraAnimationInterval = setInterval(() => {
       setCamPathIndex((prev) => ++prev % activeCamPaths.current.length);
-    }, 6000);
+    }, 5800);
 
     if (pomodoroPhase === "none")
       return () => clearInterval(cameraAnimationInterval);

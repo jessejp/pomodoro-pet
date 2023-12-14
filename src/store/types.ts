@@ -36,18 +36,22 @@ export type CosmeticItem = {
   slot: CosmeticSlots;
 };
 
-export type Pet = "monkey";
+export type PetType = "monkey" | "penguin";
+
+export type PetMeshType = {
+  monkey: THREE.SkinnedMesh;
+  penguin: THREE.SkinnedMesh;
+};
 
 export type EquippedCosmetic = {
-  petModel: Pet;
+  petModel: PetType;
   cosmetics: CosmeticItem[];
 };
 
 export interface CosmeticParams {
   equippedCosmetic: EquippedCosmetic;
-  isModelLoaded: boolean;
+  updatePetModel: (pet: PetType) => void;
   updateCosmetic: (cosmetics: EquippedCosmetic) => void;
-  modelLoaded: () => void;
 }
 
 /* 

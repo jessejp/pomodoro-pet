@@ -1,10 +1,12 @@
 import { OrbitControls, PresentationControls } from "@react-three/drei";
 import { Room } from "./world/Room";
-import Monkey from "./pets/Monkey";
+import { Pet } from "./pets/Pet";
 import Chair from "./world/furniture/ChairSoft1";
 import { useBoundStore } from "../store/useBoundStore";
 import { useControls } from "leva";
 import Camera from "./Camera";
+import { Book } from "./world/furniture/Book";
+import { Suspense } from "react";
 
 const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
   const ctrls = useControls("Scene", {
@@ -13,10 +15,11 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
     showAxes: true,
   });
 
-  const { pomodoroPhase } = useBoundStore((state) => ({
+  const { pomodoroPhase, pet } = useBoundStore((state) => ({
     pomodoroPhase: state.pomodoroPhase,
+    pet: state.equippedCosmetic.petModel,
   }));
-  
+
   return (
     <>
       {devGUI && ctrls.showAxes && <axesHelper args={[1]} />}
@@ -29,8 +32,11 @@ const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
       >
         <Camera />
         <Room />
+        <Book />
         <Chair />
-        <Monkey />
+        <Suspense fallback={null}>
+          <Pet pet={pet} />
+        </Suspense>
       </PresentationControls>
     </>
   );

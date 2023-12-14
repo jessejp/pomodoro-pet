@@ -1,89 +1,45 @@
-import { useState, Suspense } from "react";
-import WorkTimeButtonsCircle from "./timer/WorkTimeButtonsCircle";
-import { useBoundStore } from "../store/useBoundStore";
-import SliderWithTabs from "./ui/SliderWithTabs";
-import Button from "./ui/Button";
-import { useControls } from "leva";
+import { useState } from "react";
+import ConfigSession from "./timer/ConfigSession";
+import clsx from "clsx";
+import CustomizePet from "./CustomizePet";
 
 const StartSessionMainMenu = () => {
-  const [workTime, setWorkTime] = useState(25);
-  const [breakTime, setBreakTime] = useState(5);
-  const [rounds, setRounds] = useState(2);
-  const { start } = useBoundStore((state) => ({
-    start: state.start,
-  }));
-
-  const ctrls = useControls("App.CustomTimers", {
-    workTime: 0,
-    breakTime: 0,
-    rounds: 0,
-  });
-
-  const bgFiller = <div className="h-full w-full bg-tertiary-300"></div>;
+  const [showCharacterCustomization, setShowCharacterCustomization] =
+    useState(false);
 
   return (
-    <div className="fixed left-0 top-0 z-10 grid h-screen w-screen grid-cols-startScreenBg items-center justify-center">
-      {bgFiller}
-      <div className="grid h-screen min-h-160 grid-cols-1 grid-rows-startScreenInputs place-content-between items-center">
-        <div className="flex h-full w-full items-start justify-center self-start bg-tertiary-300 pt-10">
-          <div className="flex min-w-[24rem] flex-col rounded-xl bg-primary-100 p-4 text-center text-lg font-semibold thin:min-w-min thin:px-8 thin:text-md">
-            <span>
-              Session Length: {(workTime + breakTime) * rounds} minutes
-            </span>
-          </div>
-        </div>
-        <div className="h-full w-full bg-orange-circle-gradient from-transparent from-45% to-tertiary-300 to-45% thin:from-35% thin:to-35%">
-          <Suspense fallback={null}>
-            <WorkTimeButtonsCircle
-              selectedMinutes={workTime}
-              onWorkTimeSelected={(minutes: number) => {
-                setWorkTime(minutes);
-              }}
-            />
-          </Suspense>
-        </div>
-        <div className="flex h-full w-full flex-col items-center justify-end gap-4 self-end bg-tertiary-300 pb-4">
-          <div className="flex w-4/6 flex-col gap-4">
-            <SliderWithTabs
-              tabs={[
-                {
-                  name: "Break",
-                  valueLabel: "minutes",
-                  value: breakTime,
-                  setMethod: setBreakTime,
-                  step: 1,
-                  min: 1,
-                  max: 20,
-                },
-                {
-                  name: "Rounds",
-                  valueLabel: "rounds",
-                  value: rounds,
-                  setMethod: setRounds,
-                  step: 1,
-                  min: 1,
-                  max: 8,
-                },
-              ]}
-            />
-            <Button
-              intent="accent"
-              variant="big"
-              icon="check-tertiary-900"
-              onClick={() => {
-                start({
-                  workTime: ctrls.workTime || workTime,
-                  breakTime: ctrls.breakTime || breakTime,
-                  rounds: ctrls.rounds || rounds,
-                });
-              }}
-            >
-              Start
-            </Button>
-          </div>
-        </div>
-      </div>
-      {bgFiller}
+    <div className="relative flex h-screen flex-col items-center justify-center gap-16 bg-tertiary-300 short:justify-end short:gap-8 xshort:gap-4">
+      <button
+        className={clsx(
+          "fixed top-0 z-10 mr-8 mt-8 grid place-content-center self-end rounded-full border-4  p-4 hover:scale-105  thin:p-3",
+          {
+            "border-tertiary-800 bg-primary-200 hover:bg-primary-100":
+              !showCharacterCustomization,
+            "hover:bg-cool-100 border-tertiary-800 bg-cool-150":
+              showCharacterCustomization,
+          }
+        )}
+        onClick={() => {
+          setShowCharacterCustomization(!showCharacterCustomization);
+        }}
+      >
+        {!showCharacterCustomization && (
+          <img
+            className="h-8 w-8"
+            src={`/icons/customize-x24-tertiary-800.svg`}
+            alt={`customize character button`}
+          />
+        )}
+        {showCharacterCustomization && (
+          <img
+            className="h-8 w-8"
+            src={`/icons/close-x24-tertiary-800.svg`}
+            alt={`close character customization button`}
+          />
+        )}
+      </button>
+      {!!showCharacterCustomization && <CustomizePet />}
+      {!showCharacterCustomization && <ConfigSession />}
     </div>
   );
 };
