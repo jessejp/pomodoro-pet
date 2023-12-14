@@ -48,36 +48,25 @@ type GLTFResult = GLTF & {
 const material = new THREE.MeshBasicMaterial();
 
 export const Pet = (
-  props: JSX.IntrinsicElements["group"] & { pet: PetType }
+  props: JSX.IntrinsicElements["group"] & { pet: PetType; unanimated?: boolean }
 ) => {
-  const { pet } = props;
-  const { equippedCosmetic, modelLoaded, pomodoroPhase } = useBoundStore(
-    (state) => ({
-      equippedCosmetic: state.equippedCosmetic,
-      modelLoaded: state.modelLoaded,
-      pomodoroPhase: state.pomodoroPhase,
-    })
-  );
+  const { pet, unanimated = false } = props;
+  const { equippedCosmetic, pomodoroPhase } = useBoundStore((state) => ({
+    equippedCosmetic: state.equippedCosmetic,
+    pomodoroPhase: state.pomodoroPhase,
+  }));
 
   const group = useRef<THREE.Group>(null);
   const { nodes, animations } = useGLTF(
     `/models/pomodoro_pets_${pet}.glb`,
     true,
-    undefined,
-    (loader) => {
-      loader.manager.onLoad = () => {
-        modelLoaded(true);
-      };
-    }
+    undefined
   ) as GLTFResult;
 
-  const { actions , mixer} = useAnimations<PetGLTFAction>(animations, group);
-
-  console.log(nodes);
-  console.log(actions);
-  console.log(mixer);
+  const { actions } = useAnimations<PetGLTFAction>(animations, group);
 
   useEffect(() => {
+    if (unanimated) return;
     if (pomodoroPhase === "none") {
       actions.none?.reset().fadeIn(0.5).play();
       return () => actions.none?.reset().stop();
@@ -92,7 +81,7 @@ export const Pet = (
         actions.pause?.reset().stop();
       };
     }
-  }, [pomodoroPhase, actions, pet]);
+  }, [pomodoroPhase, actions, pet, unanimated]);
 
   const texture = useLoader(TextureLoader, `textures/pets/${pet}.png`);
   texture.flipY = false;
@@ -104,7 +93,7 @@ export const Pet = (
   );
 
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} dispose={null}>
       <group name="Scene">
         <group name={`${pet}_rig`}>
           <skinnedMesh

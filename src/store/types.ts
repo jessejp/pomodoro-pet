@@ -50,9 +50,8 @@ export type EquippedCosmetic = {
 
 export interface CosmeticParams {
   equippedCosmetic: EquippedCosmetic;
-  isModelLoaded: boolean;
+  updatePetModel: (pet: PetType) => void;
   updateCosmetic: (cosmetics: EquippedCosmetic) => void;
-  modelLoaded: (isLoaded: boolean) => void;
 }
 
 /* 

@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { CosmeticItem, PetType } from "../../store/types";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -22,18 +22,21 @@ type HeadSlotProps = React.JSX.IntrinsicElements["skinnedMesh"] & {
 };
 
 const HeadSlot = (props: HeadSlotProps) => {
-  const morphInfluence = useRef(0);
+  const [morphInfluence, setMorphInfluence] = useState(0);
   const mesh = useRef<THREE.SkinnedMesh>(null);
   const model = useGLTF(`models/cosmetic_${props.cosmetic}.glb`) as GLTFResult;
+  const { morphTargetDictionary } = model.nodes.head_slot_beanie;
 
   useEffect(() => {
     if (
-      mesh.current?.morphTargetDictionary !== undefined &&
-      mesh.current?.morphTargetDictionary[props.pet] !== undefined
+      morphTargetDictionary !== undefined &&
+      morphTargetDictionary[props.pet] !== undefined
     ) {
-      morphInfluence.current = 1;
+      setMorphInfluence(1);
+    } else {
+      setMorphInfluence(0);
     }
-  }, [props.pet]);
+  }, [props.pet, morphTargetDictionary, setMorphInfluence]);
 
   if (!props.cosmetic) return null;
 
@@ -45,7 +48,7 @@ const HeadSlot = (props: HeadSlotProps) => {
       geometry={model.nodes[`head_slot_${props.cosmetic}`].geometry}
       material={model.materials.vertex_color}
       morphTargetDictionary={model.nodes.head_slot_beanie.morphTargetDictionary}
-      morphTargetInfluences={[morphInfluence.current]}
+      morphTargetInfluences={[morphInfluence]}
     />
   );
 };

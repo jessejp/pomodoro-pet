@@ -30,7 +30,7 @@ const SessionLog = () => {
   return (
     <>
       <div className="flex h-5/6 w-full flex-col gap-3">
-        <div className="grid h-8 grid-cols-sessionlog gap-3 text-sm">
+        <div className="grid h-8 grid-cols-sessionlog thin:grid-cols-sessionlogMobile gap-3 text-sm">
           <div>Length</div>
           <div className="pl-1">Task Name</div>
           <div>Active Task</div>
@@ -41,7 +41,7 @@ const SessionLog = () => {
             return (
               <div
                 key={index}
-                className="grid grid-cols-sessionlog items-center gap-3"
+                className="grid grid-cols-sessionlog thin:grid-cols-sessionlogMobile items-center gap-3"
               >
                 <div>{`${logTime === 0 ? "0.00" : logTime} h`}</div>
                 <div className="pl-1">{entry.message}</div>
@@ -63,10 +63,10 @@ const SessionLog = () => {
             );
           })}
         </div>
-        <div className="grid h-8 grid-cols-sessionlog gap-3 text-md">
+        <div className="grid h-8 grid-cols-sessionlog thin:grid-cols-sessionlogMobile gap-3 text-md">
           <div>0.00&nbsp;h</div>
           <input
-            className="h-8 rounded-lg bg-secondary-100 pl-1"
+            className="h-8 rounded-lg bg-secondary-100 pl-1 thin:w-full"
             value={taskName}
             type="text"
             placeholder="New Task"

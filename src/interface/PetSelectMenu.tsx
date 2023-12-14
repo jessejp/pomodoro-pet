@@ -1,25 +1,23 @@
 import clsx from "clsx";
-import type { EquippedCosmetic, PetType } from "../store/types";
+import type { CosmeticParams, EquippedCosmetic, PetType } from "../store/types";
 import { useBoundStore } from "../store/useBoundStore";
 
 const characters: PetType[] = ["monkey", "penguin"];
 
-const CharacterSelection = () => {
-  const { equippedCosmetic, updateCosmetic } = useBoundStore(
-    (state) => ({
-      equippedCosmetic: state.equippedCosmetic,
-      updateCosmetic: state.updateCosmetic,
-    })
-  );
+const PetSelectMenu = () => {
+  const { equippedCosmetic, updatePetModel } = useBoundStore((state) => ({
+    equippedCosmetic: state.equippedCosmetic,
+    updatePetModel: state.updatePetModel,
+  }));
 
   return (
-    <div className="min-h-[83%] w-full">
+    <div className="flex w-full gap-3">
       {characters.map((pet) => (
         <CharacterOption
           key={pet}
           pet={pet}
           equippedCosmetic={equippedCosmetic}
-          updateCosmetic={updateCosmetic}
+          updatePetModel={updatePetModel}
         />
       ))}
     </div>
@@ -29,13 +27,13 @@ const CharacterSelection = () => {
 interface CharacterOptionProps {
   pet: PetType;
   equippedCosmetic: EquippedCosmetic;
-  updateCosmetic: (cosmetic: EquippedCosmetic) => void;
+  updatePetModel: CosmeticParams["updatePetModel"];
 }
 
 const CharacterOption: React.FC<CharacterOptionProps> = ({
   pet,
   equippedCosmetic,
-  updateCosmetic,
+  updatePetModel,
 }) => {
   const isEquipped = pet === equippedCosmetic.petModel;
   return (
@@ -43,10 +41,7 @@ const CharacterOption: React.FC<CharacterOptionProps> = ({
       className="relative"
       onClick={() => {
         if (isEquipped) return;
-        updateCosmetic({
-          cosmetics: equippedCosmetic.cosmetics,
-          petModel: pet,
-        });
+        updatePetModel(pet);
       }}
     >
       {isEquipped && (
@@ -68,4 +63,4 @@ const CharacterOption: React.FC<CharacterOptionProps> = ({
   );
 };
 
-export default CharacterSelection;
+export default PetSelectMenu;
