@@ -4,6 +4,8 @@ import {
   createColumnHelper,
   getCoreRowModel,
   flexRender,
+  SortingState,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 import clsx from "clsx";
 
@@ -33,27 +35,34 @@ const columns = [
   columnHelper.accessor("task", {
     header: "Task Name",
     cell: (info) => info.getValue(),
+    footer: (info) => info.column.id,
+    enableSorting: false,
   }),
   columnHelper.accessor((row) => row.taskTimeSeconds, {
     id: "taskTimeSeconds",
     header: "Work Time",
     cell: (info) => info.getValue(),
+    footer: (info) => info.column.id,
   }),
 ];
 
 const SessionLog = () => {
   const [data] = useState<Log[]>(() => [...DUMMY_DATA]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
     enableRowSelection: true,
     enableMultiRowSelection: false,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    debugTable: true,
   });
-
-  console.log("table", table);
-  console.log("rowSeelction state", table.getState().rowSelection);
-  console.log("selected row model", table.getSelectedRowModel().rows);
 
   return (
     <table className="w-full">
@@ -62,16 +71,23 @@ const SessionLog = () => {
           <tr className="flex" key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
               <th
-                className={clsx("text-start", {
-                  "w-full": header.column.columnDef.header === "Task Name",
-                  "w-28": header.column.columnDef.header === "Work Time",
-                })}
                 key={header.id}
+                colSpan={header.colSpan}
+                className={clsx("text-start", {
+                  "cursor-pointer select-none": header.column.getCanSort(),
+                  "w-full": header.column.columnDef.header === "Task Name",
+                  "w-32": header.column.columnDef.header === "Work Time",
+                })}
+                onClick={header.column.getToggleSortingHandler()}
               >
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext()
                 )}
+                {{
+                  asc: "▴",
+                  desc: "▾",
+                }[header.column.getIsSorted() as string] ?? null}
               </th>
             ))}
           </tr>
@@ -89,21 +105,12 @@ const SessionLog = () => {
               key={row.id}
               onClick={() => row.toggleSelected()}
             >
-              <input
-                className="sr-only"
-                type="radio"
-                id={`radio-${row.id}`}
-                name="selectedRow"
-                checked={isRowSelected}
-                readOnly
-                aria-hidden="true"
-              />
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
                   className={clsx("overflow-hidden whitespace-nowrap", {
                     "w-full": cell.column.columnDef.header === "Task Name",
-                    "w-28": cell.column.columnDef.header === "Work Time",
+                    "w-32": cell.column.columnDef.header === "Work Time",
                   })}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
