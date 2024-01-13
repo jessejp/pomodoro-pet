@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
+import clsx from "clsx";
 
 type Log = {
   task: string;
@@ -14,15 +15,15 @@ type Log = {
 const DUMMY_DATA: Log[] = [
   {
     task: "Writing documentation",
-    taskTimeSeconds: 7200, // 2h 0min
+    taskTimeSeconds: 7200,
   },
   {
     task: "code feat-style-session-log-v2",
-    taskTimeSeconds: 60 * 60 * 1 + 60 * 5, // 1h 5min
+    taskTimeSeconds: 60 * 60 * 1 + 60 * 5,
   },
   {
     task: "Designing Session Log V2",
-    taskTimeSeconds: 60 * 30 + 35, // 30min 35sec
+    taskTimeSeconds: 60 * 30 + 35,
   },
 ];
 
@@ -41,22 +42,32 @@ const columns = [
 ];
 
 const SessionLog = () => {
-  const [data, setData] = useState<Log[]>(() => [...DUMMY_DATA]);
+  const [data] = useState<Log[]>(() => [...DUMMY_DATA]);
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    enableRowSelection: true,
+    enableMultiRowSelection: false,
   });
 
-  console.log(table);
+  console.log("table", table);
+  console.log("rowSeelction state", table.getState().rowSelection);
+  console.log("selected row model", table.getSelectedRowModel().rows);
 
   return (
-    <table>
+    <table className="w-full">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
+          <tr className="flex" key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>
+              <th
+                className={clsx("text-start", {
+                  "w-full": header.column.columnDef.header === "Task Name",
+                  "w-28": header.column.columnDef.header === "Work Time",
+                })}
+                key={header.id}
+              >
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext()
@@ -67,15 +78,40 @@ const SessionLog = () => {
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
+        {table.getRowModel().rows.map((row) => {
+          const isRowSelected = row.getIsSelected();
+          return (
+            <tr
+              className={clsx("flex cursor-pointer hover:bg-primary-200", {
+                "bg-accent-400": isRowSelected,
+              })}
+              role="radio"
+              key={row.id}
+              onClick={() => row.toggleSelected()}
+            >
+              <input
+                className="sr-only"
+                type="radio"
+                id={`radio-${row.id}`}
+                name="selectedRow"
+                checked={isRowSelected}
+                readOnly
+                aria-hidden="true"
+              />
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  key={cell.id}
+                  className={clsx("overflow-hidden whitespace-nowrap", {
+                    "w-full": cell.column.columnDef.header === "Task Name",
+                    "w-28": cell.column.columnDef.header === "Work Time",
+                  })}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
