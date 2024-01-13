@@ -3,10 +3,9 @@ import React, { type PropsWithChildren } from "react";
 
 interface ButtonProps extends PropsWithChildren {
   icon: string;
-  intent: "secondary" | "accent";
-  variant?: "big";
+  intent: "primary" | "primary-light" | "secondary";
+  variant: "big" | "tiny";
   onClick?: () => void;
-  position?: "bottom-right";
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -14,25 +13,28 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   onClick,
   children,
-  position,
-  variant
+  variant,
 }) => {
   return (
     <button
       onClick={onClick}
       className={clsx(
-        "flex items-center gap-4 rounded-xl py-3 pl-4 pr-5 text-xl font-semibold leading-none thin:text-lg",
+        "flex items-center justify-center whitespace-nowrap font-semibold leading-none",
         {
-          "bg-accent-500 text-tertiary-900": intent === "accent",
+          "bg-accent-500 text-tertiary-900": intent === "primary",
+          "bg-accent-400 text-tertiary-900": intent === "primary-light",
           "bg-secondary-500 text-tertiary-900": intent === "secondary",
-          "fixed bottom-4 right-16 thin:relative thin:bottom-0 thin:right-0":
-            position === "bottom-right",
-          "w-full justify-center": variant === "big",
+          "w-full gap-4 rounded-xl py-3 pl-4 pr-5 text-xl thin:text-lg":
+            variant === "big",
+          "w-fit gap-2 rounded-lg py-1.5 pl-2 pr-3 text-sm": variant === "tiny",
         }
       )}
     >
       <img
-        className="h-8 w-8"
+        className={clsx({
+          "h-8 w-8": variant === "big",
+          "h-5 w-5": variant === "tiny",
+        })}
         src={`/icons/${icon}.svg`}
         alt={`${children} button icon`}
       />

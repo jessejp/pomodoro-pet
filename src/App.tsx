@@ -62,7 +62,7 @@ function App() {
                 <Scene devGUI={devGUI} />
               </Canvas>
             </Suspense>
-            <div className="flex w-full flex-col items-center gap-2">
+            <div className="fixed bottom-4 flex w-full items-end justify-center gap-2 thin:flex-col thin:items-center">
               <Menu
                 isFixed={true}
                 tabs={[
@@ -72,14 +72,16 @@ function App() {
                   },
                 ]}
               />
-              <Button
-                position="bottom-right"
-                intent="secondary"
-                onClick={stop}
-                icon="stop-tertiary-900"
-              >
-                Stop
-              </Button>
+              <div className="absolute right-4 flex w-fit shrink thin:relative">
+                <Button
+                  variant="big"
+                  intent="secondary"
+                  onClick={stop}
+                  icon="stop-tertiary-900"
+                >
+                  Stop
+                </Button>
+              </div>
             </div>
           </div>
         </>

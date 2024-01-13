@@ -3,7 +3,7 @@
 import scrollbarplugin from "tailwind-scrollbar";
 
 export default {
-  content: ["./index.html", "./src/interface/**/*.{ts,tsx}"],
+  content: ["./index.html", "./src/interface/**/*.{ts,tsx}", "./src/App.tsx"],
   theme: {
     screens: {
       short: { raw: "(max-height: 800px)" },
@@ -27,6 +27,7 @@ export default {
         orangeFlavour: "#FFC222",
         "primary-100": "#FDE2DB",
         "primary-200": "#FBC5B8",
+        "primary-300": "#FAA794",
         "secondary-100": "#FFFAE4",
         "secondary-200": "#FFF5C8",
         "secondary-500": "#FFE576",
@@ -44,11 +45,8 @@ export default {
       borderWidth: {
         6: "6px",
       },
-      spacing: {
-        "1/14": `${(1 / 14) * 100}%`,
-        "1/20": `${(1 / 20) * 100}%`,
-      },
       width: {
+        "1.5": "0.38rem",
         128: "32rem",
       },
       height: {

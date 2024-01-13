@@ -71,7 +71,7 @@ const ConfigSession: React.FC = () => {
             ]}
           />
           <Button
-            intent="accent"
+            intent="primary"
             variant="big"
             icon="check-tertiary-900"
             onClick={() => {
