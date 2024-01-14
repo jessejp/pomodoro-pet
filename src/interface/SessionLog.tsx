@@ -90,6 +90,13 @@ const SessionLog = () => {
     return () => clearInterval(interval);
   }, [rows, setData, data]);
 
+  const handleAddNewTask = () => {
+    setData((prevState) => {
+      return [...prevState, { task: newTaskName, taskTimeSeconds: 0 }];
+    });
+    setNewTaskName("");
+  };
+
   return (
     <table className="w-full text-tertiary-900">
       <thead>
@@ -139,11 +146,20 @@ const SessionLog = () => {
                 return (
                   <td
                     key={cell.id}
-                    className={clsx(" overflow-hidden whitespace-nowrap", {
-                      "w-full": cell.column.id === "taskName",
-                      "w-36": cell.column.id === "taskTimeSeconds",
-                    })}
+                    className={clsx(
+                      "relative flex items-center whitespace-nowrap",
+                      {
+                        "w-full overflow-hidden": cell.column.id === "taskName",
+                        "w-36": cell.column.id === "taskTimeSeconds",
+                      }
+                    )}
                   >
+                    {cell.column.id === "taskTimeSeconds" && isRowSelected && (
+                      <img
+                        className="absolute -left-8 h-6 w-6"
+                        src="/icons/stopwatch.gif"
+                      />
+                    )}
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 );
@@ -154,31 +170,31 @@ const SessionLog = () => {
       </tbody>
       <tfoot>
         <tr className="flex gap-8 rounded-b-xl bg-primary-100 px-6 py-2">
-          <td className="w-full">
-            <input
-              className="h-8 w-full rounded-lg bg-secondary-100 pl-1"
-              value={newTaskName}
-              type="text"
-              placeholder="New Task"
-              onChange={(event) => {
-                setNewTaskName(event.target.value);
+          <td className="relative w-full">
+            <form
+              className="relative -left-0.5"
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleAddNewTask();
               }}
-            />
+            >
+              <input
+                className="h-8 w-full rounded-lg bg-secondary-100 pl-1.5"
+                value={newTaskName}
+                type="text"
+                placeholder="New Task"
+                onChange={(event) => {
+                  setNewTaskName(event.target.value);
+                }}
+              />
+            </form>
           </td>
-          <td className="w-36">
+          <td className="w-fit min-w-[9rem]">
             <Button
               icon="note-x16-tertiary-900"
               variant="tiny"
               intent="primary-light"
-              onClick={() => {
-                setData((prevState) => {
-                  return [
-                    ...prevState,
-                    { task: newTaskName, taskTimeSeconds: 0 },
-                  ];
-                });
-                setNewTaskName("");
-              }}
+              onClick={handleAddNewTask}
             >
               Add Task
             </Button>

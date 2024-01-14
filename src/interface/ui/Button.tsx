@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
       <img
         className={clsx({
           "h-8 w-8": variant === "big",
-          "h-5 w-5": variant === "tiny",
+          "h-[1.125rem] w-[1.125rem]": variant === "tiny",
         })}
         src={`/icons/${icon}.svg`}
         alt={`${children} button icon`}
