@@ -26,6 +26,7 @@ export default {
       colors: {
         orangeFlavour: "#FFC222",
         "primary-100": "#FDE2DB",
+        "primary-150": "#FCCFC5",
         "primary-200": "#FBC5B8",
         "primary-300": "#FAA794",
         "secondary-100": "#FFFAE4",

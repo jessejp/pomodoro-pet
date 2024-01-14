@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useReactTable,
   createColumnHelper,
@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import Button from "./ui/Button";
+import { formatTimeVerbose } from "../utils/formatTime";
 
 type Log = {
   task: string;
@@ -34,6 +35,7 @@ const columnHelper = createColumnHelper<Log>();
 
 const columns = [
   columnHelper.accessor("task", {
+    id: "taskName",
     header: "Task Name",
     cell: (info) => info.getValue(),
     footer: (info) => info.column.id,
@@ -42,7 +44,7 @@ const columns = [
   columnHelper.accessor((row) => row.taskTimeSeconds, {
     id: "taskTimeSeconds",
     header: "Work Time",
-    cell: (info) => info.getValue(),
+    cell: (info) => formatTimeVerbose(info.getValue()),
     footer: (info) => info.column.id,
   }),
 ];
@@ -65,6 +67,28 @@ const SessionLog = () => {
     getSortedRowModel: getSortedRowModel(),
     debugTable: true,
   });
+
+  const { rows } = table.getSelectedRowModel();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (rows.length) {
+        setData((prev) => {
+          return prev.map((row, index) => {
+            if (index === rows[0].index) {
+              return {
+                ...row,
+                taskTimeSeconds: row.taskTimeSeconds + 1,
+              };
+            } else {
+              return row;
+            }
+          });
+        });
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [rows, setData, data]);
 
   return (
     <table className="w-full text-tertiary-900">
@@ -101,29 +125,29 @@ const SessionLog = () => {
       <tbody>
         {table.getRowModel().rows.map((row) => {
           const isRowSelected = row.getIsSelected();
-          console.log(isRowSelected);
-
           return (
             <tr
               className={clsx("flex cursor-pointer gap-8 px-6 py-2", {
-                "bg-primary-100 hover:bg-primary-200": !isRowSelected,
+                "bg-primary-100 hover:bg-primary-150": !isRowSelected,
                 "bg-primary-200 font-semibold": isRowSelected,
               })}
               role="radio"
               key={row.id}
               onClick={() => row.toggleSelected()}
             >
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className={clsx("overflow-hidden whitespace-nowrap", {
-                    "w-full": cell.column.columnDef.header === "Task Name",
-                    "w-36": cell.column.columnDef.header === "Work Time",
-                  })}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
+              {row.getVisibleCells().map((cell) => {
+                return (
+                  <td
+                    key={cell.id}
+                    className={clsx(" overflow-hidden whitespace-nowrap", {
+                      "w-full": cell.column.id === "taskName",
+                      "w-36": cell.column.id === "taskTimeSeconds",
+                    })}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                );
+              })}
             </tr>
           );
         })}
