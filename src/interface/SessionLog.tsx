@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
 import {
-  useReactTable,
-  createColumnHelper,
-  getCoreRowModel,
-  flexRender,
+  Row,
   SortingState,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
   getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
+import { useMemo, useState } from "react";
+import { Log } from "../store/types";
+import { LogTimer } from "./timer/LogTimer";
 import Button from "./ui/Button";
-import { formatTimeVerbose } from "../utils/formatTime";
 
-type Log = {
-  task: string;
-  taskTimeSeconds: number;
-};
+
 
 const DUMMY_DATA: Log[] = [
   {
@@ -31,29 +30,48 @@ const DUMMY_DATA: Log[] = [
   },
 ];
 
-const columnHelper = createColumnHelper<Log>();
-
-const columns = [
-  columnHelper.accessor("task", {
-    id: "taskName",
-    header: "Task Name",
-    cell: (info) => info.getValue(),
-    footer: (info) => info.column.id,
-    enableSorting: false,
-  }),
-  columnHelper.accessor((row) => row.taskTimeSeconds, {
-    id: "taskTimeSeconds",
-    header: "Work Time",
-    cell: (info) => formatTimeVerbose(info.getValue()),
-    footer: (info) => info.column.id,
-  }),
-];
-
 const SessionLog = () => {
   const [newTaskName, setNewTaskName] = useState<string>("");
   const [data, setData] = useState<Log[]>(() => [...DUMMY_DATA]);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const columnHelper = createColumnHelper<Log>();
 
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("task", {
+        id: "taskName",
+        header: "Task Name",
+        cell: (info) => info.getValue(),
+        footer: (info) => info.column.id,
+        enableSorting: false,
+      }),
+      columnHelper.accessor((row) => row.taskTimeSeconds, {
+        id: "taskTimeSeconds",
+        header: "Work Time",
+        cell: (info) => (
+          <LogTimer
+            initialSeconds={info.getValue()}
+            row={info.row}
+            handleDismount={(sec: number, activeRow: Row<Log>) => {
+              setData((prev) => {
+                return prev.map((row, index) => {
+                  if (index === activeRow.index) {
+                    return {
+                      ...row,
+                      taskTimeSeconds: sec,
+                    };
+                  }
+                  return row;
+                });
+              });
+            }}
+          />
+        ),
+        footer: (info) => info.column.id,
+      }),
+    ],
+    [columnHelper]
+  );
   const table = useReactTable({
     data,
     columns,
@@ -65,30 +83,8 @@ const SessionLog = () => {
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    debugTable: true,
+    debugTable: false,
   });
-
-  const { rows } = table.getSelectedRowModel();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (rows.length) {
-        setData((prev) => {
-          return prev.map((row, index) => {
-            if (index === rows[0].index) {
-              return {
-                ...row,
-                taskTimeSeconds: row.taskTimeSeconds + 1,
-              };
-            } else {
-              return row;
-            }
-          });
-        });
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [rows, setData, data]);
 
   const handleAddNewTask = () => {
     setData((prevState) => {
@@ -96,6 +92,8 @@ const SessionLog = () => {
     });
     setNewTaskName("");
   };
+
+  console.count("SessionLog");
 
   return (
     <table className="w-full text-tertiary-900">

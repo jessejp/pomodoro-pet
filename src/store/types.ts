@@ -61,9 +61,8 @@ export interface CosmeticParams {
 */
 
 export type Log = {
-  message: string | null;
-  minutes: number;
-  minutesWithBreaks: number;
+  task: string;
+  taskTimeSeconds: number;
 };
 
 export interface SessionLogParams {
