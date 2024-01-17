@@ -13,8 +13,6 @@ import { Log } from "../store/types";
 import { LogTimer } from "./timer/LogTimer";
 import Button from "./ui/Button";
 
-
-
 const DUMMY_DATA: Log[] = [
   {
     task: "Designing Session Log V2",
@@ -51,11 +49,14 @@ const SessionLog = () => {
         cell: (info) => (
           <LogTimer
             initialSeconds={info.getValue()}
-            row={info.row}
-            handleDismount={(sec: number, activeRow: Row<Log>) => {
+            rowId={info.row.id}
+            isSelected={info.row.getIsSelected()}
+            handleDismount={(sec: number, rowId: Row<Log>["id"]) => {
+              console.log("saving data", sec, "to", rowId);
+
               setData((prev) => {
                 return prev.map((row, index) => {
-                  if (index === activeRow.index) {
+                  if (`${index}` === rowId) {
                     return {
                       ...row,
                       taskTimeSeconds: sec,
