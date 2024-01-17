@@ -14,7 +14,7 @@ import { LogTimer } from "./timer/LogTimer";
 import Button from "./ui/Button";
 
 const DUMMY_DATA: Log[] = [
-  {
+  /*  {
     task: "Designing Session Log V2",
     taskTimeSeconds: 60 * 30 + 35,
   },
@@ -25,11 +25,10 @@ const DUMMY_DATA: Log[] = [
   {
     task: "Code feat-style-session-log-v2",
     taskTimeSeconds: 60 * 60 * 1 + 60 * 5,
-  },
+  }, */
 ];
 
-const SessionLog = () => {
-  const [newTaskName, setNewTaskName] = useState<string>("");
+export const SessionLog = () => {
   const [data, setData] = useState<Log[]>(() => [...DUMMY_DATA]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = createColumnHelper<Log>();
@@ -87,11 +86,10 @@ const SessionLog = () => {
     debugTable: false,
   });
 
-  const handleAddNewTask = () => {
+  const handleAddNewTask = (taskName: string) => {
     setData((prevState) => {
-      return [...prevState, { task: newTaskName, taskTimeSeconds: 0 }];
+      return [...prevState, { task: taskName, taskTimeSeconds: 0 }];
     });
-    setNewTaskName("");
   };
 
   console.count("SessionLog");
@@ -130,78 +128,92 @@ const SessionLog = () => {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => {
-          const isRowSelected = row.getIsSelected();
-          return (
-            <tr
-              className={clsx("flex cursor-pointer gap-8 px-6 py-2", {
-                "bg-primary-100 hover:bg-primary-150": !isRowSelected,
-                "bg-primary-200 font-semibold": isRowSelected,
-              })}
-              role="radio"
-              key={row.id}
-              onClick={() => row.toggleSelected()}
-            >
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <td
-                    key={cell.id}
-                    className={clsx(
-                      "relative flex items-center whitespace-nowrap",
-                      {
-                        "w-full overflow-hidden": cell.column.id === "taskName",
-                        "w-36": cell.column.id === "taskTimeSeconds",
-                      }
-                    )}
-                  >
-                    {cell.column.id === "taskTimeSeconds" && isRowSelected && (
-                      <img
-                        className="absolute -left-8 h-6 w-6"
-                        src="/icons/stopwatch.gif"
-                      />
-                    )}
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                );
-              })}
-            </tr>
-          );
+          return <LogRow key={row.id} {...row} />;
         })}
       </tbody>
       <tfoot>
-        <tr className="flex gap-8 rounded-b-xl bg-primary-100 px-6 py-2">
-          <td className="relative w-full">
-            <form
-              className="relative -left-0.5"
-              onSubmit={(event) => {
-                event.preventDefault();
-                handleAddNewTask();
-              }}
-            >
-              <input
-                className="h-8 w-full rounded-lg bg-secondary-100 pl-1.5"
-                value={newTaskName}
-                type="text"
-                placeholder="New Task"
-                onChange={(event) => {
-                  setNewTaskName(event.target.value);
-                }}
-              />
-            </form>
-          </td>
-          <td className="w-fit min-w-[9rem]">
-            <Button
-              icon="note-x16-tertiary-900"
-              variant="tiny"
-              intent="primary-light"
-              onClick={handleAddNewTask}
-            >
-              Add Task
-            </Button>
-          </td>
-        </tr>
+        <LogInputRow handleAddNewTask={handleAddNewTask} />
       </tfoot>
     </table>
   );
 };
 
-export default SessionLog;
+const LogRow: React.FC<Row<Log>> = (row) => {
+  const isRowSelected = row.getIsSelected();
+  return (
+    <tr
+      className={clsx("flex cursor-pointer gap-8 px-6 py-2", {
+        "bg-primary-100 hover:bg-primary-150": !isRowSelected,
+        "bg-primary-200 font-semibold": isRowSelected,
+      })}
+      role="radio"
+      onClick={() => row.toggleSelected()}
+    >
+      {row.getVisibleCells().map((cell) => {
+        return (
+          <td
+            key={cell.id}
+            className={clsx("relative flex items-center whitespace-nowrap", {
+              "w-full overflow-hidden": cell.column.id === "taskName",
+              "w-36": cell.column.id === "taskTimeSeconds",
+            })}
+          >
+            {cell.column.id === "taskTimeSeconds" && isRowSelected && (
+              <img
+                className="absolute -left-8 h-6 w-6"
+                src="/icons/stopwatch.gif"
+              />
+            )}
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </td>
+        );
+      })}
+    </tr>
+  );
+};
+
+interface LogInputRowProps {
+  handleAddNewTask: (newTaskName: string) => void;
+}
+
+const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
+  const [newTaskName, setNewTaskName] = useState<string>("");
+
+  return (
+    <tr className="flex gap-8 rounded-b-xl bg-primary-100 px-6 py-2">
+      <td className="relative w-full">
+        <form
+          className="relative -left-0.5"
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleAddNewTask(newTaskName);
+            setNewTaskName("");
+          }}
+        >
+          <input
+            className="h-8 w-full rounded-lg bg-secondary-100 pl-1.5"
+            value={newTaskName}
+            type="text"
+            placeholder="New Task"
+            onChange={(event) => {
+              setNewTaskName(event.target.value);
+            }}
+          />
+        </form>
+      </td>
+      <td className="w-fit min-w-[9rem]">
+        <Button
+          icon="note-x16-tertiary-900"
+          variant="tiny"
+          intent="primary-light"
+          onClick={() => {
+            handleAddNewTask(newTaskName);
+            setNewTaskName("");
+          }}
+        >
+          Add Task
+        </Button>
+      </td>
+    </tr>
+  );
+};

@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./canvas/Scene";
 import SessionTimeInterface from "./interface/SessionTimeInterface";
-import SessionLog from "./interface/SessionLog";
+import { SessionLog } from "./interface/SessionLog";
 import Menu from "./interface/components/Menu";
 import StartSessionMainMenu from "./interface/StartSessionMainMenu";
 import { useBoundStore } from "./store/useBoundStore";

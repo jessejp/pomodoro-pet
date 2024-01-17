@@ -14,7 +14,6 @@ export const LogTimer: React.FC<LogTimerProps> = ({
   initialSeconds,
   isSelected,
   rowId,
-  handleDismount,
 }) => {
   const saveChangesRef = useRef(false);
   const [seconds, setSeconds] = useState(initialSeconds);
@@ -22,17 +21,14 @@ export const LogTimer: React.FC<LogTimerProps> = ({
 
   const dismount = useCallback(() => {
     console.log("hello useCallback, we should be dismounting");
-
-    handleDismount(seconds, rowId);
-  }, [seconds, rowId, handleDismount]);
+    console.log("is this old info tho?", seconds, rowId);
+    // handleDismount(seconds, rowId);
+  }, [seconds, rowId]);
 
   useEffect(() => {
     if (!isSelected) {
       console.log("if !isSelected");
-      console.log(seconds, initialSeconds);
       return;
-    } else if (isSelected && seconds === initialSeconds) {
-      console.log('Timer just started');
     }
 
     const interval = setInterval(() => {
@@ -41,8 +37,7 @@ export const LogTimer: React.FC<LogTimerProps> = ({
     }, 1000);
 
     return () => {
-      console.log("ticker useEffect, but can we set ref here?");
-      console.log("seconds changed", seconds > initialSeconds);
+      console.log("ticker useEffect, cleanup");
 
       clearInterval(interval);
     };
@@ -51,15 +46,13 @@ export const LogTimer: React.FC<LogTimerProps> = ({
   useEffect(() => {
     console.log("hello dismount effect", saveChangesRef.current);
 
-    if (saveChangesRef.current === false) return;
-
     console.log("SaveChanges === TRUE");
 
     return () => {
       console.log("Save To Zustand?");
       dismount();
     };
-  }, [dismount, saveChangesRef]);
+  }, [dismount]);
 
   return formatTimeVerbose(seconds);
 };
