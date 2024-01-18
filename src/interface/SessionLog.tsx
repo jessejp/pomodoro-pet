@@ -178,6 +178,16 @@ interface LogInputRowProps {
 
 const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
   const [newTaskName, setNewTaskName] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const validate = (value: string) => {
+    if (value.length === 0) {
+      setErrorMessage("Task name can't be empty! 😦");
+      return false;
+    }
+    setErrorMessage("");
+    return true;
+  };
 
   return (
     <tr className="flex gap-8 rounded-b-xl bg-primary-100 px-6 py-2">
@@ -186,17 +196,44 @@ const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
           className="relative -left-0.5"
           onSubmit={(event) => {
             event.preventDefault();
+            if (validate(newTaskName) === false) return;
+
             handleAddNewTask(newTaskName);
             setNewTaskName("");
           }}
         >
+          {!!errorMessage && (
+            <div className="absolute -top-10 rounded-xl bg-primary-400 px-4 py-1 text-md text-tertiary-900">
+              {errorMessage}
+              <button
+                className="absolute -right-2 -top-2 aspect-square rounded-full bg-tertiary-350 px-1.5 text-[12px] leading-none hover:bg-secondary-300"
+                onClick={() => {
+                  setErrorMessage("");
+                }}
+              >
+                ⨉
+              </button>
+            </div>
+          )}
           <input
-            className="h-8 w-full rounded-lg bg-secondary-100 pl-1.5"
+            className={clsx(
+              "h-8 w-full rounded-lg bg-secondary-100 pl-1.5 focus:border-0",
+              {
+                "border-2 border-primary-700": !!errorMessage,
+              }
+            )}
             value={newTaskName}
             type="text"
             placeholder="New Task"
             onChange={(event) => {
+              if (errorMessage) setErrorMessage("");
               setNewTaskName(event.target.value);
+            }}
+            onFocus={() => {
+              if (errorMessage) setErrorMessage("");
+            }}
+            onBlur={() => {
+              if (errorMessage) setErrorMessage("");
             }}
           />
         </form>
@@ -207,6 +244,7 @@ const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
           variant="tiny"
           intent="primary-light"
           onClick={() => {
+            if (validate(newTaskName) === false) return;
             handleAddNewTask(newTaskName);
             setNewTaskName("");
           }}

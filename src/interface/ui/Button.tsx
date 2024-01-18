@@ -5,7 +5,7 @@ interface ButtonProps extends PropsWithChildren {
   icon: string;
   intent: "primary" | "primary-light" | "secondary";
   variant: "big" | "tiny";
-  onClick?: () => void;
+  onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button: React.FC<ButtonProps> = ({

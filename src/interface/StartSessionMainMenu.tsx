@@ -11,12 +11,10 @@ const StartSessionMainMenu = () => {
     <div className="relative flex h-screen flex-col items-center justify-center gap-16 bg-tertiary-300 short:justify-end short:gap-8 xshort:gap-4">
       <button
         className={clsx(
-          "fixed top-0 z-10 mr-8 mt-8 grid place-content-center self-end rounded-full border-4  p-4 hover:scale-105  thin:p-3",
+          "fixed top-0 z-10 mr-8 mt-8 grid place-content-center self-end rounded-full  p-4 hover:scale-105  thin:p-3",
           {
-            "border-tertiary-800 bg-primary-200 hover:bg-primary-100":
-              !showCharacterCustomization,
-            "hover:bg-cool-100 border-tertiary-800 bg-cool-150":
-              showCharacterCustomization,
+            "bg-primary-200 hover:bg-primary-100": !showCharacterCustomization,
+            "hover:bg-cool-100 bg-cool-150": showCharacterCustomization,
           }
         )}
         onClick={() => {
