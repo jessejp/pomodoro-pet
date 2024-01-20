@@ -5,14 +5,14 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
 import { Log } from "../store/types";
+import { useBoundStore } from "../store/useBoundStore";
 import { LogTimer } from "./timer/LogTimer";
 import Button from "./ui/Button";
-import { useBoundStore } from "../store/useBoundStore";
 
 export const SessionLog = () => {
   const { sessionLog, createLog, updateSessionLog } = useBoundStore(
@@ -26,6 +26,19 @@ export const SessionLog = () => {
   const [data, setData] = useState<Log[]>(() => [...sessionLog]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = createColumnHelper<Log>();
+
+  const saveUpdatedSeconds = useMemo(
+    () => (sec: number, row: Row<Log>) => {
+      const isSelected = row.getIsSelected();
+      if (!isSelected) {
+        updateSessionLog({
+          task: row.original.task,
+          taskTimeSeconds: sec,
+        });
+      }
+    },
+    [updateSessionLog]
+  );
 
   const columns = useMemo(
     () => [
@@ -44,21 +57,15 @@ export const SessionLog = () => {
             initialSeconds={info.getValue()}
             rowId={info.row.id}
             isSelected={info.row.getIsSelected()}
-            handleDismount={(sec: number) => {
-              const isSelected = info.row.getIsSelected();
-              if (!isSelected) {
-                updateSessionLog({
-                  task: info.row.original.task,
-                  taskTimeSeconds: sec,
-                });
-              }
+            saveUpdatedSeconds={(sec) => {
+              saveUpdatedSeconds(sec, info.row);
             }}
           />
         ),
         footer: (info) => info.column.id,
       }),
     ],
-    [columnHelper, updateSessionLog]
+    [columnHelper, saveUpdatedSeconds]
   );
 
   const table = useReactTable({
@@ -81,6 +88,7 @@ export const SessionLog = () => {
 
   const handleAddNewTask = (task: string) => {
     createLog({ task, taskTimeSeconds: 0 });
+    table.resetRowSelection();
   };
 
   console.count("SessionLog");
@@ -144,7 +152,7 @@ const LogRow: React.FC<Row<Log>> = (row) => {
         return (
           <td
             key={cell.id}
-            className={clsx("relative flex items-center whitespace-nowrap", {
+            className={clsx("relative flex items-center", {
               "w-full overflow-hidden": cell.column.id === "taskName",
               "w-36": cell.column.id === "taskTimeSeconds",
             })}

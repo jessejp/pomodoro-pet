@@ -7,14 +7,14 @@ interface LogTimerProps {
   initialSeconds: number;
   rowId: Row<Log>["id"];
   isSelected: ReturnType<Row<Log>["getIsSelected"]>;
-  handleDismount: (sec: number) => void;
+  saveUpdatedSeconds: (sec: number) => void;
 }
 
 export const LogTimer: React.FC<LogTimerProps> = ({
   initialSeconds,
   isSelected,
   rowId,
-  handleDismount,
+  saveUpdatedSeconds,
 }) => {
   const [seconds, setSeconds] = useState(initialSeconds);
 
@@ -29,9 +29,9 @@ export const LogTimer: React.FC<LogTimerProps> = ({
 
     return () => {
       clearInterval(interval);
-      handleDismount(seconds);
+      saveUpdatedSeconds(seconds);
     };
-  }, [isSelected, seconds, rowId, handleDismount]);
+  }, [isSelected, seconds, rowId, saveUpdatedSeconds]);
 
   return formatTimeVerbose(seconds);
 };
