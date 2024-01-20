@@ -66,10 +66,7 @@ export type Log = {
 };
 
 export interface SessionLogParams {
-  selectedTaskIndex: number;
-  newTaskMessage: string;
   sessionLog: Log[];
+  createLog: (logEntry: Log) => void;
   updateSessionLog: (logEntry: Log) => void;
-  updateSelectedTaskIndex: (selectedIndex: number) => void;
-  updateNewTaskMessage: (value: string) => void;
 }

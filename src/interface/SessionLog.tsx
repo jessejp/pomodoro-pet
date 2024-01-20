@@ -8,28 +8,22 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Log } from "../store/types";
 import { LogTimer } from "./timer/LogTimer";
 import Button from "./ui/Button";
-
-const DUMMY_DATA: Log[] = [
-  /*  {
-    task: "Designing Session Log V2",
-    taskTimeSeconds: 60 * 30 + 35,
-  },
-  {
-    task: "Writing documentation",
-    taskTimeSeconds: 7200,
-  },
-  {
-    task: "Code feat-style-session-log-v2",
-    taskTimeSeconds: 60 * 60 * 1 + 60 * 5,
-  }, */
-];
+import { useBoundStore } from "../store/useBoundStore";
 
 export const SessionLog = () => {
-  const [data, setData] = useState<Log[]>(() => [...DUMMY_DATA]);
+  const { sessionLog, createLog, updateSessionLog } = useBoundStore(
+    (state) => ({
+      sessionLog: state.sessionLog,
+      createLog: state.createLog,
+      updateSessionLog: state.updateSessionLog,
+    })
+  );
+
+  const [data, setData] = useState<Log[]>(() => [...sessionLog]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = createColumnHelper<Log>();
 
@@ -50,28 +44,23 @@ export const SessionLog = () => {
             initialSeconds={info.getValue()}
             rowId={info.row.id}
             isSelected={info.row.getIsSelected()}
-            handleDismount={(sec: number, rowId: Row<Log>["id"]) => {
-              console.log("saving data", sec, "to", rowId);
-
-              setData((prev) => {
-                return prev.map((row, index) => {
-                  if (`${index}` === rowId) {
-                    return {
-                      ...row,
-                      taskTimeSeconds: sec,
-                    };
-                  }
-                  return row;
+            handleDismount={(sec: number) => {
+              const isSelected = info.row.getIsSelected();
+              if (!isSelected) {
+                updateSessionLog({
+                  task: info.row.original.task,
+                  taskTimeSeconds: sec,
                 });
-              });
+              }
             }}
           />
         ),
         footer: (info) => info.column.id,
       }),
     ],
-    [columnHelper]
+    [columnHelper, updateSessionLog]
   );
+
   const table = useReactTable({
     data,
     columns,
@@ -86,10 +75,12 @@ export const SessionLog = () => {
     debugTable: false,
   });
 
-  const handleAddNewTask = (taskName: string) => {
-    setData((prevState) => {
-      return [...prevState, { task: taskName, taskTimeSeconds: 0 }];
-    });
+  useEffect(() => {
+    setData(sessionLog);
+  }, [sessionLog]);
+
+  const handleAddNewTask = (task: string) => {
+    createLog({ task, taskTimeSeconds: 0 });
   };
 
   console.count("SessionLog");
@@ -206,7 +197,7 @@ const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
             <div className="absolute -top-10 rounded-xl bg-primary-400 px-4 py-1 text-md text-tertiary-900">
               {errorMessage}
               <button
-                className="absolute -right-2 -top-2 aspect-square rounded-full bg-tertiary-350 px-1.5 text-[12px] leading-none hover:bg-secondary-300"
+                className="absolute -right-2 -top-2 aspect-square rounded-full bg-tertiary-350 px-1.5 text-[12px] font-bold leading-none hover:bg-secondary-300"
                 onClick={() => {
                   setErrorMessage("");
                 }}
