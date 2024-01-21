@@ -32,7 +32,6 @@ const CustomizePet = () => {
         </Canvas>
       </div>
       <Menu
-        isFixed={false}
         tabs={[
           {
             icon: "customize-tertiary-800",
