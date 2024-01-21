@@ -9,19 +9,16 @@ interface Props {
 }
 
 const CountdownClock: React.FC<Props> = ({ startTime, minutes }) => {
-  const {
-    pomodoroPhase,
-    startBreak,
-    nextRound,
-    setIsRunning,
-  } = useBoundStore((state) => ({
-    pomodoroPhase: state.pomodoroPhase,
-    pomodoroSession: state.pomodoroSession,
-    currentRound: state.currentRound,
-    startBreak: state.startBreak,
-    nextRound: state.nextRound,
-    setIsRunning: state.setIsRunning,
-  }));
+  const { pomodoroPhase, startBreak, nextRound, setIsRunning } = useBoundStore(
+    (state) => ({
+      pomodoroPhase: state.pomodoroPhase,
+      pomodoroSession: state.pomodoroSession,
+      currentRound: state.currentRound,
+      startBreak: state.startBreak,
+      nextRound: state.nextRound,
+      setIsRunning: state.setIsRunning,
+    })
+  );
 
   const [timeRemaining, setTimeRemaining] = useState(minutes * 60);
 
@@ -40,9 +37,9 @@ const CountdownClock: React.FC<Props> = ({ startTime, minutes }) => {
           nextRound();
         }
       } else {
-        // timerRef.current!.innerText = formatTime(timeLeft);
         setTimeRemaining(timeLeft);
       }
+
     }, 1000);
 
     return () => {

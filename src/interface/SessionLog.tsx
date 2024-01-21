@@ -8,35 +8,48 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Log } from "../store/types";
 import { useBoundStore } from "../store/useBoundStore";
 import { LogTimer } from "./timer/LogTimer";
 import Button from "./ui/Button";
 
 export const SessionLog = () => {
-  const { sessionLog, createLog, updateSessionLog, pomodoroPhase } =
-    useBoundStore((state) => ({
-      pomodoroPhase: state.pomodoroPhase,
+  console.count("SessionLog.tsx");
+
+  const { sessionLog, createLog, updateSessionLog, isRunning } = useBoundStore(
+    (state) => ({
+      isRunning: state.isRunning,
       sessionLog: state.sessionLog,
       createLog: state.createLog,
       updateSessionLog: state.updateSessionLog,
-    }));
+    })
+  );
 
   const [data, setData] = useState<Log[]>(() => [...sessionLog]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = createColumnHelper<Log>();
+  const lastSec = useRef<Log>();
 
   const saveUpdatedSeconds = useMemo(
     () => (sec: number, row: Row<Log>, allowSaving: boolean) => {
-      if (!allowSaving) return;
+      const { task, taskTimeSeconds: ogSecs } = row.original;
+
+      if (
+        !lastSec.current ||
+        lastSec.current.task !== task ||
+        (lastSec.current?.task === task && sec !== ogSecs)
+      )
+        lastSec.current = { task, taskTimeSeconds: sec };
+
+      if (!allowSaving && isRunning) return;
 
       updateSessionLog({
-        task: row.original.task,
-        taskTimeSeconds: sec,
+        task,
+        taskTimeSeconds: lastSec.current.taskTimeSeconds + 1,
       });
     },
-    [updateSessionLog]
+    [updateSessionLog, isRunning]
   );
 
   const columns = useMemo(
@@ -57,11 +70,7 @@ export const SessionLog = () => {
             rowId={info.row.id}
             isSelected={info.row.getIsSelected()}
             saveUpdatedSeconds={(sec) => {
-              saveUpdatedSeconds(
-                sec,
-                info.row,
-                info.row.getIsSelected() === false
-              );
+              saveUpdatedSeconds(sec, info.row, !info.row.getIsSelected());
             }}
           />
         ),
@@ -93,8 +102,6 @@ export const SessionLog = () => {
     createLog({ task, taskTimeSeconds: 0 });
     table.resetRowSelection();
   };
-
-  console.count("SessionLog");
 
   return (
     <table className="w-full text-tertiary-900">

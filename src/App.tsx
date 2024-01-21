@@ -25,7 +25,7 @@ function App() {
     devFeatures: true,
   });
 
-  console.log("App", "pomodoroPhase:", pomodoroPhase);
+  console.count("App.tsx");
 
   return (
     <>
