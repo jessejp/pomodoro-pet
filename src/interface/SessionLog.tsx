@@ -5,7 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
@@ -15,27 +15,26 @@ import { LogTimer } from "./timer/LogTimer";
 import Button from "./ui/Button";
 
 export const SessionLog = () => {
-  const { sessionLog, createLog, updateSessionLog } = useBoundStore(
-    (state) => ({
+  const { sessionLog, createLog, updateSessionLog, pomodoroPhase } =
+    useBoundStore((state) => ({
+      pomodoroPhase: state.pomodoroPhase,
       sessionLog: state.sessionLog,
       createLog: state.createLog,
       updateSessionLog: state.updateSessionLog,
-    })
-  );
+    }));
 
   const [data, setData] = useState<Log[]>(() => [...sessionLog]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = createColumnHelper<Log>();
 
   const saveUpdatedSeconds = useMemo(
-    () => (sec: number, row: Row<Log>) => {
-      const isSelected = row.getIsSelected();
-      if (!isSelected) {
-        updateSessionLog({
-          task: row.original.task,
-          taskTimeSeconds: sec,
-        });
-      }
+    () => (sec: number, row: Row<Log>, allowSaving: boolean) => {
+      if (!allowSaving) return;
+
+      updateSessionLog({
+        task: row.original.task,
+        taskTimeSeconds: sec,
+      });
     },
     [updateSessionLog]
   );
@@ -58,7 +57,11 @@ export const SessionLog = () => {
             rowId={info.row.id}
             isSelected={info.row.getIsSelected()}
             saveUpdatedSeconds={(sec) => {
-              saveUpdatedSeconds(sec, info.row);
+              saveUpdatedSeconds(
+                sec,
+                info.row,
+                info.row.getIsSelected() === false
+              );
             }}
           />
         ),
