@@ -7,22 +7,23 @@ import { useControls } from "leva";
 import Camera from "./Camera";
 import { Book } from "./world/furniture/Book";
 import { Suspense } from "react";
+import { PomodoroTimerParams } from "../store/types";
 
-const Scene: React.FC<{ devGUI: boolean }> = ({ devGUI }) => {
+const Scene: React.FC<{
+  pomodoroPhase: PomodoroTimerParams["pomodoroPhase"];
+}> = ({pomodoroPhase}) => {
   const ctrls = useControls("Scene", {
     presentationMode: true,
     orbitControls: false,
     showAxes: true,
   });
 
-  const { pomodoroPhase, pet } = useBoundStore((state) => ({
-    pomodoroPhase: state.pomodoroPhase,
+  const { pet } = useBoundStore((state) => ({
     pet: state.equippedCosmetic.petModel,
   }));
 
   return (
     <>
-      {devGUI && ctrls.showAxes && <axesHelper args={[1]} />}
       <OrbitControls enabled={ctrls.orbitControls} />
       <PresentationControls
         enabled={(pomodoroPhase !== "none") === ctrls.presentationMode}

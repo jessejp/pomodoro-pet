@@ -18,22 +18,25 @@ function App() {
     stop: state.stop,
   }));
 
-  const ctrls = useControls("App", {
-    showStartMenu: true,
-    showSessionTimeInterface: true,
-    showMenu: true,
+  const ctrls = useControls("Views", {
+    startMenu: true,
+    timeInterface: true,
+    menuBox: true,
+    devFeatures: true,
   });
+
+  console.log("App", "pomodoroPhase:", pomodoroPhase);
 
   return (
     <>
       {!devGUI && <Leva hidden={true} />}
-      {(pomodoroPhase === "none") === ctrls.showStartMenu && (
+      {(pomodoroPhase === "none") === ctrls.startMenu && (
         <StartSessionMainMenu />
       )}
 
       {pomodoroPhase !== "none" && (
         <>
-          {ctrls.showSessionTimeInterface && <SessionTimeInterface />}
+          {ctrls.timeInterface && <SessionTimeInterface />}
 
           <div className="relative flex h-screen flex-col items-center bg-white">
             <Suspense
@@ -58,31 +61,33 @@ function App() {
                 }}
                 flat={true}
               >
-                {devGUI && <Perf position="top-left" />}
-                <Scene devGUI={devGUI} />
+                {devGUI && ctrls.devFeatures && <Perf position="top-left" />}
+                {devGUI && ctrls.devFeatures && <axesHelper args={[1]} />}
+                <Scene pomodoroPhase={pomodoroPhase} />
               </Canvas>
             </Suspense>
-            <div className="fixed bottom-4 flex w-full items-end justify-center gap-2 thin:flex-col thin:items-center">
-              <Menu
-                isFixed={true}
-                tabs={[
-                  {
-                    icon: "note-tertiary-800",
-                    component: <SessionLog />,
-                  },
-                ]}
-              />
-              <div className="absolute right-4 flex w-fit shrink thin:relative">
-                <Button
-                  variant="big"
-                  intent="secondary"
-                  onClick={stop}
-                  icon="stop-tertiary-900"
-                >
-                  Stop
-                </Button>
+            {ctrls.menuBox && (
+              <div className="fixed bottom-4 flex w-full items-end justify-center gap-2 thin:flex-col thin:items-center">
+                <Menu
+                  tabs={[
+                    {
+                      icon: "note-tertiary-800",
+                      component: <SessionLog />,
+                    },
+                  ]}
+                />
+                <div className="absolute right-4 flex w-fit shrink thin:relative">
+                  <Button
+                    variant="big"
+                    intent="secondary"
+                    onClick={stop}
+                    icon="stop-tertiary-900"
+                  >
+                    Stop
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </>
       )}

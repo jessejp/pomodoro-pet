@@ -7,7 +7,6 @@ type Tab = {
 };
 
 interface MenuProps {
-  isFixed?: boolean;
   tabs: Tab[];
 }
 
