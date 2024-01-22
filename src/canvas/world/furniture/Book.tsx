@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { useLoader } from "@react-three/fiber";
+import { ObjectMap, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 import { useBoundStore } from "../../../store/useBoundStore";
 
@@ -17,14 +17,15 @@ export interface FurnitureGLTFAction extends THREE.AnimationClip {
   name: ActionName;
 }
 
-type GLTFResult = GLTF & {
-  nodes: {
-    book_page001: THREE.SkinnedMesh;
-    book001: THREE.SkinnedMesh;
-    book_root: THREE.Bone;
+type GLTFResult = GLTF &
+  ObjectMap & {
+    nodes: {
+      book_page001: THREE.SkinnedMesh;
+      book001: THREE.SkinnedMesh;
+      book_root: THREE.Bone;
+    };
+    animations: FurnitureGLTFAction[];
   };
-  animations: FurnitureGLTFAction[];
-};
 
 // type ActionName = "page_flip" | "page_none";
 // type GLTFActions = Record<ActionName, THREE.AnimationAction>;

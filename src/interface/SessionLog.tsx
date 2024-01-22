@@ -1,108 +1,266 @@
-import { useEffect, useState } from "react";
+import {
+  Row,
+  SortingState,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import clsx from "clsx";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Log } from "../store/types";
 import { useBoundStore } from "../store/useBoundStore";
+import { LogTimer } from "./timer/LogTimer";
+import Button from "./ui/Button";
 
-const SessionLog = () => {
-  const {
-    sessionLog,
-    selectedTask,
-    newTaskMessage,
-    updateNewTaskMessage,
-    updateSelectedTaskIndex,
-  } = useBoundStore((state) => ({
-    sessionLog: state.sessionLog,
-    selectedTask: state.selectedTaskIndex,
-    newTaskMessage: state.newTaskMessage,
-    updateNewTaskMessage: state.updateNewTaskMessage,
-    updateSelectedTaskIndex: state.updateSelectedTaskIndex,
-  }));
-  const [taskName, setTaskName] = useState<string>(newTaskMessage);
+export const SessionLog = () => {
+  console.count("SessionLog.tsx");
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      updateNewTaskMessage(taskName || "");
-    }, 800);
+  const { sessionLog, createLog, updateSessionLog, isRunning } = useBoundStore(
+    (state) => ({
+      isRunning: state.isRunning,
+      sessionLog: state.sessionLog,
+      createLog: state.createLog,
+      updateSessionLog: state.updateSessionLog,
+    })
+  );
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [taskName, updateNewTaskMessage]);
+  const [data, setData] = useState<Log[]>(() => [...sessionLog]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const columnHelper = createColumnHelper<Log>();
+  const lastSec = useRef<Log>();
 
-  return (
-    <>
-      <div className="flex h-5/6 w-full flex-col gap-3">
-        <div className="grid h-8 grid-cols-sessionlog thin:grid-cols-sessionlogMobile gap-3 text-sm">
-          <div>Length</div>
-          <div className="pl-1">Task Name</div>
-          <div>Active Task</div>
-        </div>
-        <div className="flex h-fit max-h-24 flex-col gap-3 overflow-y-scroll text-md scrollbar-thin scrollbar-thumb-tertiary-300 scrollbar-thumb-rounded-lg">
-          {sessionLog.map((entry, index) => {
-            const logTime = Math.round((entry.minutes / 60) * 100) / 100;
-            return (
-              <div
-                key={index}
-                className="grid grid-cols-sessionlog thin:grid-cols-sessionlogMobile items-center gap-3"
-              >
-                <div>{`${logTime === 0 ? "0.00" : logTime} h`}</div>
-                <div className="pl-1">{entry.message}</div>
-                <label htmlFor={`active-session-${index}`}>
-                  <input
-                    className="grid h-8 w-8 appearance-none
-                              place-content-center rounded-full bg-secondary-100 before:h-4 before:w-4 before:scale-0 before:rounded-full before:shadow-radioButtonInset before:shadow-tertiary-600 before:transition-transform before:content-[''] checked:before:scale-100"
-                    id={`active-session-${index}`}
-                    type="radio"
-                    name={`active-session-${index}`}
-                    checked={selectedTask === index}
-                    autoFocus={selectedTask === index}
-                    onChange={() => {
-                      updateSelectedTaskIndex(index);
-                    }}
-                  />
-                </label>
-              </div>
-            );
-          })}
-        </div>
-        <div className="grid h-8 grid-cols-sessionlog thin:grid-cols-sessionlogMobile gap-3 text-md">
-          <div>0.00&nbsp;h</div>
-          <input
-            className="h-8 rounded-lg bg-secondary-100 pl-1 thin:w-full"
-            value={taskName}
-            type="text"
-            placeholder="New Task"
-            onFocus={() => {
-              updateSelectedTaskIndex(-1);
-            }}
-            onChange={(event) => {
-              setTaskName(event.target.value);
+  const saveUpdatedSeconds = useMemo(
+    () => (sec: number, row: Row<Log>, allowSaving: boolean) => {
+      const { task, taskTimeSeconds: ogSecs } = row.original;
+
+      if (
+        !lastSec.current ||
+        lastSec.current.task !== task ||
+        (lastSec.current?.task === task && sec !== ogSecs)
+      )
+        lastSec.current = { task, taskTimeSeconds: sec };
+
+      if (!allowSaving && isRunning) return;
+
+      updateSessionLog({
+        task,
+        taskTimeSeconds: lastSec.current.taskTimeSeconds + 1,
+      });
+    },
+    [updateSessionLog, isRunning]
+  );
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("task", {
+        id: "taskName",
+        header: "Task Name",
+        cell: (info) => info.getValue(),
+        footer: (info) => info.column.id,
+        enableSorting: false,
+      }),
+      columnHelper.accessor((row) => row.taskTimeSeconds, {
+        id: "taskTimeSeconds",
+        header: "Work Time",
+        cell: (info) => (
+          <LogTimer
+            initialSeconds={info.getValue()}
+            rowId={info.row.id}
+            isSelected={info.row.getIsSelected()}
+            saveUpdatedSeconds={(sec) => {
+              saveUpdatedSeconds(sec, info.row, !info.row.getIsSelected());
             }}
           />
-          <label htmlFor="active-session--1">
-            <input
-              className="grid h-8 w-8 scale-100 appearance-none
-              place-content-center rounded-full bg-secondary-100 before:h-4 before:w-4 before:scale-0 before:rounded-full before:shadow-radioButtonInset before:shadow-tertiary-600 before:transition-transform before:content-[''] checked:before:scale-100"
-              id="active-session--1"
-              type="radio"
-              name="active-session"
-              checked={selectedTask === -1}
-              onChange={() => {
-                updateSelectedTaskIndex(-1);
-              }}
-            />
-          </label>
-        </div>
-      </div>
-      {/* <div className="flex h-1/6 flex-row-reverse items-center justify-start gap-2 py-2">
-        <label>Include break time</label>
-        <input
-          className="scale-150"
-          type="checkbox"
-          checked={showTimeWithBreaks}
-          onChange={(event) => setShowTimeWithBreaks(event.target.checked)}
-        />
-      </div> */}
-    </>
+        ),
+        footer: (info) => info.column.id,
+      }),
+    ],
+    [columnHelper, saveUpdatedSeconds]
+  );
+
+  const table = useReactTable({
+    data,
+    columns,
+    enableRowSelection: true,
+    enableMultiRowSelection: false,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    debugTable: false,
+  });
+
+  useEffect(() => {
+    setData(sessionLog);
+  }, [sessionLog]);
+
+  const handleAddNewTask = (task: string) => {
+    createLog({ task, taskTimeSeconds: 0 });
+    table.resetRowSelection();
+  };
+
+  return (
+    <table className="w-full text-tertiary-900">
+      <thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr
+            className="flex gap-8 rounded-t-xl bg-primary-300 px-6 py-2 font-semibold"
+            key={headerGroup.id}
+          >
+            {headerGroup.headers.map((header) => (
+              <th
+                key={header.id}
+                colSpan={header.colSpan}
+                className={clsx("text-start", {
+                  "cursor-pointer select-none": header.column.getCanSort(),
+                  "w-full": header.column.columnDef.header === "Task Name",
+                  "w-36": header.column.columnDef.header === "Work Time",
+                })}
+                onClick={header.column.getToggleSortingHandler()}
+              >
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+                {{
+                  asc: "▴",
+                  desc: "▾",
+                }[header.column.getIsSorted() as string] ?? null}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map((row) => {
+          return <LogRow key={row.id} {...row} />;
+        })}
+      </tbody>
+      <tfoot>
+        <LogInputRow handleAddNewTask={handleAddNewTask} />
+      </tfoot>
+    </table>
   );
 };
 
-export default SessionLog;
+const LogRow: React.FC<Row<Log>> = (row) => {
+  const isRowSelected = row.getIsSelected();
+  return (
+    <tr
+      className={clsx("flex cursor-pointer gap-8 px-6 py-2", {
+        "bg-primary-100 hover:bg-primary-150": !isRowSelected,
+        "bg-primary-200 font-semibold": isRowSelected,
+      })}
+      role="radio"
+      onClick={() => row.toggleSelected()}
+    >
+      {row.getVisibleCells().map((cell) => {
+        return (
+          <td
+            key={cell.id}
+            className={clsx("relative flex items-center", {
+              "w-full overflow-hidden": cell.column.id === "taskName",
+              "w-36": cell.column.id === "taskTimeSeconds",
+            })}
+          >
+            {cell.column.id === "taskTimeSeconds" && isRowSelected && (
+              <img
+                className="absolute -left-8 h-6 w-6"
+                src="/icons/stopwatch.gif"
+              />
+            )}
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </td>
+        );
+      })}
+    </tr>
+  );
+};
+
+interface LogInputRowProps {
+  handleAddNewTask: (newTaskName: string) => void;
+}
+
+const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
+  const [newTaskName, setNewTaskName] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const validate = (value: string) => {
+    if (value.length === 0) {
+      setErrorMessage("Task name can't be empty! 😦");
+      return false;
+    }
+    setErrorMessage("");
+    return true;
+  };
+
+  return (
+    <tr className="flex gap-8 rounded-b-xl bg-primary-100 px-6 py-2">
+      <td className="relative w-full">
+        <form
+          className="relative -left-0.5"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (validate(newTaskName) === false) return;
+
+            handleAddNewTask(newTaskName);
+            setNewTaskName("");
+          }}
+        >
+          {!!errorMessage && (
+            <div className="absolute -top-10 rounded-xl bg-primary-400 px-4 py-1 text-md text-tertiary-900">
+              {errorMessage}
+              <button
+                className="absolute -right-2 -top-2 aspect-square rounded-full bg-tertiary-350 px-1.5 text-[12px] font-bold leading-none hover:bg-secondary-300"
+                onClick={() => {
+                  setErrorMessage("");
+                }}
+              >
+                ⨉
+              </button>
+            </div>
+          )}
+          <input
+            className={clsx(
+              "h-8 w-full rounded-lg bg-secondary-100 pl-1.5 focus:border-0",
+              {
+                "border-2 border-primary-700": !!errorMessage,
+              }
+            )}
+            value={newTaskName}
+            type="text"
+            placeholder="New Task"
+            onChange={(event) => {
+              if (errorMessage) setErrorMessage("");
+              setNewTaskName(event.target.value);
+            }}
+            onFocus={() => {
+              if (errorMessage) setErrorMessage("");
+            }}
+            onBlur={() => {
+              if (errorMessage) setErrorMessage("");
+            }}
+          />
+        </form>
+      </td>
+      <td className="w-fit min-w-[9rem]">
+        <Button
+          icon="note-x16-tertiary-900"
+          variant="tiny"
+          intent="primary-light"
+          onClick={() => {
+            if (validate(newTaskName) === false) return;
+            handleAddNewTask(newTaskName);
+            setNewTaskName("");
+          }}
+        >
+          Add Task
+        </Button>
+      </td>
+    </tr>
+  );
+};

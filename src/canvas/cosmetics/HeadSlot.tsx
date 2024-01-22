@@ -6,15 +6,17 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { CosmeticItem, PetType } from "../../store/types";
 import { useEffect, useRef, useState } from "react";
+import { ObjectMap } from "@react-three/fiber";
 
-type GLTFResult = GLTF & {
-  nodes: {
-    head_slot_beanie: THREE.SkinnedMesh;
+type GLTFResult = GLTF &
+  ObjectMap & {
+    nodes: {
+      head_slot_beanie: THREE.SkinnedMesh;
+    };
+    materials: {
+      vertex_color: THREE.MeshBasicMaterial;
+    };
   };
-  materials: {
-    vertex_color: THREE.MeshBasicMaterial;
-  };
-};
 
 type HeadSlotProps = React.JSX.IntrinsicElements["skinnedMesh"] & {
   pet: PetType;

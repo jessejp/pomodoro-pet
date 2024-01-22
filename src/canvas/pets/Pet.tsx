@@ -7,7 +7,7 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 import { GLTF } from "three-stdlib";
-import { useLoader } from "@react-three/fiber";
+import { ObjectMap, useLoader } from "@react-three/fiber";
 import HeadSlot from "../cosmetics/HeadSlot";
 import { useBoundStore } from "../../store/useBoundStore";
 import type { PetType, PetMeshType } from "../../store/types";
@@ -29,7 +29,7 @@ export interface PetGLTFAction extends THREE.AnimationClip {
   name: ActionName;
 }
 
-type GLTFResult = GLTF & {
+type GLTFResult = GLTF & ObjectMap & {
   nodes: {
     root: THREE.Bone;
     ["MCH-torsoparent"]: THREE.Bone;

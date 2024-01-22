@@ -3,7 +3,7 @@
 import scrollbarplugin from "tailwind-scrollbar";
 
 export default {
-  content: ["./index.html", "./src/interface/**/*.{ts,tsx}"],
+  content: ["./index.html", "./src/interface/**/*.{ts,tsx}", "./src/App.tsx"],
   theme: {
     screens: {
       short: { raw: "(max-height: 800px)" },
@@ -26,12 +26,22 @@ export default {
       colors: {
         orangeFlavour: "#FFC222",
         "primary-100": "#FDE2DB",
+        "primary-150": "#FCCFC5",
         "primary-200": "#FBC5B8",
+        "primary-300": "#FAA794",
+        "primary-400": "#F88A71",
+        "primary-500": "#F66D4D",
+        "primary-700": "#9E442F",
         "secondary-100": "#FFFAE4",
         "secondary-200": "#FFF5C8",
+        "secondary-300": "#FFEFAD",
         "secondary-500": "#FFE576",
+        "secondary-600": "#DBC45E",
         "tertiary-200": "#F1D3B1",
         "tertiary-300": "#EBBE8A",
+        "tertiary-350": "#ECB679",
+        "tertiary-400": "#E4A863",
+        "tertiary-500": "#DD923C",
         "tertiary-600": "#B17530",
         "tertiary-700": "#855824",
         "tertiary-800": "#583A18",
@@ -44,11 +54,8 @@ export default {
       borderWidth: {
         6: "6px",
       },
-      spacing: {
-        "1/14": `${(1 / 14) * 100}%`,
-        "1/20": `${(1 / 20) * 100}%`,
-      },
       width: {
+        "1.5": "0.38rem",
         128: "32rem",
       },
       height: {

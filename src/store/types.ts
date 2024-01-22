@@ -61,16 +61,12 @@ export interface CosmeticParams {
 */
 
 export type Log = {
-  message: string | null;
-  minutes: number;
-  minutesWithBreaks: number;
+  task: string;
+  taskTimeSeconds: number;
 };
 
 export interface SessionLogParams {
-  selectedTaskIndex: number;
-  newTaskMessage: string;
   sessionLog: Log[];
+  createLog: (logEntry: Log) => void;
   updateSessionLog: (logEntry: Log) => void;
-  updateSelectedTaskIndex: (selectedIndex: number) => void;
-  updateNewTaskMessage: (value: string) => void;
 }

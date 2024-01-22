@@ -7,20 +7,14 @@ type Tab = {
 };
 
 interface MenuProps {
-  isFixed?: boolean;
   tabs: Tab[];
 }
 
-const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ isFixed, tabs }) => {
+const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ tabs }) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   return (
-    <div
-      className={clsx({
-        "fixed bottom-4 thin:relative thin:bottom-0 thin:w-full": isFixed,
-        "relative thin:relative thin:bottom-0 thin:w-full thin:px-4": !isFixed,
-      })}
-    >
-      <div className="absolute -top-12 left-6 flex items-center gap-1">
+    <div className="w-full max-w-2xl">
+      <div className="flex w-full gap-2 px-6">
         {tabs.map((tab, index) => (
           <div
             key={index}
@@ -39,13 +33,8 @@ const Menu: React.FC<PropsWithChildren<MenuProps>> = ({ isFixed, tabs }) => {
           </div>
         ))}
       </div>
-      <div className="flex h-full flex-col justify-between rounded-xl bg-primary-100 px-8 py-4">
-        <div
-          className={clsx("h-4/5 max-w-xl self-center thin:w-full", {
-            "w-[29.5rem]": isFixed,
-            "w-[36rem]": !isFixed,
-          })}
-        >
+      <div className="flex h-full flex-col justify-between">
+        <div className={clsx("h-4/5 w-full")}>
           {tabs[selectedTabIndex].component}
         </div>
       </div>
