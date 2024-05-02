@@ -116,7 +116,7 @@ export const SessionLog = () => {
                 key={header.id}
                 colSpan={header.colSpan}
                 className={clsx("text-start", {
-                  "cursor-pointer select-none": header.column.getCanSort(),
+                  "cursor-pointer select-none text-end": header.column.getCanSort(),
                   "w-full": header.column.columnDef.header === "Task Name",
                   "w-36": header.column.columnDef.header === "Work Time",
                 })}
@@ -164,7 +164,7 @@ const LogRow: React.FC<Row<Log>> = (row) => {
             key={cell.id}
             className={clsx("relative flex items-center", {
               "w-full overflow-hidden": cell.column.id === "taskName",
-              "w-36": cell.column.id === "taskTimeSeconds",
+              "w-36 justify-end": cell.column.id === "taskTimeSeconds",
             })}
           >
             {cell.column.id === "taskTimeSeconds" && isRowSelected && (
@@ -247,7 +247,7 @@ const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
           />
         </form>
       </td>
-      <td className="w-fit min-w-[9rem]">
+      <td className="w-fit min-w-[9rem] flex justify-end">
         <Button
           icon="note-x16-tertiary-900"
           variant="tiny"
