@@ -41,7 +41,7 @@ const SliderWithTabs: React.FC<SliderTabsProps> = ({ tabs }) => {
           {tabs[activeTab].value} {tabs[activeTab].valueLabel}
         </div>
         <input
-          className="h-2 w-64 appearance-none rounded-full border-2 border-tertiary-700 bg-secondary-100 accent-secondary-500 thin:w-40"
+          className="h-3 w-64 appearance-none rounded-full bg-secondary-100  accent-secondary-500 thin:w-40"
           type="range"
           name={tabs[activeTab].name}
           min={tabs[activeTab].min}

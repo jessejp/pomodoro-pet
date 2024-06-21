@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import type { CosmeticItem, EquippedCosmetic } from "../store/types";
-import { useBoundStore } from "../store/useBoundStore";
+import type { CosmeticItem, EquippedCosmetic } from "../../store/types";
+import { useBoundStore } from "../../store/useBoundStore";
 
 const cosmetics: CosmeticItem[] = [
   {

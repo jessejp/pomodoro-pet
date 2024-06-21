@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import type { CosmeticParams, EquippedCosmetic, PetType } from "../store/types";
-import { useBoundStore } from "../store/useBoundStore";
+import type { CosmeticParams, EquippedCosmetic, PetType } from "../../store/types";
+import { useBoundStore } from "../../store/useBoundStore";
 
 const characters: PetType[] = ["monkey", "penguin"];
 

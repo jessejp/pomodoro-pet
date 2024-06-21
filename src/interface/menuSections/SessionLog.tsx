@@ -9,10 +9,10 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Log } from "../store/types";
-import { useBoundStore } from "../store/useBoundStore";
-import { LogTimer } from "./timer/LogTimer";
-import Button from "./ui/Button";
+import { Log } from "../../store/types";
+import { useBoundStore } from "../../store/useBoundStore";
+import { LogTimer } from "../timer/LogTimer";
+import Button from "../ui/Button";
 
 export const SessionLog = () => {
   console.count("SessionLog.tsx");
