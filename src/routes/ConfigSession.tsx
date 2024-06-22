@@ -1,9 +1,10 @@
 import CircularSlider from "@fseehawer/react-circular-slider";
 import React, { Suspense, useState } from "react";
-import Button from "../ui/Button";
-import SliderWithTabs from "../ui/SliderWithTabs";
+import Button from "../interface/ui/Button";
+import SliderWithTabs from "../interface/ui/SliderWithTabs";
 import { useControls } from "leva";
-import { useBoundStore } from "../../store/useBoundStore";
+import { useBoundStore } from "../store/useBoundStore";
+import { Link } from "react-router-dom";
 
 const ConfigSession: React.FC = () => {
   const [workTime, setWorkTime] = useState(25);
@@ -70,6 +71,7 @@ const ConfigSession: React.FC = () => {
               },
             ]}
           />
+          <Link to="focus-session">
           <Button
             intent="primary"
             variant="big"
@@ -84,6 +86,7 @@ const ConfigSession: React.FC = () => {
           >
             Start
           </Button>
+          </Link>
         </div>
       </div>
     </>

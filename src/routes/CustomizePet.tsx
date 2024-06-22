@@ -1,10 +1,10 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Pet } from "../canvas/pets/Pet";
-import Menu from "./ui/Menu";
+import Menu from "../interface/ui/Menu";
 import { useBoundStore } from "../store/useBoundStore";
-import CosmeticSelectMenu from "./menuSections/CosmeticSelectMenu";
-import PetSelectMenu from "./menuSections/PetSelectMenu";
+import CosmeticSelectMenu from "../interface/menuSections/CosmeticSelectMenu";
+import PetSelectMenu from "../interface/menuSections/PetSelectMenu";
 
 const CustomizePet = () => {
   const { pet } = useBoundStore((state) => ({

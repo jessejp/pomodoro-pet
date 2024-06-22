@@ -7,6 +7,7 @@ import { useGUI } from "./Root";
 import { SessionLog } from "../interface/menuSections/SessionLog";
 import Button from "../interface/ui/Button";
 import Menu from "../interface/ui/Menu";
+import { Link } from "react-router-dom";
 
 export function FocusSession() {
   const { ctrls } = useGUI();
@@ -54,14 +55,16 @@ export function FocusSession() {
               ]}
             />
             <div className="absolute right-4 flex w-fit shrink thin:relative">
-              <Button
-                variant="big"
-                intent="secondary"
-                onClick={stop}
-                icon="stop-tertiary-900"
-              >
-                Stop
-              </Button>
+              <Link to="/">
+                <Button
+                  variant="big"
+                  intent="secondary"
+                  onClick={stop}
+                  icon="stop-tertiary-900"
+                >
+                  Stop
+                </Button>
+              </Link>
             </div>
           </div>
         )}

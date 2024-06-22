@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ConfigSession from "../interface/timer/ConfigSession";
+import ConfigSession from "./ConfigSession";
 import clsx from "clsx";
-import CustomizePet from "../interface/CustomizePet";
+import CustomizePet from "./CustomizePet";
 
 const StartSessionMainMenu = () => {
   const [showCharacterCustomization, setShowCharacterCustomization] =
