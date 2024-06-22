@@ -3,7 +3,7 @@ import Scene from "./canvas/Scene";
 import SessionTimeInterface from "./interface/SessionTimeInterface";
 import { SessionLog } from "./interface/menuSections/SessionLog";
 import Menu from "./interface/ui/Menu";
-import StartSessionMainMenu from "./interface/StartSessionMainMenu";
+import StartSessionMainMenu from "./routes/StartSessionMainMenu";
 import { useBoundStore } from "./store/useBoundStore";
 import Button from "./interface/ui/Button";
 import { useControls, Leva } from "leva";
