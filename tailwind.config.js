@@ -55,7 +55,7 @@ export default {
         6: "6px",
       },
       width: {
-        "1.5": "0.38rem",
+        1.5: "0.38rem",
         128: "32rem",
       },
       height: {
@@ -102,6 +102,7 @@ export default {
       },
       boxShadow: {
         radioButtonInset: "inset 1em 1em var(--tw-shadow-color)",
+        innerBlur: "inset 0px 0px 8px 0px var(--tw-shadow-color)",
       },
     },
   },

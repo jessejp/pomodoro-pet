@@ -1,6 +1,10 @@
 import clsx from "clsx";
 import { Leva, useControls } from "leva";
 import { Outlet, useOutletContext, useLocation, Link } from "react-router-dom";
+import SessionTimeInterface from "../interface/SessionTimeInterface";
+import { SessionLog } from "../interface/menuSections/SessionLog";
+import Button from "../interface/ui/Button";
+import Menu from "../interface/ui/Menu";
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -55,11 +59,35 @@ export function Root() {
           </div>
         </Link>
       </header>
-      <main>
+      {ctrls.timeInterface && <SessionTimeInterface />}
+
+      <main className="relative flex h-screen flex-col items-center bg-white">
         <Outlet context={{ ctrls } satisfies ContextType} />
-        <footer>
-          <div>hello hello</div>
-        </footer>
+
+        {ctrls.menuBox && (
+          <div className="fixed bottom-4 flex w-full items-end justify-center gap-2 thin:flex-col thin:items-center">
+            <Menu
+              tabs={[
+                {
+                  icon: "note-tertiary-800",
+                  component: <SessionLog />,
+                },
+              ]}
+            />
+            <div className="absolute right-4 flex w-fit shrink thin:relative">
+              <Link to="/">
+                <Button
+                  variant="big"
+                  intent="secondary"
+                  onClick={stop}
+                  icon="stop-tertiary-900"
+                >
+                  Stop
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );

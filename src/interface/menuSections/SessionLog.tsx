@@ -116,7 +116,8 @@ export const SessionLog = () => {
                 key={header.id}
                 colSpan={header.colSpan}
                 className={clsx("text-start", {
-                  "cursor-pointer select-none text-end": header.column.getCanSort(),
+                  "cursor-pointer select-none text-end":
+                    header.column.getCanSort(),
                   "w-full": header.column.columnDef.header === "Task Name",
                   "w-36": header.column.columnDef.header === "Work Time",
                 })}
@@ -151,8 +152,9 @@ const LogRow: React.FC<Row<Log>> = (row) => {
   const isRowSelected = row.getIsSelected();
   return (
     <tr
-      className={clsx("flex cursor-pointer gap-8 px-6 py-2", {
-        "bg-primary-100 hover:bg-primary-150": !isRowSelected,
+      className={clsx("flex cursor-pointer gap-8 px-8 py-2", {
+        "bg-primary-100 transition-shadow duration-700 shadow-none hover:shadow-innerBlur hover:shadow-primary-200":
+          !isRowSelected,
         "bg-primary-200 font-semibold": isRowSelected,
       })}
       role="radio"
