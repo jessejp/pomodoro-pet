@@ -5,6 +5,7 @@ import SessionTimeInterface from "../interface/SessionTimeInterface";
 import { SessionLog } from "../interface/menuSections/SessionLog";
 import Button from "../interface/ui/Button";
 import Menu from "../interface/ui/Menu";
+import SessionSetup from "../interface/menuSections/SessionSetup";
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -70,11 +71,16 @@ export function Root() {
               tabs={[
                 {
                   icon: "note-tertiary-800",
+                  component: <SessionSetup />,
+                },
+
+                {
+                  icon: "note-tertiary-800",
                   component: <SessionLog />,
                 },
               ]}
             />
-            <div className="absolute right-4 flex w-fit shrink thin:relative">
+            {/* <div className="absolute right-4 flex w-fit shrink thin:relative">
               <Link to="/">
                 <Button
                   variant="big"
@@ -85,7 +91,7 @@ export function Root() {
                   Stop
                 </Button>
               </Link>
-            </div>
+            </div> */}
           </div>
         )}
       </main>

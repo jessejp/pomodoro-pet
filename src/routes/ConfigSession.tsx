@@ -25,7 +25,7 @@ const ConfigSession: React.FC = () => {
       <Suspense fallback={null}>
         <CircularSlider
           renderLabelValue={
-            <div className="absolute top-0 grid h-full w-full place-content-center text-center font-semibold">
+            <div className="absolute top-1 grid h-full w-full place-content-center text-center font-semibold">
               <div className="text-2xl text-tertiary-900">{workTime}</div>
               <div className="text-lg text-tertiary-900">minutes</div>
             </div>
@@ -71,22 +71,22 @@ const ConfigSession: React.FC = () => {
               },
             ]}
           />
-          <Link to="focus-session">
-          <Button
-            intent="primary"
-            variant="big"
-            icon="check-tertiary-900"
-            onClick={() => {
-              start({
-                workTime: ctrls.workTime || workTime,
-                breakTime: ctrls.breakTime || breakTime,
-                rounds: ctrls.rounds || rounds,
-              });
-            }}
-          >
-            Start
-          </Button>
-          </Link>
+          {/* <Link to="focus-session">
+            <Button
+              intent="primary"
+              variant="big"
+              icon="check-tertiary-900"
+              onClick={() => {
+                start({
+                  workTime: ctrls.workTime || workTime,
+                  breakTime: ctrls.breakTime || breakTime,
+                  rounds: ctrls.rounds || rounds,
+                });
+              }}
+            >
+              Start
+            </Button>
+          </Link> */}
         </div>
       </div>
     </>
