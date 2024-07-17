@@ -6,6 +6,7 @@ import { SessionLog } from "../interface/menuSections/SessionLog";
 import Button from "../interface/ui/Button";
 import Menu from "../interface/ui/Menu";
 import SessionSetup from "../interface/menuSections/SessionSetup";
+import { Routes } from "../main";
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -27,13 +28,14 @@ export function Root() {
     devFeatures: devGUI,
   });
 
-  const pageIsCustomize = location.pathname === "/customize";
+  const pathname = location.pathname as Routes;
+  console.log(pathname);
 
   return (
     <>
       {!devGUI && <Leva hidden={true} />}
       <header>
-        <Link to={pageIsCustomize ? "/" : "/customize"}>
+        {/* <Link to={pageIsCustomize ? "/" : "/customize"}>
           <div
             className={clsx(
               "fixed top-0 z-10 mr-8 mt-8 grid place-content-center self-end rounded-full p-4 hover:scale-105  thin:p-3",
@@ -58,22 +60,21 @@ export function Root() {
               />
             )}
           </div>
-        </Link>
+        </Link> */}
       </header>
       {ctrls.timeInterface && <SessionTimeInterface />}
 
-      <main className="relative flex h-screen flex-col items-center bg-white">
+      <main className="relative flex h-screen flex-col items-center justify-between bg-white md:justify-start">
         <Outlet context={{ ctrls } satisfies ContextType} />
 
         {ctrls.menuBox && (
-          <div className="fixed bottom-4 flex w-full items-end justify-center gap-2 thin:flex-col thin:items-center">
+          <div className="relative flex w-full flex-col items-center justify-center gap-2 sm:fixed sm:bottom-4">
             <Menu
               tabs={[
                 {
                   icon: "note-tertiary-800",
                   component: <SessionSetup />,
                 },
-
                 {
                   icon: "note-tertiary-800",
                   component: <SessionLog />,

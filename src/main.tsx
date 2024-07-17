@@ -7,6 +7,8 @@ import { FocusSession } from "./routes/FocusSession.tsx";
 import ConfigSession from "./routes/ConfigSession.tsx";
 import CustomizePet from "./routes/CustomizePet.tsx";
 
+export type Routes = "/" | "/customize" | "/focus-session";
+
 const router = createBrowserRouter([
   {
     path: "/",

@@ -48,7 +48,6 @@ const ConfigSession: React.FC = () => {
         />
       </Suspense>
       <div className="flex w-full flex-col items-center justify-end self-end pb-4">
-        <div className="flex flex-col gap-6 xshort:gap-2">
           <SliderWithTabs
             tabs={[
               {
@@ -87,7 +86,6 @@ const ConfigSession: React.FC = () => {
               Start
             </Button>
           </Link> */}
-        </div>
       </div>
     </>
   );

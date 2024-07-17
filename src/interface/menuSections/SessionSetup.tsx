@@ -10,7 +10,7 @@ const SessionSetup: React.FC<SessionSetupProps> = ({}) => {
   const [rounds, setRounds] = useState(2);
 
   return (
-    <div className="flex items-center justify-between w-full bg-primary-100">
+    <div className="flex w-full items-center justify-between bg-primary-100">
       <div className="flex flex-col">
         {[
           {
@@ -32,15 +32,15 @@ const SessionSetup: React.FC<SessionSetupProps> = ({}) => {
             max: 8,
           },
         ].map((range) => (
-          <div className="flex flex-col gap-2 items-center rounded-xl px-6 pb-4 pt-2 thin:px-8">
+          <div className="flex flex-col items-center gap-2 rounded-xl px-6 pb-4 pt-2">
             <label
               htmlFor={range.name}
-              className="text-center text-[24px] font-semibold text-tertiary-900 thin:text-md"
+              className="text-center text-[24px] font-semibold text-tertiary-900"
             >
               {range.value} {range.valueLabel}
             </label>
             <input
-              className="h-3 w-64 appearance-none rounded-full bg-secondary-100  accent-secondary-500 thin:w-40"
+              className="h-3 w-64 appearance-none rounded-full bg-secondary-100 accent-secondary-500"
               type="range"
               name={range.name}
               min={range.min}
@@ -54,7 +54,7 @@ const SessionSetup: React.FC<SessionSetupProps> = ({}) => {
           </div>
         ))}
       </div>
-      <Link className="w-full flex justify-center" to="focus-session">
+      <Link className="flex w-full justify-center" to="focus-session">
         <img
           className="w-16"
           src={`/icons/play-tertiary-900.svg`}
