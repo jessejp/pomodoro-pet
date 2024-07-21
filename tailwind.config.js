@@ -3,7 +3,12 @@
 import scrollbarplugin from "tailwind-scrollbar";
 
 export default {
-  content: ["./index.html", "./src/interface/**/*.{ts,tsx}", "./src/App.tsx"],
+  content: [
+    "./index.html",
+    "./src/interface/**/*.{ts,tsx}",
+    "./src/routes/**/*.{ts,tsx}",
+    "./src/App.tsx",
+  ],
   theme: {
     fontSize: {
       sm: "16px",

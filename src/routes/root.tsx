@@ -1,12 +1,12 @@
-import clsx from "clsx";
 import { Leva, useControls } from "leva";
-import { Outlet, useOutletContext, useLocation, Link } from "react-router-dom";
+import { Outlet, useLocation, useOutletContext } from "react-router-dom";
 import SessionTimeInterface from "../interface/SessionTimeInterface";
 import { SessionLog } from "../interface/menuSections/SessionLog";
-import Button from "../interface/ui/Button";
-import Menu from "../interface/ui/Menu";
 import SessionSetup from "../interface/menuSections/SessionSetup";
-import { Routes } from "../main";
+import Menu from "../interface/ui/Menu";
+import { getRoute } from "../utils/getRoute";
+import Button from "../interface/ui/Button";
+import { useBoundStore } from "../store/useBoundStore";
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -20,7 +20,11 @@ type ContextType = {
 };
 
 export function Root() {
+  const {} = useBoundStore((state) => ({
+    start: state.start,
+  }));
   const location = useLocation();
+  const route = getRoute(location);
   const ctrls = useControls("Views", {
     startMenu: true,
     timeInterface: true,
@@ -28,8 +32,6 @@ export function Root() {
     devFeatures: devGUI,
   });
 
-  const pathname = location.pathname as Routes;
-  console.log(pathname);
 
   return (
     <>
@@ -66,36 +68,19 @@ export function Root() {
 
       <main className="relative flex h-screen flex-col items-center justify-between bg-white md:justify-start">
         <Outlet context={{ ctrls } satisfies ContextType} />
-
-        {ctrls.menuBox && (
-          <div className="relative flex w-full flex-col items-center justify-center gap-2 sm:fixed sm:bottom-4">
-            <Menu
-              tabs={[
-                {
-                  icon: "note-tertiary-800",
-                  component: <SessionSetup />,
-                },
-                {
-                  icon: "note-tertiary-800",
-                  component: <SessionLog />,
-                },
-              ]}
-            />
-            {/* <div className="absolute right-4 flex w-fit shrink thin:relative">
-              <Link to="/">
-                <Button
-                  variant="big"
-                  intent="secondary"
-                  onClick={stop}
-                  icon="stop-tertiary-900"
-                >
-                  Stop
-                </Button>
-              </Link>
-            </div> */}
-          </div>
-        )}
       </main>
+        {route.rootLayout === "default" && (
+      <aside className="relative flex w-full flex-col items-center justify-center gap-2 sm:fixed sm:bottom-4">
+          <Menu
+            tabs={[
+              {
+                icon: "note-tertiary-800",
+                component: <SessionLog />,
+              },
+            ]}
+          />
+      </aside>
+        )}
     </>
   );
 }

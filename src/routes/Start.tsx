@@ -48,29 +48,30 @@ const ConfigSession: React.FC = () => {
         />
       </Suspense>
       <div className="flex w-full flex-col items-center justify-end self-end pb-4">
-          <SliderWithTabs
-            tabs={[
-              {
-                name: "Break",
-                valueLabel: "minutes",
-                value: breakTime,
-                setMethod: setBreakTime,
-                step: 1,
-                min: 1,
-                max: 20,
-              },
-              {
-                name: "Rounds",
-                valueLabel: "rounds",
-                value: rounds,
-                setMethod: setRounds,
-                step: 1,
-                min: 1,
-                max: 8,
-              },
-            ]}
-          />
-          {/* <Link to="focus-session">
+        <SliderWithTabs
+          tabs={[
+            {
+              name: "Break",
+              valueLabel: "minutes",
+              value: breakTime,
+              setMethod: setBreakTime,
+              step: 1,
+              min: 1,
+              max: 20,
+            },
+            {
+              name: "Rounds",
+              valueLabel: "rounds",
+              value: rounds,
+              setMethod: setRounds,
+              step: 1,
+              min: 1,
+              max: 8,
+            },
+          ]}
+        />
+        <aside className="relative flex w-full flex-col items-center justify-center gap-2 sm:fixed sm:bottom-4">
+          <Link to="focus-session">
             <Button
               intent="primary"
               variant="big"
@@ -85,7 +86,8 @@ const ConfigSession: React.FC = () => {
             >
               Start
             </Button>
-          </Link> */}
+          </Link>
+        </aside>
       </div>
     </>
   );

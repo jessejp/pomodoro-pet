@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ConfigSession from "./ConfigSession";
+import ConfigSession from "./Start";
 import clsx from "clsx";
 import CustomizePet from "./CustomizePet";
 
