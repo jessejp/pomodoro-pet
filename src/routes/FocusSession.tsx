@@ -3,6 +3,7 @@ import { Perf } from "r3f-perf";
 import { Suspense } from "react";
 import Scene from "../canvas/Scene";
 import { useGUI } from "./Root";
+import { Color } from "three";
 
 export function FocusSession() {
   const { ctrls } = useGUI();
@@ -30,6 +31,9 @@ export function FocusSession() {
             far: 15,
           }}
           flat={true}
+          scene={{
+            background: new Color("white")
+          }}
         >
           {ctrls.devFeatures && <Perf position="top-left" />}
           {ctrls.devFeatures && <axesHelper args={[1]} />}

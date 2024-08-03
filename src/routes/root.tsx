@@ -66,7 +66,7 @@ export function Root() {
       </header>
       {ctrls.timeInterface && <SessionTimeInterface />}
 
-      <main className="relative flex h-screen flex-col items-center justify-between bg-white md:justify-start">
+      <main className="relative flex h-screen flex-col items-center justify-between bg-tertiary-300 md:justify-start">
         <Outlet context={{ ctrls } satisfies ContextType} />
       </main>
         {route.rootLayout === "default" && (
