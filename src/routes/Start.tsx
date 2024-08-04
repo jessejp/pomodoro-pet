@@ -22,32 +22,34 @@ const ConfigSession: React.FC = () => {
 
   return (
     <>
-      <Suspense fallback={null}>
-        <CircularSlider
-          renderLabelValue={
-            <div className="absolute top-1 grid h-full w-full place-content-center text-center font-semibold">
-              <div className="text-2xl text-tertiary-900">{workTime}</div>
-              <div className="text-lg text-tertiary-900">minutes</div>
-            </div>
-          }
-          data={Array.from({ length: 12 }).map((_, index) => index * 5 + 5)}
-          dataIndex={4}
-          progressSize={16}
-          initialValue={workTime}
-          progressColorFrom="#FFE576"
-          progressColorTo="#FFE576"
-          trackColor="#FFFAE4"
-          knobColor="#FFE576"
-          knobSize={48}
-          trackSize={16}
-          label="minutes"
-          labelBottom={true}
-          onChange={(value: number) => {
-            setWorkTime(value);
-          }}
-        />
-      </Suspense>
-      <div className="flex w-full flex-col items-center justify-end self-end pb-4">
+      <div className="h-full w-full flex justify-center items-center">
+        <Suspense fallback={null}>
+          <CircularSlider
+            renderLabelValue={
+              <div className="absolute top-1 grid h-full w-full place-content-center text-center font-semibold">
+                <div className="text-2xl text-tertiary-900">{workTime}</div>
+                <div className="text-lg text-tertiary-900">minutes</div>
+              </div>
+            }
+            data={Array.from({ length: 12 }).map((_, index) => index * 5 + 5)}
+            dataIndex={4}
+            progressSize={16}
+            initialValue={workTime}
+            progressColorFrom="#FFE576"
+            progressColorTo="#FFE576"
+            trackColor="#FFFAE4"
+            knobColor="#FFE576"
+            knobSize={48}
+            trackSize={16}
+            label="minutes"
+            labelBottom={true}
+            onChange={(value: number) => {
+              setWorkTime(value);
+            }}
+          />
+        </Suspense>
+      </div>
+      <div className="flex w-full flex-col items-center justify-end self-end pb-4 gap-8">
         <SliderWithTabs
           tabs={[
             {
@@ -70,7 +72,7 @@ const ConfigSession: React.FC = () => {
             },
           ]}
         />
-        <aside className="relative flex w-full flex-col items-center justify-center gap-2 sm:fixed sm:bottom-4">
+        <aside className="relative flex w-full flex-col items-center justify-center gap-2">
           <Link to="focus-session">
             <Button
               intent="primary"
