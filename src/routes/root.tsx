@@ -1,11 +1,9 @@
 import { Leva, useControls } from "leva";
-import { Outlet, useLocation, useOutletContext } from "react-router-dom";
+import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
 import SessionTimeInterface from "../interface/SessionTimeInterface";
 import { SessionLog } from "../interface/menuSections/SessionLog";
-import SessionSetup from "../interface/menuSections/SessionSetup";
 import Menu from "../interface/ui/Menu";
 import { getRoute } from "../utils/getRoute";
-import Button from "../interface/ui/Button";
 import { useBoundStore } from "../store/useBoundStore";
 
 const devGUI = window.location.search === "?dev=1";
@@ -20,8 +18,8 @@ type ContextType = {
 };
 
 export function Root() {
-  const {} = useBoundStore((state) => ({
-    start: state.start,
+  const {stop} = useBoundStore((state) => ({
+    stop: state.stop
   }));
   const location = useLocation();
   const route = getRoute(location);
@@ -32,45 +30,47 @@ export function Root() {
     devFeatures: devGUI,
   });
 
-
   return (
-    <>
+    <div className="flex flex-col h-screen">
       {!devGUI && <Leva hidden={true} />}
-      <header>
-        {/* <Link to={pageIsCustomize ? "/" : "/customize"}>
-          <div
-            className={clsx(
-              "fixed top-0 z-10 mr-8 mt-8 grid place-content-center self-end rounded-full p-4 hover:scale-105  thin:p-3",
-              {
-                "bg-primary-200 hover:bg-primary-100": !pageIsCustomize,
-                "hover:bg-cool-100 bg-cool-150": pageIsCustomize,
-              }
-            )}
-          >
-            {!pageIsCustomize && (
-              <img
-                className="h-8 w-8"
-                src={`/icons/customize-x24-tertiary-800.svg`}
-                alt={`customize character button`}
-              />
-            )}
-            {pageIsCustomize && (
-              <img
-                className="h-8 w-8"
-                src={`/icons/close-x24-tertiary-800.svg`}
-                alt={`close character customization button`}
-              />
-            )}
-          </div>
-        </Link> */}
+      <header className="flex justify-between bg-primary-100 py-1 px-4">
+          {route.path !== "/customize" && (
+            <Link to="/customize">
+              <button
+                className="flex gap-1"
+                onClick={stop}
+              >
+                <img src="/icons/customize-x24-tertiary-800.svg" className="h-6" />
+                Shop
+              </button>
+            </Link>
+          )}
+          {route.path === "/customize" && (
+            <Link to="/">
+              <button
+                className="flex gap-1"
+              >
+                Start
+              </button>
+            </Link>
+          )}
+          {route.path === "/focus-session" && (
+              <button
+                className="flex gap-1"
+                onClick={stop}
+              >
+                <img src="/icons/stop-tertiary-900.svg" className="h-6" />
+                Stop
+              </button>
+          )}
       </header>
       {ctrls.timeInterface && <SessionTimeInterface />}
 
-      <main className="relative flex h-screen flex-col items-center justify-between bg-tertiary-300 md:justify-start">
+      <main className="relative flex h-full sm:h-screen flex-col items-center justify-between bg-tertiary-300">
         <Outlet context={{ ctrls } satisfies ContextType} />
       </main>
-        {route.rootLayout === "default" && (
-      <aside className="relative flex w-full flex-col items-center justify-center gap-2 sm:fixed sm:bottom-4">
+      {route.rootLayout === "default" && (
+        <aside className="flex w-full flex-1 flex-col items-center justify-center gap-2 fixed bottom-0 sm:bottom-4">
           <Menu
             tabs={[
               {
@@ -79,12 +79,12 @@ export function Root() {
               },
             ]}
           />
-      </aside>
-        )}
-    </>
+        </aside>
+      )}
+    </div>
   );
 }
-
+// hello
 export function useGUI() {
   return useOutletContext<ContextType>();
 }

@@ -8,7 +8,6 @@ import Camera from "./Camera";
 import { Book } from "./world/furniture/Book";
 import { Suspense } from "react";
 import { PomodoroTimerParams } from "../store/types";
-import { Color } from "three";
 
 const Scene: React.FC<{
   pomodoroPhase: PomodoroTimerParams["pomodoroPhase"];
