@@ -55,6 +55,7 @@ export function Root() {
             </Link>
           )}
           {route.path === "/focus-session" && (
+            <Link to="/">
               <button
                 className="flex gap-1"
                 onClick={stop}
@@ -62,6 +63,7 @@ export function Root() {
                 <img src="/icons/stop-tertiary-900.svg" className="h-6" />
                 Stop
               </button>
+            </Link>
           )}
       </header>
       {ctrls.timeInterface && <SessionTimeInterface />}
