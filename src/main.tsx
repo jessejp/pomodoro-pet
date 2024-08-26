@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Root } from "./routes/Root.tsx";
+import { Root } from "./routes/root.tsx";
 import { FocusSession } from "./routes/FocusSession.tsx";
 import Start from "./routes/Start.tsx";
 import CustomizePet from "./routes/CustomizePet.tsx";

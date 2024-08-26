@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
 import { Suspense } from "react";
 import Scene from "../canvas/Scene";
-import { useGUI } from "./Root";
+import { useGUI } from "./root";
 import { Color } from "three";
 
 export function FocusSession() {
