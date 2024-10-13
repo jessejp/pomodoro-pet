@@ -21,8 +21,10 @@ export function Root() {
   const {stop} = useBoundStore((state) => ({
     stop: state.stop
   }));
+
   const location = useLocation();
-  const route = getRoute(location);
+  const { path, rootLayout } = getRoute(location);
+
   const ctrls = useControls("Views", {
     startMenu: true,
     timeInterface: true,
@@ -34,7 +36,7 @@ export function Root() {
     <div className="flex flex-col h-screen">
       {!devGUI && <Leva hidden={true} />}
       <header className="flex justify-between bg-primary-100 py-1 px-4">
-          {route.path !== "/customize" && (
+          {path !== "/customize" && (
             <Link to="/customize">
               <button
                 className="flex gap-1"
@@ -45,7 +47,7 @@ export function Root() {
               </button>
             </Link>
           )}
-          {route.path === "/customize" && (
+          {path === "/customize" && (
             <Link to="/">
               <button
                 className="flex gap-1"
@@ -54,7 +56,7 @@ export function Root() {
               </button>
             </Link>
           )}
-          {route.path === "/focus-session" && (
+          {path === "/focus-session" && (
             <Link to="/">
               <button
                 className="flex gap-1"
@@ -71,7 +73,7 @@ export function Root() {
       <main className="relative flex h-full sm:h-screen flex-col items-center justify-between bg-tertiary-300">
         <Outlet context={{ ctrls } satisfies ContextType} />
       </main>
-      {route.rootLayout === "default" && (
+      {rootLayout === "default" && (
         <aside className="flex w-full flex-1 flex-col items-center justify-center gap-2 fixed bottom-0 sm:bottom-4">
           <Menu
             tabs={[

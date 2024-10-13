@@ -4,9 +4,24 @@ import { Suspense } from "react";
 import Scene from "../canvas/Scene";
 import { useGUI } from "./root";
 import { Color } from "three";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getRoute } from "../utils/getRoute";
+import { useBoundStore } from "../store/useBoundStore";
 
 export function FocusSession() {
   const { ctrls } = useGUI();
+
+  const {isRunning} = useBoundStore((state) => ({
+    isRunning: state.isRunning,
+  }));
+
+  const location = useLocation();
+  const { path } = getRoute(location);
+  const navigate = useNavigate();
+
+  if(path === "/focus-session" && !isRunning) {
+    navigate('/')
+  }
 
   return (
     <>
