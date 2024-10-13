@@ -1,5 +1,6 @@
 import {
   Row,
+  RowSelectionState,
   SortingState,
   createColumnHelper,
   flexRender,
@@ -23,13 +24,14 @@ export const SessionLog = () => {
       sessionLog: state.sessionLog,
       createLog: state.createLog,
       updateSessionLog: state.updateSessionLog,
-    })
+    }),
   );
 
   const [data, setData] = useState<Log[]>(() => [...sessionLog]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = createColumnHelper<Log>();
   const lastSec = useRef<Log>();
+  const tableLength = useRef<number>(0);
 
   const saveUpdatedSeconds = useMemo(
     () => (sec: number, row: Row<Log>, allowSaving: boolean) => {
@@ -49,7 +51,7 @@ export const SessionLog = () => {
         taskTimeSeconds: lastSec.current.taskTimeSeconds + 1,
       });
     },
-    [updateSessionLog, isRunning]
+    [updateSessionLog, isRunning],
   );
 
   const columns = useMemo(
@@ -77,7 +79,7 @@ export const SessionLog = () => {
         footer: (info) => info.column.id,
       }),
     ],
-    [columnHelper, saveUpdatedSeconds]
+    [columnHelper, saveUpdatedSeconds],
   );
 
   const table = useReactTable({
@@ -88,6 +90,7 @@ export const SessionLog = () => {
     state: {
       sorting,
     },
+    getRowId: (row) => row.task,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -98,8 +101,19 @@ export const SessionLog = () => {
     setData(sessionLog);
   }, [sessionLog]);
 
+  useEffect(() => {
+    const rows = table.getRowModel().rows;
+    const lastRow = rows[rows.length - 1];
+    
+    if (lastRow && rows.length > tableLength.current) {
+      tableLength.current += 1; 
+      lastRow.toggleSelected();
+    }
+  }, [data, table, tableLength]);
+
   const handleAddNewTask = (task: string) => {
-    createLog({ task, taskTimeSeconds: 0 });
+    const newRow: Log = { task, taskTimeSeconds: 0 };
+    createLog(newRow);
     table.resetRowSelection();
   };
 
@@ -125,7 +139,7 @@ export const SessionLog = () => {
               >
                 {flexRender(
                   header.column.columnDef.header,
-                  header.getContext()
+                  header.getContext(),
                 )}
                 {{
                   asc: "▴",
@@ -153,7 +167,7 @@ const LogRow: React.FC<Row<Log>> = (row) => {
   return (
     <tr
       className={clsx("flex cursor-pointer gap-8 px-8 py-2", {
-        "bg-primary-100 transition-shadow duration-700 shadow-none hover:shadow-innerBlur hover:shadow-primary-200":
+        "bg-primary-100 shadow-none transition-shadow duration-700 hover:shadow-innerBlur hover:shadow-primary-200":
           !isRowSelected,
         "bg-primary-200 font-semibold": isRowSelected,
       })}
