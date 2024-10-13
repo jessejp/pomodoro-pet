@@ -3,8 +3,8 @@ import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
 import SessionTimeInterface from "../interface/SessionTimeInterface";
 import { SessionLog } from "../interface/menuSections/SessionLog";
 import Menu from "../interface/ui/Menu";
-import { getRoute } from "../utils/getRoute";
 import { useBoundStore } from "../store/useBoundStore";
+import { getRoute } from "../utils/getRoute";
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -19,7 +19,8 @@ type ContextType = {
 
 export function Root() {
   const {stop} = useBoundStore((state) => ({
-    stop: state.stop
+    stop: state.stop,
+    isRunning: state.isRunning,
   }));
 
   const location = useLocation();
