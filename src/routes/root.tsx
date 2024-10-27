@@ -5,6 +5,8 @@ import { SessionLog } from "../interface/menuSections/SessionLog";
 import Menu from "../interface/ui/Menu";
 import { useBoundStore } from "../store/useBoundStore";
 import { getRoute } from "../utils/getRoute";
+import PetSelectMenu from "../interface/menuSections/PetSelectMenu";
+import CosmeticSelectMenu from "../interface/menuSections/CosmeticSelectMenu";
 
 const devGUI = window.location.search === "?dev=1";
 
@@ -74,22 +76,38 @@ export function Root() {
       <main className="relative flex h-full sm:h-screen flex-col items-center justify-between bg-tertiary-300">
         <Outlet context={{ ctrls } satisfies ContextType} />
       </main>
-      {rootLayout === "default" && (
+      {(rootLayout === "default") && (
         <aside className="flex w-full flex-1 flex-col items-center justify-center gap-2 fixed bottom-0 sm:bottom-4">
           <Menu
             tabs={[
-              {
-                icon: "note-tertiary-800",
-                component: <SessionLog />,
-              },
+             {
+              icon: "note-tertiary-800",
+              component: <SessionLog />,
+            }
             ]}
           />
+        </aside>
+      )}
+      {(rootLayout === "shop") && (
+        <aside className="flex w-full flex-1 flex-col items-center justify-center gap-2 fixed bottom-0 sm:bottom-4">
+        <Menu
+          tabs={[
+            {
+              icon: "customize-tertiary-800",
+              component: <PetSelectMenu />,
+            },
+            {
+              icon: "backpack-tertiary-800",
+              component: <CosmeticSelectMenu />,
+            },
+          ]}
+        />
         </aside>
       )}
     </div>
   );
 }
-// hello
+
 export function useGUI() {
   return useOutletContext<ContextType>();
 }

@@ -10,7 +10,7 @@ import CustomizePet from "./routes/CustomizePet.tsx";
 export const Routes: {
   path: string;
   element: JSX.Element;
-  rootLayout: "default" | "start-button";
+  rootLayout: "default" | "start-button" | "shop";
 }[] = [
   {
     path: "/",
@@ -25,7 +25,7 @@ export const Routes: {
   {
     path: "/customize",
     element: <CustomizePet />,
-    rootLayout: "default",
+    rootLayout: "shop",
   },
 ] as const;
 

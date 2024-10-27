@@ -1,10 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Pet } from "../canvas/pets/Pet";
-import Menu from "../interface/ui/Menu";
 import { useBoundStore } from "../store/useBoundStore";
-import CosmeticSelectMenu from "../interface/menuSections/CosmeticSelectMenu";
-import PetSelectMenu from "../interface/menuSections/PetSelectMenu";
 
 const CustomizePet = () => {
   const { pet } = useBoundStore((state) => ({
@@ -31,18 +28,6 @@ const CustomizePet = () => {
           </Suspense>
         </Canvas>
       </div>
-      <Menu
-        tabs={[
-          {
-            icon: "customize-tertiary-800",
-            component: <PetSelectMenu />,
-          },
-          {
-            icon: "backpack-tertiary-800",
-            component: <CosmeticSelectMenu />,
-          },
-        ]}
-      />
     </>
   );
 };

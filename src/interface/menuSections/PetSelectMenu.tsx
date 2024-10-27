@@ -11,7 +11,7 @@ const PetSelectMenu = () => {
   }));
 
   return (
-    <div className="flex w-full gap-3">
+    <div className="flex w-full gap-3 p-4 rounded-xl text-tertiary-900 bg-primary-100">
       {characters.map((pet) => (
         <CharacterOption
           key={pet}
@@ -54,7 +54,7 @@ const CharacterOption: React.FC<CharacterOptionProps> = ({
       <img
         className={clsx("rounded-xl border-8", {
           "border-tertiary-200 brightness-[0.95] saturate-[0.25]": !isEquipped,
-          "border-accent-500": !!isEquipped,
+          "border-accent-500": isEquipped,
         })}
         src={`/thumbnails/pet_${pet}.webp`}
         alt={pet}
