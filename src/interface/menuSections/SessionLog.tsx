@@ -5,14 +5,14 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Log } from "../store/types";
-import { useBoundStore } from "../store/useBoundStore";
-import { LogTimer } from "./timer/LogTimer";
-import Button from "./ui/Button";
+import { Log } from "../../store/types";
+import { useBoundStore } from "../../store/useBoundStore";
+import { LogTimer } from "../timer/LogTimer";
+import Button from "../ui/Button";
 
 export const SessionLog = () => {
   console.count("SessionLog.tsx");
@@ -23,13 +23,15 @@ export const SessionLog = () => {
       sessionLog: state.sessionLog,
       createLog: state.createLog,
       updateSessionLog: state.updateSessionLog,
-    })
+    }),
   );
 
   const [data, setData] = useState<Log[]>(() => [...sessionLog]);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [error, setError] = useState<string>("");
   const columnHelper = createColumnHelper<Log>();
   const lastSec = useRef<Log>();
+  const tableLength = useRef<number>(0);
 
   const saveUpdatedSeconds = useMemo(
     () => (sec: number, row: Row<Log>, allowSaving: boolean) => {
@@ -49,7 +51,7 @@ export const SessionLog = () => {
         taskTimeSeconds: lastSec.current.taskTimeSeconds + 1,
       });
     },
-    [updateSessionLog, isRunning]
+    [updateSessionLog, isRunning],
   );
 
   const columns = useMemo(
@@ -77,7 +79,7 @@ export const SessionLog = () => {
         footer: (info) => info.column.id,
       }),
     ],
-    [columnHelper, saveUpdatedSeconds]
+    [columnHelper, saveUpdatedSeconds],
   );
 
   const table = useReactTable({
@@ -88,6 +90,7 @@ export const SessionLog = () => {
     state: {
       sorting,
     },
+    getRowId: (row) => row.task,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -98,9 +101,26 @@ export const SessionLog = () => {
     setData(sessionLog);
   }, [sessionLog]);
 
-  const handleAddNewTask = (task: string) => {
-    createLog({ task, taskTimeSeconds: 0 });
+  useEffect(() => {
+    const rows = table.getRowModel().rows;
+    const lastRow = rows[rows.length - 1];
+
+    if (lastRow && rows.length > tableLength.current) {
+      tableLength.current += 1;
+      lastRow.toggleSelected();
+    }
+  }, [data, table, tableLength]);
+
+  const handleAddNewTask = (task: string, callback: Function) => {
+    if (table.getRowModel().rows.find((r) => r.getValue("taskName") === task)) {
+      setError("Can't create duplicate task!");
+      return;
+    }
+
+    const newRow: Log = { task, taskTimeSeconds: 0 };
+    createLog(newRow);
     table.resetRowSelection();
+    callback();
   };
 
   return (
@@ -116,7 +136,8 @@ export const SessionLog = () => {
                 key={header.id}
                 colSpan={header.colSpan}
                 className={clsx("text-start", {
-                  "cursor-pointer select-none text-end": header.column.getCanSort(),
+                  "cursor-pointer select-none text-end":
+                    header.column.getCanSort(),
                   "w-full": header.column.columnDef.header === "Task Name",
                   "w-36": header.column.columnDef.header === "Work Time",
                 })}
@@ -124,7 +145,7 @@ export const SessionLog = () => {
               >
                 {flexRender(
                   header.column.columnDef.header,
-                  header.getContext()
+                  header.getContext(),
                 )}
                 {{
                   asc: "▴",
@@ -141,7 +162,11 @@ export const SessionLog = () => {
         })}
       </tbody>
       <tfoot>
-        <LogInputRow handleAddNewTask={handleAddNewTask} />
+        <LogInputRow
+          handleAddNewTask={handleAddNewTask}
+          error={error}
+          setError={setError}
+        />
       </tfoot>
     </table>
   );
@@ -151,8 +176,9 @@ const LogRow: React.FC<Row<Log>> = (row) => {
   const isRowSelected = row.getIsSelected();
   return (
     <tr
-      className={clsx("flex cursor-pointer gap-8 px-6 py-2", {
-        "bg-primary-100 hover:bg-primary-150": !isRowSelected,
+      className={clsx("flex cursor-pointer gap-8 px-8 py-2", {
+        "bg-primary-100 shadow-none transition-shadow duration-700 hover:shadow-innerBlur hover:shadow-primary-200":
+          !isRowSelected,
         "bg-primary-200 font-semibold": isRowSelected,
       })}
       role="radio"
@@ -182,42 +208,48 @@ const LogRow: React.FC<Row<Log>> = (row) => {
 };
 
 interface LogInputRowProps {
-  handleAddNewTask: (newTaskName: string) => void;
+  handleAddNewTask: (newTaskName: string, callback: Function) => void;
+  error: string;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
+const LogInputRow: React.FC<LogInputRowProps> = ({
+  handleAddNewTask,
+  error = "",
+  setError,
+}) => {
   const [newTaskName, setNewTaskName] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const validate = (value: string) => {
     if (value.length === 0) {
-      setErrorMessage("Task name can't be empty! 😦");
+      setError("Task name can't be empty! 😦");
       return false;
     }
-    setErrorMessage("");
+    setError("");
     return true;
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    if (validate(newTaskName) === false && !error) return;
+    handleAddNewTask(newTaskName, () => { setNewTaskName("")});
   };
 
   return (
     <tr className="flex gap-8 rounded-b-xl bg-primary-100 px-6 py-2">
       <td className="relative w-full">
         <form
+          id="task-name"
           className="relative -left-0.5"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (validate(newTaskName) === false) return;
-
-            handleAddNewTask(newTaskName);
-            setNewTaskName("");
-          }}
+          onSubmit={handleSubmit}
         >
-          {!!errorMessage && (
+          {!!error && (
             <div className="absolute -top-10 rounded-xl bg-primary-400 px-4 py-1 text-md text-tertiary-900">
-              {errorMessage}
+              {error}
               <button
                 className="absolute -right-2 -top-2 aspect-square rounded-full bg-tertiary-350 px-1.5 text-[12px] font-bold leading-none hover:bg-secondary-300"
                 onClick={() => {
-                  setErrorMessage("");
+                  setError("");
                 }}
               >
                 ⨉
@@ -228,35 +260,33 @@ const LogInputRow: React.FC<LogInputRowProps> = ({ handleAddNewTask }) => {
             className={clsx(
               "h-8 w-full rounded-lg bg-secondary-100 pl-1.5 focus:border-0",
               {
-                "border-2 border-primary-700": !!errorMessage,
-              }
+                "border-2 border-primary-700": !!error,
+              },
             )}
             value={newTaskName}
             type="text"
             placeholder="New Task"
             onChange={(event) => {
-              if (errorMessage) setErrorMessage("");
+              if (error) setError("");
               setNewTaskName(event.target.value);
             }}
             onFocus={() => {
-              if (errorMessage) setErrorMessage("");
+              if (error) setError("");
             }}
             onBlur={() => {
-              if (errorMessage) setErrorMessage("");
+              if (error) setError("");
             }}
           />
         </form>
       </td>
-      <td className="w-fit min-w-[9rem] flex justify-end">
+      <td className="flex w-fit min-w-[9rem] justify-end">
         <Button
+          form="task-name"
+          type="submit"
+          onClick={handleSubmit}
           icon="note-x16-tertiary-900"
           variant="tiny"
           intent="primary-light"
-          onClick={() => {
-            if (validate(newTaskName) === false) return;
-            handleAddNewTask(newTaskName);
-            setNewTaskName("");
-          }}
         >
           Add Task
         </Button>

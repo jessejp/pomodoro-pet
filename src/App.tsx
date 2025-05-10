@@ -1,9 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./canvas/Scene";
 import SessionTimeInterface from "./interface/SessionTimeInterface";
-import { SessionLog } from "./interface/SessionLog";
-import Menu from "./interface/components/Menu";
-import StartSessionMainMenu from "./interface/StartSessionMainMenu";
+import { SessionLog } from "./interface/menuSections/SessionLog";
+import Menu from "./interface/ui/Menu";
+import StartSessionMainMenu from "./routes/StartSessionMainMenu";
 import { useBoundStore } from "./store/useBoundStore";
 import Button from "./interface/ui/Button";
 import { useControls, Leva } from "leva";
@@ -25,15 +25,12 @@ function App() {
     devFeatures: true,
   });
 
-  console.count("App.tsx");
-
   return (
     <>
       {!devGUI && <Leva hidden={true} />}
       {(pomodoroPhase === "none") === ctrls.startMenu && (
         <StartSessionMainMenu />
       )}
-
       {pomodoroPhase !== "none" && (
         <>
           {ctrls.timeInterface && <SessionTimeInterface />}

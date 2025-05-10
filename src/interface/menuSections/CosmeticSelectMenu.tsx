@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import type { CosmeticItem, EquippedCosmetic } from "../store/types";
-import { useBoundStore } from "../store/useBoundStore";
+import type { CosmeticItem, EquippedCosmetic } from "../../store/types";
+import { useBoundStore } from "../../store/useBoundStore";
 
 const cosmetics: CosmeticItem[] = [
   {
@@ -16,7 +16,7 @@ const CosmeticSelectMenu = () => {
   }));
 
   return (
-    <div className="flex w-full gap-3">
+    <div className="flex w-full gap-3 p-4 rounded-xl text-tertiary-900 bg-primary-100">
       {cosmetics.map((cosmetic) => (
         <CosmeticOption
           key={cosmetic.name}

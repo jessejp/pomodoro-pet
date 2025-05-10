@@ -1,13 +1,17 @@
 import type { StateCreator } from "zustand";
 import type { PomodoroTimerParams } from "../types";
 
-export const PomodoroTimerSlice: StateCreator<PomodoroTimerParams> = (set) => ({
+const init = {
   startTime: 0,
   pomodoroSession: null,
   rounds: 0,
   currentRound: 0,
   pomodoroPhase: "none",
   isRunning: false,
+} as PomodoroTimerParams;
+
+export const PomodoroTimerSlice: StateCreator<PomodoroTimerParams> = (set) => ({
+  ...init,
   start: ({ rounds, workTime, breakTime }) =>
     set(() => {
       const pomodoroSession = [];
@@ -26,7 +30,10 @@ export const PomodoroTimerSlice: StateCreator<PomodoroTimerParams> = (set) => ({
         rounds,
       };
     }),
-  stop: () => set(() => ({ pomodoroPhase: "none", isRunning: false })),
+  stop: () =>
+    set(() => ({
+      ...init
+    })),
   startBreak: () =>
     set(() => ({ pomodoroPhase: "break", startTime: Date.now() })),
   nextRound: () =>

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React, { type PropsWithChildren } from "react";
 
-interface ButtonProps extends PropsWithChildren {
+interface ButtonProps extends PropsWithChildren, React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: string;
   intent: "primary" | "primary-light" | "secondary";
   variant: "big" | "tiny";

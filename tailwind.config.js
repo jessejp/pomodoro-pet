@@ -3,15 +3,13 @@
 import scrollbarplugin from "tailwind-scrollbar";
 
 export default {
-  content: ["./index.html", "./src/interface/**/*.{ts,tsx}", "./src/App.tsx"],
+  content: [
+    "./index.html",
+    "./src/interface/**/*.{ts,tsx}",
+    "./src/routes/**/*.{ts,tsx}",
+    "./src/App.tsx",
+  ],
   theme: {
-    screens: {
-      short: { raw: "(max-height: 800px)" },
-      xshort: { raw: "(max-height: 560px)" },
-      thin: { raw: "(max-width: 990px)" },
-      xl: "1280px",
-      "2xl": "1536px",
-    },
     fontSize: {
       sm: "16px",
       md: "20px",
@@ -55,7 +53,7 @@ export default {
         6: "6px",
       },
       width: {
-        "1.5": "0.38rem",
+        1.5: "0.38rem",
         128: "32rem",
       },
       height: {
@@ -102,6 +100,7 @@ export default {
       },
       boxShadow: {
         radioButtonInset: "inset 1em 1em var(--tw-shadow-color)",
+        innerBlur: "inset 0px 0px 8px 0px var(--tw-shadow-color)",
       },
     },
   },

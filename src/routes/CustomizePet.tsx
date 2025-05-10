@@ -1,10 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Pet } from "../canvas/pets/Pet";
-import Menu from "./components/Menu";
 import { useBoundStore } from "../store/useBoundStore";
-import CosmeticSelectMenu from "./CosmeticSelectMenu";
-import PetSelectMenu from "./PetSelectMenu";
 
 const CustomizePet = () => {
   const { pet } = useBoundStore((state) => ({
@@ -12,9 +9,9 @@ const CustomizePet = () => {
   }));
   return (
     <>
-      <div className="w-full max-w-xl px-14 pt-4 short:h-screen">
+      <div className="w-full max-w-xl px-14 pt-4">
         <Canvas
-          className="aspect-square w-full rounded-xl short:aspect-auto short:h-screen"
+          className="aspect-square w-full rounded-xl"
           camera={{
             fov: 40,
             near: 0.05,
@@ -31,18 +28,6 @@ const CustomizePet = () => {
           </Suspense>
         </Canvas>
       </div>
-      <Menu
-        tabs={[
-          {
-            icon: "customize-tertiary-800",
-            component: <PetSelectMenu />,
-          },
-          {
-            icon: "backpack-tertiary-800",
-            component: <CosmeticSelectMenu />,
-          },
-        ]}
-      />
     </>
   );
 };
