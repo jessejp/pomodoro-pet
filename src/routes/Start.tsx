@@ -1,5 +1,4 @@
-import CircularSlider from "@fseehawer/react-circular-slider";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import Button from "../interface/ui/Button";
 import SliderWithTabs from "../interface/ui/SliderWithTabs";
 import { useControls } from "leva";
@@ -23,35 +22,19 @@ const ConfigSession: React.FC = () => {
   return (
     <>
       <div className="h-full w-full flex justify-center items-center">
-        <Suspense fallback={null}>
-          <CircularSlider
-            renderLabelValue={
-              <div className="absolute top-1 grid h-full w-full place-content-center text-center font-semibold">
-                <div className="text-2xl text-tertiary-900">{workTime}</div>
-                <div className="text-lg text-tertiary-900">minutes</div>
-              </div>
-            }
-            data={Array.from({ length: 12 }).map((_, index) => index * 5 + 5)}
-            dataIndex={4}
-            progressSize={16}
-            initialValue={workTime}
-            progressColorFrom="#FFE576"
-            progressColorTo="#FFE576"
-            trackColor="#FFFAE4"
-            knobColor="#FFE576"
-            knobSize={48}
-            trackSize={16}
-            label="minutes"
-            labelBottom={true}
-            onChange={(value: number) => {
-              setWorkTime(value);
-            }}
-          />
-        </Suspense>
       </div>
       <div className="flex w-full flex-col items-center justify-end self-end pb-4 gap-8">
         <SliderWithTabs
           tabs={[
+            {
+              name: "Work Time",
+              valueLabel: "minutes",
+              value: workTime,
+              setMethod: setWorkTime,
+              step: 1,
+              min: 5,
+              max: 60,
+            },
             {
               name: "Break",
               valueLabel: "minutes",

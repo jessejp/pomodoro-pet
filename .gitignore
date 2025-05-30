@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# env
+.env
+
 # gltf test files
 ./src/canvas/pets/Preview.tsx
 ./src/canvas/rooms/Preview.tsx

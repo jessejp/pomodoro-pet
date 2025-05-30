@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fseehawer/react-circular-slider": "^2.6.4",
     "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.8",
     "@tanstack/react-table": "^8.17.3",
