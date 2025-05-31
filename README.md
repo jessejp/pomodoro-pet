@@ -4,8 +4,9 @@ Pomodoro with fun!
 # Tasks
 
 - setup backend
-  - [ ] init node project into /api/
-  - [ ] setup prisma and migrate initial user tables
+  - [x] setup postgres db with docker compose
+  - [x] init node project into /api/
+  - [x] setup prisma and migrate initial user tables
   - [ ] setup OAuth
   - [ ] setup docker container for server
 - frontend to backend e2e typesafe
