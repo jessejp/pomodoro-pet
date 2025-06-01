@@ -1,34 +1,11 @@
 import { PrismaClient } from "./generated/prisma";
 import express from "express";
-
 const prisma = new PrismaClient();
-const app = express();
-app.use(express.json());
 
-/*   await prisma.user.create({
-    data: {
-      name: "jesse",
-      isPublic: false,
-      pomodoroSessions: {
-        create: {
-          startDate: new Date(),
-          endDate: new Date(),
-          stopDate: new Date(),
-          workTimeMinutes: 25,
-          breakTimeMinutes: 5,
-          rounds: 4,
-        },
-      },
-      tasks: {
-        create: {
-          name: "setting up prisma",
-          isDone: false,
-          totalCompletedSeconds: 57,
-        },
-      },
-    },
-  }); */
 async function main() {
+  const app = express();
+  app.use(express.json());
+
   app.post("/user", async (req, res) => {
     const { name } = req.body;
 
