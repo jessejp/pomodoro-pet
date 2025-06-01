@@ -6,18 +6,22 @@ async function main() {
 /*   await prisma.user.create({
     data: {
       name: "jesse",
-      is_public: false,
-      sessions: {
+      isPublic: false,
+      pomodoroSessions: {
         create: {
-          start_date: new Date(),
-          total_completed_seconds: 69,
-          tasks: {
-            create: {
-              name: "setting up prisma",
-              is_done: false,
-              total_completed_seconds: 57,
-            },
-          },
+          startDate: new Date(),
+          endDate: new Date(),
+          stopDate: new Date(),
+          workTimeMinutes: 25,
+          breakTimeMinutes: 5,
+          rounds: 4,
+        },
+      },
+      tasks: {
+        create: {
+          name: "setting up prisma",
+          isDone: false,
+          totalCompletedSeconds: 57,
         },
       },
     },
@@ -26,11 +30,12 @@ async function main() {
   const allUsers = await prisma.user.findMany({
     include: {
       _count: true,
-      sessions: true,
+      pomodoroSessions: true,
+      tasks: true,
     },
   });
 
-  console.dir(allUsers, {depth: null});
+  console.dir(allUsers, { depth: null });
 }
 
 main()
