@@ -1,8 +1,10 @@
 import { PrismaClient } from "./generated/prisma";
+import express from "express";
 
 const prisma = new PrismaClient();
+const app = express();
+app.use(express.json());
 
-async function main() {
 /*   await prisma.user.create({
     data: {
       name: "jesse",
@@ -26,16 +28,54 @@ async function main() {
       },
     },
   }); */
+async function main() {
+  app.post("/user", async (req, res) => {
+    const { name } = req.body;
 
-  const allUsers = await prisma.user.findMany({
-    include: {
-      _count: true,
-      pomodoroSessions: true,
-      tasks: true,
-    },
+    if (!name) {
+      res.status(400).json({ error: "Name is required" });
+      return;
+    }
+
+    const newUser = await prisma.user.create({
+      data: { name, isPublic: false },
+    });
+    res.status(201).json(newUser);
   });
 
-  console.dir(allUsers, { depth: null });
+  app.get("/users", async (req, res) => {
+    const users = await prisma.user.findMany({
+      include: {
+        _count: true,
+        pomodoroSessions: true,
+        tasks: true,
+      },
+    });
+    res.json(users);
+  });
+
+  app.get("/user/:id", async (req, res) => {
+    const { id } = req.params;
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        _count: true,
+        pomodoroSessions: true,
+        tasks: true,
+      },
+    });
+
+    if (user) {
+      console.dir(user, { depth: null });
+      res.json(user);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  });
+  const port = process.env.PORT || 8000;
+  app.listen(port, () => {
+    console.log("Server is running on http://localhost:" + port);
+  });
 }
 
 main()
