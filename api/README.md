@@ -1,6 +1,8 @@
 **execute typescipt**
 `npx tsx index.ts`
 
+**generate .env types**
+`npx gen-env-types`
 
 **prisma migration**
 npx prisma migrate dev --name init
