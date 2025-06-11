@@ -29,14 +29,26 @@ export const Routes: {
   },
 ] as const;
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Root />,
+      errorElement: <main>NO SUCH PAGE</main>,
+      children: Routes.map((r) => ({ path: r.path, element: r.element })),
+    },
+  ],
   {
-    path: "/",
-    element: <Root />,
-    errorElement: <main>NO SUCH PAGE</main>,
-    children: Routes.map((r) => ({ path: r.path, element: r.element })),
+    future: {
+      v7_relativeSplatPath: true,
+      v7_startTransition: true,
+      v7_fetcherPersist: true,
+      v7_skipActionErrorRevalidation: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true
+    },
   },
-]);
+);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

@@ -41,7 +41,7 @@ export function Root() {
       {!devGUI && <Leva hidden={true} />}
       <header className="flex justify-between bg-primary-100 px-4 py-1">
         {path !== "/customize" && (
-          <Link to="/customize">
+          <Link to="../customize">
             <button className="flex gap-1" onClick={stop}>
               <img
                 src="/icons/customize-x24-tertiary-800.svg"
@@ -54,12 +54,12 @@ export function Root() {
         <LoginButton />
         <LogoutButton />
         {path === "/customize" && (
-          <Link to="/">
+          <Link to="../">
             <button className="flex gap-1">Start</button>
           </Link>
         )}
         {path === "/focus-session" && (
-          <Link to="/">
+          <Link to="../">
             <button className="flex gap-1" onClick={stop}>
               <img src="/icons/stop-tertiary-900.svg" className="h-6" />
               Stop
@@ -146,6 +146,7 @@ function LogoutButton() {
     </Button>
   );
 }
+
 export function useGUI() {
   return useOutletContext<ContextType>();
 }

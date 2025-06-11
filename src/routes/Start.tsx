@@ -56,7 +56,7 @@ const ConfigSession: React.FC = () => {
           ]}
         />
         <aside className="relative flex w-full flex-col items-center justify-center gap-2">
-          <Link to="focus-session">
+          <Link to="../focus-session">
             <Button
               intent="primary"
               variant="big"
