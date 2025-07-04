@@ -1,9 +1,10 @@
 import session from "express-session";
 import { PrismaClient, User } from "./generated/prisma";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import { Strategy as GoogleAuthStrategy } from "passport-google-oauth20";
-
+import { config } from 'dotenv-safe';
+config();
 const prisma = new PrismaClient();
 
 async function main() {
@@ -18,6 +19,13 @@ async function main() {
     passport.initialize(),
     passport.session(),
   );
+
+  function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
+    if (req.isAuthenticated && req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ error: "Unauthorized" });
+  }
 
   passport.use(
     new GoogleAuthStrategy(
@@ -125,7 +133,7 @@ async function main() {
     res.status(201).json(newUser);
   });
 
-  app.get("/users", async (req, res) => {
+  app.get("/user", ensureAuthenticated, async (req, res) => {
     const users = await prisma.user.findMany({
       include: {
         _count: true,
@@ -156,7 +164,15 @@ async function main() {
       res.status(404).json({ error: "User not found" });
     }
   });
+
+
+  app.post("/pomodoro", ensureAuthenticated, async (req, res) => {
+    // Your logic for creating a pomodoro session goes here
+    res.status(200).json({ message: "Authenticated! Ready to create pomodoro session." });
+  });
+
   const port = process.env.PORT;
+
   app.listen(port, () => {
     console.log("Server is running on http://localhost:" + port);
   });

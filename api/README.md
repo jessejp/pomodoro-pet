@@ -21,4 +21,4 @@ npx prisma migrate dev --name init
 `npx prisma studio`
 
 **start postgres database**
-`docker-compose up`
+`docker compose up`
