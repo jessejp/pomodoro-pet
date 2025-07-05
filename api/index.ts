@@ -1,20 +1,48 @@
 import session from "express-session";
+import {RedisStore} from "connect-redis"
+import {createClient} from "redis"
 import { PrismaClient, User } from "./generated/prisma";
 import express, { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import { Strategy as GoogleAuthStrategy } from "passport-google-oauth20";
 import { config } from 'dotenv-safe';
+import cors from "cors";
+import { __prod__ } from "./constants";
+
 config();
 const prisma = new PrismaClient();
 
 async function main() {
   const app = express();
+
+  let redisClient = createClient();
+  redisClient.connect().catch(console.error);
+
+  let redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "ppsess:",
+    disableTouch: true,
+  });
+
+
   app.use(
+    cors<cors.CorsRequest>({
+      credentials: true,
+      origin: ["http://localhost:5173"],
+    }),
     express.json(),
     session({
-      secret: "keyboard cat",
+      secret: "actually-the-secret-key-lol-4242-yieryjkjykrjkrjy4",
       resave: false,
       saveUninitialized: false,
+            name: "qid",
+      store: redisStore,
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
+        httpOnly: true, // disable client-side JS access
+        sameSite: "lax",
+        secure: __prod__,
+      },
     }),
     passport.initialize(),
     passport.session(),

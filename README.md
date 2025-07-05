@@ -7,7 +7,7 @@ Pomodoro with fun!
   - [x] setup postgres db with docker compose
   - [x] init node project into /api/
   - [x] setup prisma and migrate initial user tables
-  - [ ] setup OAuth
+  - [x] setup OAuth
   - [ ] setup docker container for server
 - frontend to backend e2e typesafe
   - [ ] tRPC, Zod

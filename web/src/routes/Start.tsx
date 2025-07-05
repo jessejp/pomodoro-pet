@@ -19,11 +19,32 @@ const ConfigSession: React.FC = () => {
     rounds: 0,
   });
 
+  const handleStartSession = () => {
+    fetch(import.meta.env.VITE_API_BASE_URL + "/pomodoro", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log(response);
+          start({
+            workTime: ctrls.workTime || workTime,
+            breakTime: ctrls.breakTime || breakTime,
+            rounds: ctrls.rounds || rounds,
+          });
+        } else {
+          console.error("Logout failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+      });
+  };
+
   return (
     <>
-      <div className="h-full w-full flex justify-center items-center">
-      </div>
-      <div className="flex w-full flex-col items-center justify-end self-end pb-4 gap-8">
+      <div className="flex h-full w-full items-center justify-center"></div>
+      <div className="flex w-full flex-col items-center justify-end gap-8 self-end pb-4">
         <SliderWithTabs
           tabs={[
             {
@@ -61,12 +82,8 @@ const ConfigSession: React.FC = () => {
               intent="primary"
               variant="big"
               icon="check-tertiary-900"
-              onClick={() => {
-                start({
-                  workTime: ctrls.workTime || workTime,
-                  breakTime: ctrls.breakTime || breakTime,
-                  rounds: ctrls.rounds || rounds,
-                });
+              onClick={async () => {
+                await handleStartSession();
               }}
             >
               Start
