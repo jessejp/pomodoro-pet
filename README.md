@@ -8,9 +8,13 @@ Pomodoro with fun!
   - [x] init node project into /api/
   - [x] setup prisma and migrate initial user tables
   - [x] setup OAuth
-  - [ ] setup docker container for server
+  ~~- [ ] setup docker container for server~~
+  - [ ] db schema update
+    - fix forced pomodoro task timer?
+    - fix auth session pointless
+  - [ ] setup test environment for api
 - frontend to backend e2e typesafe
-  - [ ] tRPC, Zod
+  - [ ] Zod -> Orval?
   - [ ] tanstack/react-query
 - frontend rewrite
   - [ ] plan & design pages
