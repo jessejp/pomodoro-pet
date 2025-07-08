@@ -1,5 +1,5 @@
-**execute typescipt**
-`npx tsx index.ts`
+**execute backend dev watch mode**
+`npm run dev`
 
 **generate .env types**
 `npx gen-env-types`
