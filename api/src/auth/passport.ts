@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GoogleAuthStrategy } from "passport-google-oauth20";
-import { prisma } from "../context/db";
+import { prisma } from "../context/db.js";
 import z from "zod";
 
 passport.use(
@@ -51,6 +51,8 @@ passport.use(
     }
   )
 );
+
+
 
 const UserSchema = z.object({
   id: z.string(),

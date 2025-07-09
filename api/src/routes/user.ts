@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { isAuth } from "../middleware/isAuth";
-import { prisma } from "../context/db";
+import { isAuth } from "../middleware/isAuth.js";
+import { prisma } from "../context/db.js";
 
 const router = Router();
 
