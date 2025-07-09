@@ -10,7 +10,6 @@ import pomodoroRoutes from "./routes/pomodoro.js";
 import userRoutes from "./routes/user.js";
 
 export async function createServer() {
-  debugger;
   const app = express();
 
   let redisClient = createClient();
