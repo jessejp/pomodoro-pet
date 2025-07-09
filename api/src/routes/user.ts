@@ -4,7 +4,7 @@ import { prisma } from "../context/db";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   const { name } = req.body;
 
   if (!name) {
@@ -15,7 +15,15 @@ router.post("/", async (req, res) => {
   const newUser = await prisma.user.create({
     data: { name, isPublic: false },
   });
-  res.status(201).json(newUser);
+
+  req.login(newUser, (err) => {
+    if (err) {
+      console.error("Login error:", err);
+      return next(err);
+    }
+    console.log("User logged in:", newUser);
+    res.status(201).json(newUser);
+  });
 });
 
 router.get("/", isAuth, async (req, res) => {

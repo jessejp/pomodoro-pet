@@ -13,6 +13,8 @@ Pomodoro with fun!
     - fix forced pomodoro task timer?
     - fix auth session pointless
   - [ ] setup test environment for api
+    - https://www.prisma.io/blog/testing-series-1-8eRB5p0Y8o
+    - https://github.com/ivandotv/vitest-database-containers
 - frontend to backend e2e typesafe
   - [ ] Zod -> Orval?
   - [ ] tanstack/react-query
