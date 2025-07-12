@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as GoogleAuthStrategy } from "passport-google-oauth20";
 import prisma from "../context/db.js";
-import z from "zod";
+import { UserSchema } from "../routes/user.js";
 
 if (process.env.NODE_ENV !== "test") {
   passport.use(
@@ -54,11 +54,6 @@ if (process.env.NODE_ENV !== "test") {
   );
 }
 
-const UserSchema = z.object({
-  id: z.string(),
-  name: z.string().nullable(),
-  isPublic: z.boolean(),
-});
 
 passport.serializeUser((user: any, done) => {
   const parseResult = UserSchema.safeParse(user);

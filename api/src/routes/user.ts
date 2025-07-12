@@ -1,16 +1,28 @@
 import { Router } from "express";
 import { isAuth } from "../middleware/isAuth.js";
+import { validateRequest } from "../middleware/validateRequest.js";
 import prisma from "../context/db.js";
+import z from "zod";
+
+export const UserSchema = z.object({
+  id: z.string(),
+  name: z.string().nullable(),
+  isPublic: z.boolean(),
+});
+
+// Validation schemas for different routes
+const CreateUserBodySchema = z.object({
+  name: z.string().min(1, "Name is required").max(100, "Name too long"),
+});
+
+const GetUserByIdParamsSchema = z.object({
+  id: z.string().min(1, "User ID is required"),
+});
 
 const router = Router();
 
-router.post("/", async (req, res, next) => {
+router.post("/", validateRequest({ body: CreateUserBodySchema }), async (req, res, next) => {
   const { name } = req.body;
-
-  if (!name) {
-    res.status(400).json({ error: "Name is required" });
-    return;
-  }
 
   const newUser = await prisma.user.create({
     data: { name, isPublic: false },
@@ -39,7 +51,7 @@ router.get("/", isAuth, async (req, res) => {
   res.json(users);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateRequest({ params: GetUserByIdParamsSchema }), async (req, res) => {
   const { id } = req.params;
   const user = await prisma.user.findUnique({
     where: { id },
