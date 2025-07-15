@@ -8,6 +8,7 @@ import { __prod__ } from "./constants.js";
 import authRoutes from "./routes/auth.js";
 import pomodoroRoutes from "./routes/pomodoro.js";
 import userRoutes from "./routes/user.js";
+import { openApiDocument } from "./openapi.js";
 
 export async function createServer() {
   const app = express();
@@ -47,6 +48,10 @@ export async function createServer() {
   app.use("/auth", authRoutes);
   app.use("/user", userRoutes);
   app.use("/pomodoro", pomodoroRoutes);
+
+  app.get("/openapi.json", (req, res) => {
+    res.json(openApiDocument);
+  });
 
   return app;
 }
