@@ -12,7 +12,6 @@ if (process.env.NODE_ENV !== "test") {
         callbackURL: "/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log("Google profile:", profile);
         try {
           const account = await prisma.account.findUnique({
             where: {

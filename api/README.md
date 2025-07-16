@@ -4,8 +4,13 @@
 **generate .env types**
 `npx gen-env-types`
 
+**generate prisma**
+`npx prisma generate`
+
+optional flag for targetting correct schema `--schema=api/prisma/schema.prisma`
+
 **prisma migration**
-npx prisma migrate dev --name init
+`npx prisma migrate dev --name init`
 
 `npx prisma migrate dev`
 - Purpose: This command generates and applies a new migration based on your Prisma schema changes. It creates migration files that keep a history of changes.

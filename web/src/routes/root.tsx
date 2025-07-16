@@ -119,7 +119,7 @@ function LoginButton() {
 
 function LogoutButton() {
   const handleLogout = () => {
-    fetch(import.meta.env.VITE_API_BASE_URL + "/logout", {
+    fetch(import.meta.env.VITE_API_BASE_URL + "/auth/logout", {
       method: "POST",
       credentials: "include",
     })

@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  // output   = "../generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -60,7 +60,6 @@ model PomodoroSession {
   workTimeMinutes        Int                      @default(25) @map("work_time_minutes")
   breakTimeMinutes       Int                      @default(5) @map("break_time_minutes")
   rounds                 Int                      @default(4)
-  tasks                  Task[]
   userId                 String                   @map("user_id")
   user                   User                     @relation(fields: [userId], references: [id])
   TasksOnPomodoroSession TasksOnPomodoroSession[]
@@ -74,7 +73,6 @@ model Task {
   name                   String
   isDone                 Boolean                  @default(false) @map("is_done")
   totalCompletedSeconds  Int                      @default(0) @map("total_completed_seconds")
-  pomodoroSessions       PomodoroSession[]
   userId                 String                   @map("user_id")
   user                   User                     @relation(fields: [userId], references: [id])
   TasksOnPomodoroSession TasksOnPomodoroSession[]

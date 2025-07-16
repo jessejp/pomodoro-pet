@@ -1,6 +1,8 @@
+import prisma from "../context/db.js";
 import { config } from "dotenv-safe";
 import { Router } from "express";
 import passport from "passport";
+import { UserSchema } from "./user.js";
 
 config();
 
@@ -16,21 +18,46 @@ router.get(
   passport.authenticate("google", {
     failureRedirect: `${process.env.FRONTEND_URL}?error=authentication_failed`,
   }),
-  (req, res) => {
-    console.log("User authenticated:", req.user);
-    res.redirect(process.env.FRONTEND_URL);
+  async (req, res) => {
+    try {
+      const user = UserSchema.parse(req.user);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      await prisma.authSession.create({
+        data: {
+          userId: user.id,
+          sessionToken: req.session.id,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+        },
+      });
+      console.log("User authenticated:", req.user);
+      res.redirect(process.env.FRONTEND_URL);
+    } catch (error) {
+      console.error("Error authenticating user:", error);
+      res.redirect(`${process.env.FRONTEND_URL}?error=authentication_failed`);
+    }
   }
 );
 
-router.post("/logout", (req, res, next) => {
-  req.logout(function (err) {
-    // req.logout is an async function provided by Passport
+router.post("/logout", async (req, res, next) => {
+  try {
+    await prisma.authSession.deleteMany({
+      where: {
+        sessionToken: req.session.id,
+      },
+    });
+  } catch (error) {
+    console.error("Error logging out:", error);
+  }
+  req.logout(async function (err) {
     if (err) {
       return next(err);
     }
+
     req.session.destroy(() => {
-      // Clean up the session
-      res.clearCookie("connect.sid"); // Clear the session cookie (name might vary)
+      res.clearCookie("qid");
       res.status(200).json({ message: "Logged out successfully" });
     });
   });
