@@ -3,15 +3,18 @@ import { isAuth } from "../middleware/isAuth.js";
 import { validateRequest } from "../middleware/validateRequest.js";
 import prisma from "../context/db.js";
 import { z } from "zod";
+import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
+
+extendZodWithOpenApi(z);
 
 const router = Router();
 
 // Zod schemas
-const CreatePomodoroSessionSchema = z.object({
+export const CreatePomodoroSessionSchema = z.object({
   workTimeMinutes: z.number().int().min(1).max(180),
   breakTimeMinutes: z.number().int().min(1).max(60),
   rounds: z.number().int().min(1).max(12),
-});
+}).openapi("CreatePomodoroSessionSchema");
 
 // Create a new pomodoro session
 router.post(

@@ -1,6 +1,7 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from "@asteasolutions/zod-to-openapi";
 import { UserSchema, CreateUserBodySchema, GetUserByIdParamsSchema } from "./routes/user.js";
 import { z } from "zod";
+import { CreatePomodoroSessionSchema } from "./routes/pomodoro.js";
 
 const registry = new OpenAPIRegistry();
 
@@ -8,6 +9,40 @@ const registry = new OpenAPIRegistry();
 registry.register("User", UserSchema);
 registry.register("CreateUserBody", CreateUserBodySchema);
 registry.register("GetUserByIdParams", GetUserByIdParamsSchema);
+registry.register("CreatePomodoroSessionSchema", CreatePomodoroSessionSchema);
+
+registry.registerPath({
+  method: "post",
+  path: "/pomodoro",
+  request: {
+    body: {
+      description: "Create a new pomodoro session",
+      content: {
+        "application/json": {
+          schema: CreatePomodoroSessionSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      description: "Pomodoro session created",
+      content: {
+        "application/json": {
+          schema: CreatePomodoroSessionSchema,
+        },
+      },
+    },
+    400: {
+      description: "Bad request",
+      content: {
+        "application/json": {
+          schema: z.object({ error: z.string() }),
+        },
+      },
+    },
+  },
+});
 
 // Register routes
 registry.registerPath({
